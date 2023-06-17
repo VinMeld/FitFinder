@@ -1,29 +1,34 @@
 'use client'
-import Image from 'next/image'
-import { useState, useEffect} from 'react'
-
+import styles from './styles'
+import {Navbar, Hero, TrainerList, Filter, Footer} from './components/index'
 export default function Page() {
-  // Fetch countries:
-  const [countries, setCountries] = useState<Country[] | null>(null)
-  useEffect(() => {
-    fetch('/api/countries')
-      .then((res) => res.json())
-      .then((data) => {
-        setCountries(data)
-      })
-  }, [])
-  console.log("in page", countries)
-  // Display countries:
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-6xl font-bold text-center">FitFinder</h1>
-      {countries ?
-        countries.map((country: Country) => {
-          return <h1 key={country.id}>{country.name}</h1> // using .id for key and .name for display
-        })
-        : 
-        <h1>Trouble loading</h1>
-      }
-    </main>
+      <div className="bg-primary w-full overflow-hidden">
+        <div className={`${styles.paddingX} ${styles.flexCenter}`}>
+          <div className={`${styles.boxWidth}`}>
+            <Navbar />
+          </div>
+        </div>
+        <div className={`bg-primary ${styles.flexStart}`}>
+          <div className={`${styles.boxWidth}`}>
+          <Hero />
+          </div>
+        </div>
+        <div className={`bg-primary ${styles.flexStart}`}>
+          <div className={`${styles.boxWidth}`}>
+           <Filter />
+         </div>
+        </div>
+        <div className={`bg-primary ml-4 ${styles.flexStart}`}>
+         <div className={`${styles.boxWidth}`}>
+           <TrainerList />
+          </div>
+        </div>
+        <div className={`bg-primary ${styles.flexStart}`}>
+          <div className={`${styles.boxWidth}`}>
+           <Footer />
+          </div>
+        </div>
+    </div>
   )
 }
