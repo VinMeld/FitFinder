@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { useState } from "react";
 import { navLinks } from "../../../public";
@@ -8,7 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
-      <Image src="/textAndLogo.png" width="224"  height="50" alt="FitFinder" className="w-[224px] h-[50px]" quality={1}/>
+      <Image src="/FitFinderLogoTextBig.png" width="224" height="50" alt="FitFinder"/>
 
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
         {navLinks.map((nav, index) => (
@@ -19,7 +20,7 @@ export default function Navbar() {
             } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
             onClick={() => setActive(nav.title)}
           >
-            <a href={`#${nav.id}`}>{nav.title}</a>
+            <a href={`${nav.id}`}>{nav.title}</a>
           </li>
         ))}
       </ul>
@@ -36,7 +37,7 @@ export default function Navbar() {
         <div
           className={`${
             !toggle ? "hidden" : "flex"
-          } p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+          } p-6 bg-black absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
         >
           <ul className="list-none flex justify-end items-start flex-1 flex-col">
             {navLinks.map((nav, index) => (

@@ -1,13 +1,21 @@
 import React from 'react'
 import Image from 'next/image'
 export default function Trainer() {
-  return (
-    <a href="#" className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-        <Image className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" height="30" width="30" src="/people01.png" alt="" />
-        <div className="flex flex-col justify-between p-4 leading-normal">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+    return (
+    <a href="/trainerDetails" className="rounded overflow-hidden shadow-lg flex flex-col items-center ">
+        <div className="w-full h-64 relative overflow-hidden">
+          <Image className="block w-full h-40" width="320" height="160" loading="lazy" src="/Discount.svg" alt="Person" />
         </div>
-    </a>
-  )
-}
+        <div className="w-full">
+          <span className="inline-block bg-pink-200 text-white rounded-full px-2 py-1 text-xs font-bold mb-2">#photography</span>
+        </div>
+        <div className="w-full">
+          <div className="font-bold text-xl mb-2 text-center">The Coldest Sunset</div>
+          <p className="text-gray-700 text-base text-center mb-4">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+          </p>
+          <p className="text-sm text-gray-500 text-center">Furnished room in an apartment</p>
+        </div>
+      </a>
+    )
+  }

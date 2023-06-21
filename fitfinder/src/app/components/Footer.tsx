@@ -1,3 +1,4 @@
+'use client'
 import styles from "../styles";
 import { footerLinks, socialMedia } from "../../../public";
 import Image from "next/image";
@@ -7,7 +8,7 @@ const Footer = () => (
     <div className={`${styles.flexStart} md:flex-row flex-col mb-8 w-full`}>
       <div className="flex-[1] flex flex-col justify-start mr-10">
         <Image
-          src="/textAndLogo.png"
+          src="/FitFinderLogoTextBig.png"
           alt="FitFinder Logo"
           width="266" height="72"
           className="w-[266px] h-[72.14px] object-contain"
