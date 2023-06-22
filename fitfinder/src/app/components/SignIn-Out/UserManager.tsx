@@ -10,12 +10,14 @@ type UserManagerProps = {
     setShowUserManager: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const UserManager: React.FC<UserManagerProps> = ({setShowUserManager}) => {
-  const [tab, setTab] = useState(-1);
+  const [tab, setTab] = useState(-2);
   useEffect(() => {
     setTab(0)
   }, []);
   const tabManager = () => {
     switch (tab) {
+        case 6:
+            setShowUserManager(false)
         case 0:
             return <Signin setTab={setTab} />
         case 1:
