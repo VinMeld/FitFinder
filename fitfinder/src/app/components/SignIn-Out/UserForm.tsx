@@ -1,4 +1,10 @@
 import React, {useState} from 'react'
+import { useAuth } from '../../components/providers/supabase-auth-provider'; 
+import router from 'next/router';
+
+import {createClient} from "../../utils/supabase-browser"
+import { revalidatePath } from 'next/cache';
+
 type UserFormProps = {
     setTab: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -7,6 +13,7 @@ const UserForm : React.FC<UserFormProps> = ({setTab}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
+  const supabase= createClient();
   const registerUser = async () => {
     // Check if passwords match
     if (password !== confirm) {
@@ -27,20 +34,15 @@ const UserForm : React.FC<UserFormProps> = ({setTab}) => {
     const user = {email, password}
     // Get result of fetch
     try {
-        const response = await fetch('http://localhost:3000/api/users', { 
-            method: 'POST', 
-            body: JSON.stringify(user),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-        });
-        const result = await response.json();
-        console.log(result);
-        if (response.ok) {
-            alert('User added.');
-        } else {
-            alert(`Error: ${result.error}`);
-        }
+        const user = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+            emailRedirectTo: `${location.origin}/auth/callback`,
+            },
+        })
+        console.log(user);
+        revalidatePath('/')
     } catch (error) {
         console.error('Error:', error);
     }
