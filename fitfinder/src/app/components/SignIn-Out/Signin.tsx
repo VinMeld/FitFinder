@@ -14,7 +14,6 @@ const Signin: React.FC<SigninProps> = ({ setTab }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    console.log(email,password)
     try {
       const error = await signInWithEmail(email, password,);
       
