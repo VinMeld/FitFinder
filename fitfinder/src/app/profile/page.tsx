@@ -7,6 +7,7 @@ export default function Profile() {
       <div className="bg-primary w-full overflow-hidden">
         <div className={`bg-primary ${styles.flexStart}`}>
           <div className={`${styles.boxWidth}`}>
+            <h1> Profile page! </h1>
           <ProfileInfo />
           </div>
         </div>
