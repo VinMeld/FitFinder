@@ -14,7 +14,7 @@ export default function Profile() {
      <div className={`bg-primary ${styles.flexStart}`}>
         <div className={`${styles.boxWidth}`}>
          <h1> Profile page! </h1>
-          {user.isUser ? <UserProfile /> : <TrainerProfile />}
+          {user.isuser ? <UserProfile /> : <TrainerProfile />}
         </div>
       </div>
     </div>

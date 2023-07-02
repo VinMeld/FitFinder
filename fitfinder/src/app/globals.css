@@ -68,7 +68,10 @@
       #14101d 95.11%
     );
   }
-  
+  .panel-transition {
+    transition: all 0.3s ease-in-out;
+    transform-origin: top right;
+  }
   .bg-discount-gradient {
     background: linear-gradient(125.17deg, #272727 0%, #11101d 100%);
   }
