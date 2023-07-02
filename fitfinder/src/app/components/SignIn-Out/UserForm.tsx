@@ -1,3 +1,4 @@
+'use client'
 import React, {useState} from 'react'
 import { useAuth } from '../../components/providers/supabase-auth-provider'; 
 import router from 'next/router';
@@ -5,6 +6,7 @@ import { AuthResponse } from "@supabase/supabase-js";
 
 import {createClient} from "../../utils/supabase-browser"
 import { revalidatePath } from 'next/cache';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 type UserFormProps = {
     setTab: React.Dispatch<React.SetStateAction<number>>;
@@ -14,7 +16,7 @@ const UserForm : React.FC<UserFormProps> = ({setTab}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
-  const supabase= createClient();
+  const supabase = createClientComponentClient();
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

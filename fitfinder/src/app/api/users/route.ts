@@ -1,6 +1,6 @@
+'use server'
 import { createClient } from "../../utils/supabase-server";
 import { NextResponse } from "next/server";
-
 
 import { supabase } from "../../../../lib/supabaseClient";
 

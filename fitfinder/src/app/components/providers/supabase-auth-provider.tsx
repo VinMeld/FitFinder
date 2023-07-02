@@ -54,7 +54,7 @@ export default function SupabaseAuthProvider({
       console.log(error);
       return null;
     } else {
-        console.log(user)
+        console.log(user);
       return user;
     }
   };
@@ -69,7 +69,7 @@ export default function SupabaseAuthProvider({
   // Sign Out
   const signOut = async () => {
     await supabase.auth.signOut();
-    router.push("/login");
+    router.push("/");
   };
 
   // Sign-In with Github

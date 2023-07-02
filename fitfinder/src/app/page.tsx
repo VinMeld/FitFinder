@@ -16,8 +16,8 @@ export default function Page() {
           <Filter />
         </div>
       </div>
-      <div className={`bg-primary ml-4 ${styles.flexStart}`}>
-        <div className={`${styles.boxWidth}`}>
+      <div id='trainerList' className={`bg-primary ml-4 ${styles.flexStart}`}>
+        <div  className={`${styles.boxWidth}`}>
           <TrainerList />
         </div>
       </div>
