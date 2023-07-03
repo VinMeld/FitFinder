@@ -14,12 +14,16 @@ export default function Navbar() {
     console.log(pathName)
     if (pathName.includes('profile')) {
       setActive('Profile')
+    } else {
+      setActive('Home')
     }
-  }, []);
+  }, [pathName]);
     
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
-      <Image src="/FitFinderLogoTextBig.png" width="224" height="50" alt="FitFinder"/>
+      <a href="/" className="flex items-center gap-2">
+        <Image src="/FitFinderLogoTextBig.png" width="224" height="50" alt="FitFinder"/>
+      </a>
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
         { 
         user ?

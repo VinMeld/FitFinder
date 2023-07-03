@@ -1,6 +1,6 @@
 'use client'
 import styles from './styles'
-import {Navbar, Hero, Filter, Signup} from './components/index'
+import {Navbar, Hero, Signup} from './components/index'
 import dyanmic from "next/dynamic"
 const TrainerList = dyanmic(() => import('./components/TrainerList'))
 export default function Page() {
@@ -9,11 +9,6 @@ export default function Page() {
       <div className={`bg-primary ${styles.flexStart}`}>
         <div className={`${styles.boxWidth}`}>
         <Hero />
-        </div>
-      </div>
-      <div className={`bg-primary ${styles.flexStart}`}>
-        <div className={`${styles.boxWidth}`}>
-          <Filter />
         </div>
       </div>
       <div id='trainerList' className={`bg-primary ml-4 ${styles.flexStart}`}>

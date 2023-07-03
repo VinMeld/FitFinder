@@ -60,6 +60,21 @@
       #11101d 91.61%
     );
   }
+  @layer components {
+    .arrow-icon {
+      @apply w-4 h-4;
+    }
+    @screen sm {
+      .arrow-icon {
+        @apply w-6 h-6;
+      }
+    }
+    @screen md {
+      .arrow-icon {
+        @apply w-8 h-8;
+      }
+    }
+  }
   
   .bg-gray-gradient {
     background: linear-gradient(

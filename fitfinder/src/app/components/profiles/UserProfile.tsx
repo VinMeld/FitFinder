@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation'
 const UserProfile = () => {
   const { user } = useAuth()
   const router = useRouter()
-  // Function to toggle the visibility of the dropdown menu
 
   return (
     <>
