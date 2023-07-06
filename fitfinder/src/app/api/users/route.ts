@@ -46,3 +46,79 @@ export async function GET(request: Request) {
   return NextResponse.json(user["0"]);
 }
 
+export async function PUT(request: Request) {
+  const userColumns = ["first_name", "last_name", "phone_number"]
+  const trainerColumns = ["yoe","price_range_start","price_range_end","website"]
+  console.log("put request")
+  //console.log(request)
+  const supabase = createClient();
+
+  // Fetch the Current User
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  // If there is no user, return 401 Unauthorized
+  if (!session) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const req = await request.json();
+  
+
+  //respond with body
+
+
+  console.log(req)
+
+  //loop through json and discard field if its empty
+
+  for(var key in req){
+    if(req[key] == ""){
+      delete req[key];
+    }
+  }
+
+  let userReq = {}
+  let trainerReq = {}
+
+  // Loop through json and divide fields based on userColumns and trainerColumns
+  for(var key in req){
+    if(req[key] !== ""){
+      if(userColumns.includes(key)) {
+        userReq[key] = req[key]
+      } 
+      else if(trainerColumns.includes(key)) {
+        trainerReq[key] = req[key]
+      }
+    }
+  }
+
+  console.log(userReq);
+  console.log(trainerReq);
+
+
+  console.log(req);
+
+  const { data, error } = await supabase
+  .from('users')
+  .update(userReq)
+  .eq('id', session.user.id)
+  .select()
+
+  
+  const { data: trainerData, error: trainerError  } = await supabase
+  .from('trainer')
+  .update(trainerReq)
+  .eq('id', session.user.id)
+  .select()
+
+
+  console.log(trainerError);
+  console.log(trainerData);
+  return new NextResponse(JSON.stringify(req), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};

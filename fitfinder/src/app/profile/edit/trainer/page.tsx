@@ -7,6 +7,10 @@ export default function TrainerEdit() {
   const { user } = useAuth();
   const [displayName, setDisplayName] = useState('')
   const [pricing, setPricing] = useState('')
+  const [first_name, setFirstName] = useState('')
+  const [last_name, setLastName] = useState('')
+  const [price_range_start, setPricingStart] = useState('')
+  const [price_range_end, setPricingEnd] = useState('')
   const [bio, setBio] = useState('')
   const [location, setLocation] = useState('')
   const [instagram, setInstagram] = useState('')
@@ -24,23 +28,62 @@ export default function TrainerEdit() {
     setCoachingEmail(user.coaching_email);
   }, []);
 
+  const [phone_number, setPhoneNumber] = useState('')
 
   const handleBioChange = (event: any) => {
     setBio(event.target.value);
     setCharCount(event.target.value.length);
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     console.log({
       displayName,
       pricing,
+      first_name,
+      last_name,
+      price_range_start,
+      price_range_end,
       bio,
       location,
       instagram,
       website,
-      coachingEmail
+      coachingEmail,
+      phone_number
     });
+
+    const userData = {
+      first_name,
+      last_name,
+      price_range_start,
+      price_range_end,
+      bio,
+      location,
+      instagram,
+      website,
+      coachingEmail,
+      phone_number
+    };
+  
+    console.log(userData);
+  
+    try {
+      const response = await fetch('/api/users', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      } else {
+        console.log(`Update was successful, status code: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('There was a problem with the fetch operation: ', error);
+    }
   };
   
   return (
@@ -53,9 +96,15 @@ export default function TrainerEdit() {
         </div>
     </div>
 
-    <div className="relative z-0 w-full mb-6 group">
-        <input type="text" name="floating_email" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " onChange={(e) => {setPricing(e.target.value)}}   />
-        <label  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Pricing</label>
+    <div className="grid md:grid-cols-2 md:gap-6">
+        <div className="relative z-0 w-full mb-6 group">
+            <input type="text" name="floating_price_range_start" id="floating_price_range_start" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " onChange={(e) => {setPricingStart(e.target.value)}}  />
+            <label  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Pricing start</label>
+        </div>
+        <div className="relative z-0 w-full mb-6 group">
+            <input type="text" name="floating_price_range_end" id="floating_price_range_end" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " onChange={(e) => {setPricingEnd(e.target.value)}}  />
+            <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Pricing end</label>
+        </div>
     </div>
     <div className="relative z-0 w-full mb-6 group">
         <input type="text" name="floating_instagram" id="floating_instagram" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " onChange={(e) => {setInstagram(e.target.value)}}  />
@@ -73,6 +122,10 @@ export default function TrainerEdit() {
         <div className="relative z-0 w-full mb-6 group">
             <input type="text" name="floating_company" id="floating_company" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " onChange={(e) => {setLocation(e.target.value)}}  />
             <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Location</label>
+        </div>
+        <div className="relative z-0 w-full mb-6 group">
+            <input type="text" name="floating_number" id="floating_number" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " onChange={(e) => {setPhoneNumber(e.target.value)}}  />
+            <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone</label>
         </div>
         <div className="relative z-0 w-full mb-6 group">
         <div style={{position: 'relative'}}>
