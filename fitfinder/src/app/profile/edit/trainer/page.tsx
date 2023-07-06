@@ -1,7 +1,10 @@
 'use client'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { useAuth } from "../../../components/providers/supabase-auth-provider";
 
 export default function TrainerEdit() {
+
+  const { user } = useAuth();
   const [displayName, setDisplayName] = useState('')
   const [pricing, setPricing] = useState('')
   const [bio, setBio] = useState('')
@@ -10,6 +13,17 @@ export default function TrainerEdit() {
   const [website, setWebsite] = useState('')
   const [coachingEmail, setCoachingEmail] = useState('')
   const [charCount, setCharCount] = useState(0);
+ 
+  useEffect(() => {
+    setDisplayName(user.display_name);
+    setPricing(user.pricing);
+    setBio(user.bio);
+    setLocation(user.location);
+    setInstagram(user.instagram);
+    setWebsite(user.website);
+    setCoachingEmail(user.coaching_email);
+  }, []);
+
 
   const handleBioChange = (event: any) => {
     setBio(event.target.value);
@@ -19,6 +33,7 @@ export default function TrainerEdit() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log({
+      displayName,
       pricing,
       bio,
       location,

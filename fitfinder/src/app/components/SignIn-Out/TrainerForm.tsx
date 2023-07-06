@@ -7,8 +7,7 @@ type TrainerFormProps = {
 };
 
 const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -33,8 +32,6 @@ const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
     // Here you can handle form submission
     // For example, log the form data to console
     console.log({
-      firstName,
-      lastName,
       email,
       password,
       confirm,
@@ -45,8 +42,7 @@ const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
         password: password,
         options: {
             data: {
-            firstName,
-            lastName,
+            displayName,
             isuser: false,
             },
             emailRedirectTo: `${location.origin}/auth/callback`,
@@ -78,28 +74,11 @@ const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
               type="text"
               name="firstName"
               id="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               placeholder="John"
               required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="lastName"
-              className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Your Last Name
-            </label>
-            <input
-              type="text"
-              name="lastName"
-              id="lastName"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              placeholder="Smith"
             />
           </div>
         </div>
