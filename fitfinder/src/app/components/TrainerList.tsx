@@ -2,18 +2,25 @@ import React, { useEffect, useState, FC } from 'react'
 import Trainer from './Trainer'
 import styles from '../styles'
 import Filter from './Filter'
+import { supabase } from '../../../lib/supabaseClient'
 export default function TrainerList() {
   const [trainers, setTrainers]: any = useState([])
   useEffect(() => {
     generateTrainers()
   }, [])
-  function generateTrainers(){
-    const currTrainers = []
-    for (let i = 0; i < 30; i++) {
-      currTrainers.push(<Trainer />)
-    }
-    setTrainers(currTrainers)
-  }
+  async function generateTrainers(){
+    const trainers = fetch('/api/trainer')
+    .then(response => response.json()) // Parsing the JSON data from the response
+      .then(data => {
+        const trainerComponents = data.map(trainer  =>
+          <Trainer key={trainer.id} {...trainer} /> 
+        );
+        setTrainers(trainerComponents);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
   return (
   <section id="clients" className={`${styles.paddingY} ${styles.flexCenter} flex-col relative `}>
       <div className="w-full flex justify-between items-center md:flex-row flex-col sm:mb-16 mb-6 relative z-[1]">

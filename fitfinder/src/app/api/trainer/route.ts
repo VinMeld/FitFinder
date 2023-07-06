@@ -12,7 +12,6 @@ export async function GET(request: Request) {
   const { data: trainers, error } = await supabase
     .from("trainer")
     .select("*");
-
   if (error) {
     return new Response(error.message, { status: 500 });
   }
