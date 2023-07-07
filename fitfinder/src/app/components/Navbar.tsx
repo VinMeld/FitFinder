@@ -59,7 +59,7 @@ export default function Navbar() {
             } ${ "mb-0"}`}
             onClick={() => setActive("Home")}
           >
-            <a href={`#/`} className='text-slate-50'>Home</a>
+            <a href={`/`} className='text-slate-50'>Home</a>
           </li>}
       </ul>
 
@@ -100,7 +100,7 @@ export default function Navbar() {
             } ${ "mb-0"}`}
             onClick={() => setActive("Home")}
           >
-            <a href={`#/`} className='text-slate-50'>Home</a>
+            <a href={`/`} className='text-slate-50'>Home</a>
           </li>
           }
           </ul>

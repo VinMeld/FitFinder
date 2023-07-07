@@ -7,7 +7,12 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect } from "react";
 import useSWR from "swr";
 import { useSupabase } from "./supabase-provider";
+import {Database} from '../../../../types/supabase'
 interface ContextI {
+  trainer: Database["public"]["Tables"]["trainer"]["Row"] | null | undefined;
+  trainerError: any;
+  trainerLoading: boolean;
+  trainerMutate: any;
   user: User | null | undefined | any;
   error: any;
   isLoading: boolean;
@@ -17,6 +22,10 @@ interface ContextI {
   signInWithEmail: (email: string, password: string) => Promise<string | null>;
 }
 const Context = createContext<ContextI>({
+  trainer: null,
+  trainerError: null,
+  trainerLoading: true,
+  trainerMutate: null,
   user: null,
   error: null,
   isLoading: true,
@@ -35,7 +44,22 @@ export default function SupabaseAuthProvider({
 }) {
   const { supabase } = useSupabase();
   const router = useRouter();
-
+  const getTrainer = async () => {
+    const { data: trainer, error } = await supabase
+      .from("trainer")
+      .select("*")
+      .eq("id", serverSession?.user?.id)
+      .single();
+  
+    if (error) {
+      console.log(error);
+      return null;
+    } else {
+      console.log(trainer);
+      return trainer as Database["public"]["Tables"]["trainer"]["Row"];
+    }
+  };
+  
   // Get USER
   const getUser = async () => {
     console.log(serverSession?.user?.id);
@@ -58,6 +82,7 @@ export default function SupabaseAuthProvider({
       return user;
     }
   };
+  const { data: trainer, error: trainerError, isLoading: trainerLoading, mutate: trainerMutate } = useSWR(serverSession ? "trainer-context" : null, getTrainer);
 
   const {
     data: user,
@@ -108,6 +133,10 @@ export default function SupabaseAuthProvider({
 
   const exposed: ContextI = {
     user,
+    trainer,
+    trainerError,
+    trainerLoading,
+    trainerMutate,  
     error,
     isLoading,
     mutate,
