@@ -7,6 +7,22 @@ import { useRouter } from 'next/navigation'
 const UserProfile = () => {
   const { user } = useAuth()
   const router = useRouter()
+  const handleDelete = async () => {
+    const confirmation = confirm("Are you sure you want to delete your account?");
+    if (!confirmation) return;
+    const response = await fetch('/api/users/deleteUser', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response;
+    if (!response.ok) {
+      // handle error
+      console.error(data);
+    } else {
+      // handle success, e.g. redirect to homepage
+      router.push("/");
+    }
+  };
 
   return (
     <>
@@ -39,6 +55,7 @@ const UserProfile = () => {
                     <span className="font-medium" onClick={() => router.push("/profile/edit/user")}>{user.email} <span onClick={() => router.push("/profile/edit/user")} className="cursor-pointer">✏️</span></span>
                 </div>
             </a>}
+            <button className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onClick={handleDelete}>Delete Account</button>
         </div>
     </>
   )

@@ -2,7 +2,6 @@
 import { createClient } from "../../utils/supabase-server";
 import { NextResponse } from "next/server";
 
-import { supabase } from "../../../../lib/supabaseClient";
 
 //get user profile
 export async function GET(request: Request) {

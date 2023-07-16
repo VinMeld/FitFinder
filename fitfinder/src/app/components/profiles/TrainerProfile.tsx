@@ -9,6 +9,23 @@ const TrainerProfile = () => {
   const router = useRouter()
   // Function to toggle the visibility of the dropdown menu
   console.log(user)
+  const handleDelete = async () => {
+    const confirmation = confirm("Are you sure you want to delete your account?");
+    if (!confirmation) return;
+    const response = await fetch('/api/users/deleteUser', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response;
+    if (!response.ok) {
+      // handle error
+      console.error(data);
+    } else {
+      // handle success, e.g. redirect to homepage
+      router.push("/");
+    }
+  };
+  
   return (
     <>
         <div className="bg-black text-gray-300 rounded-lg space-y-6">
@@ -63,6 +80,7 @@ const TrainerProfile = () => {
                         </div>
                     </a>
                 </div>}
+                <button className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onClick={handleDelete}>Delete Account</button>
             </div>
         </div>
     </>
