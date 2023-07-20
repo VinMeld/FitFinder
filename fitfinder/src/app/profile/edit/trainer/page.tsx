@@ -1,6 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../components/providers/supabase-auth-provider";
+import { useDropzone } from 'react-dropzone';
+import UserDropzone from '../../../components/profiles/UserDropzone';
+import Image from 'next/image'
 
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
@@ -88,7 +91,13 @@ export default function TrainerEdit() {
             </label>
           </div>
         </div>
-
+        <div className="grid md:grid-cols-2 md:gap-6">
+        <div className="relative">
+            <UserDropzone className="flex-shrink-0 flex justify-center items-center border-2 hover:border-pink transition-all p-0.5">
+                <Image width="320" height="160" src="/Discount.svg" alt="Photo of Howard" className="rounded-full h-14 w-14" />
+            </UserDropzone>
+        </div>
+        </div> 
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">
             <input

@@ -13,15 +13,25 @@ const UserDropzone = (props: any) => {
         alert("You can only upload up to 5 files at a time.");
         return;
       }
-
-      const userFolderPath = `${user.email}/`;  // Path where user's files are stored
-      const { data: oldFiles, error: listError } = await supabase.storage.from('avatars').list(userFolderPath);
-
-      if (listError) {
-        console.error('Error listing files: ', listError.message);
-        return;
-      }
+      const userFolderPath = `${user.id}/`;  // Path where user's files are stored
+      console.log(userFolderPath)
+      let oldFiles = [];
+      // try {
+      //     const { data: oldFiles1, error: listError } = await supabase.storage.from('trainer-images').list(userFolderPath);
+      //     oldFiles = oldFiles1 || [];
+      //     if (listError) {
+      //         console.error('Error listing files: ', listError.message);
+      //         return;
+      //     }
       
+      //     // Continue processing with oldFiles...
+      
+      // } catch (error: any) {
+      //     console.error('Error occurred while listing files: ', error.message);
+      
+      //     // Here you could assume that if an error occurred, then it's because there were no files.
+      //     // Then, you can safely continue with your upload or other operation.
+      // }      
       if ((oldFiles.length + acceptedFiles.length) > 5) {
         alert('You have reached the maximum number of uploads (5).');
         return;
@@ -29,7 +39,7 @@ const UserDropzone = (props: any) => {
       for(const file of acceptedFiles){
         const filePath = `${user.id}/${uuidv4()}`; // File path in Supabase storage
         try {
-          const { data, error } = await supabase.storage.from('avatars').upload(filePath, file);
+          const { data, error } = await supabase.storage.from('trainer-images').upload(filePath, file);
 
           if (error) {
             console.error('Error uploading file: ', error.message);
@@ -37,7 +47,7 @@ const UserDropzone = (props: any) => {
           }
 
           // Upload Confirmation
-          const { data: newFiles, error: confirmError } = await supabase.storage.from('avatars').list(userFolderPath);
+          const { data: newFiles, error: confirmError } = await supabase.storage.from('trainer-images').list(userFolderPath);
 
           if (confirmError) {
             console.error('Error confirming upload: ', confirmError.message);

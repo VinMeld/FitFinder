@@ -4,11 +4,12 @@ import { useState } from "react";
 import { navLinks } from "../../../public";
 import Image from 'next/image'
 import { useAuth } from '../components/providers/supabase-auth-provider'; 
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 export default function Navbar() {
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
   const { user, signOut } = useAuth();
+  const router = useRouter()
   const pathName = usePathname();
   useEffect(() => {
     console.log(pathName)
@@ -35,7 +36,8 @@ export default function Navbar() {
             className={`font-poppins font-normal cursor-pointer text-[16px] mr-10 ${
               active === nav.title ? "text-slate-300	" : "text-slate-500"
             } `}
-            onClick={() => setActive(nav.title)}
+            onClick={() => {router.push('/profile')
+             setActive(nav.title)}}
           >
             <a href={`${nav.id}`}>{nav.title}</a>
           </li>
@@ -57,7 +59,9 @@ export default function Navbar() {
             className={`font-poppins font-medium cursor-pointer text-[16px] ${
  "text-slate-400" 
             } ${ "mb-0"}`}
-            onClick={() => setActive("Home")}
+            onClick={() =>{ 
+              router.push('/profile')
+            setActive("Home")}}
           >
             <a href={`/`} className='text-slate-50'>Home</a>
           </li>}
@@ -87,7 +91,9 @@ export default function Navbar() {
                 className={`font-poppins font-medium cursor-pointer text-[16px] ${
                   active === nav.title ? "text-slate-400	" : "text-slate-50"
                 } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
-                onClick={() => setActive(nav.title)}
+                onClick={() => {
+                  router.push('/profile')
+                setActive(nav.title)}}
               >
                 <a href={`#${nav.id}`} className='text-slate-50'>{nav.title}</a>
               </li>
@@ -98,7 +104,9 @@ export default function Navbar() {
             className={`font-poppins font-medium cursor-pointer text-[16px] ${
  "text-slate-400" 
             } ${ "mb-0"}`}
-            onClick={() => setActive("Home")}
+            onClick={() => {
+              router.push('/')
+            setActive("Home")}}
           >
             <a href={`/`} className='text-slate-50'>Home</a>
           </li>

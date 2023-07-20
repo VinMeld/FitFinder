@@ -10,7 +10,7 @@ const ShowImages = () => {
   useEffect(() => {
     async function getImages(){
         // Get list of images
-        const { data: images, error: listError } = await supabase.storage.from('avatars').list(`${user.id}/`);
+        const { data: images, error: listError } = await supabase.storage.from('trainer-images').list(`${user.id}/`);
         if(listError) {
             console.error('Error getting images: ', listError.message);
             return;
@@ -19,7 +19,7 @@ const ShowImages = () => {
         const urls = images.map(image => {
             const filePath = `${user.id}/${image.name}`;
             try {
-                const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+                const { data } = supabase.storage.from('trainer-images').getPublicUrl(filePath);
                 return data?.publicUrl;
             } catch(error) {
                 console.error('Error getting public URL: ', error);
