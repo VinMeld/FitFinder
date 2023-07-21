@@ -4,17 +4,19 @@ import { useAuth } from "../../../components/providers/supabase-auth-provider";
 
 export default function UserEdit() {
   const { user } = useAuth();
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [location, setLocation] = useState("");
+  const [displayName, setDisplayName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<number>(0);
+  const [location, setLocation] = useState<number>(0);
 
   useEffect(() => {
-    setDisplayName(user.display_name);
-    setEmail(user.email);
-    setPhoneNumber(user.phone_number);
-    setLocation(user.location);
-  }, []);
+    if(user) {
+      setDisplayName(user.display_name || "");
+      setEmail(user.email || "");
+      setPhoneNumber(user.phone_number || 0);
+      setLocation(user.location || 0);
+    }
+  }, [user]);
 
   return (
     <>
@@ -63,9 +65,12 @@ export default function UserEdit() {
               name="floating_phone"
               id="floating_phone"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder={phoneNumber}
+              placeholder={`${phoneNumber}`}
               onChange={(e) => {
-                setPhoneNumber(e.target.value);
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value)) {
+                  setPhoneNumber(value);
+                }
               }}
               required
             />
@@ -79,9 +84,12 @@ export default function UserEdit() {
               name="floating_location"
               id="floating_location"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder={location}
+              placeholder={`${location}`}
               onChange={(e) => {
-                setLocation(e.target.value);
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value)) {
+                  setLocation(value);
+                }
               }}
               required
             />

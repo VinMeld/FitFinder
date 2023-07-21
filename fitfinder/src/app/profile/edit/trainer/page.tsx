@@ -7,24 +7,24 @@ import Image from 'next/image'
 
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
-  const [displayName, setDisplayName] = useState("");
-  const [price_range_start, setPricingStart] = useState("");
-  const [price_range_end, setPricingEnd] = useState("");
-  const [bio, setBio] = useState("");
-  const [location, setLocation] = useState("");
-  const [instagram, setInstagram] = useState("");
-  const [website, setWebsite] = useState("");
-  const [coachingEmail, setCoachingEmail] = useState("");
+  const [displayName, setDisplayName] = useState<string>("");
+  const [price_range_start, setPricingStart] = useState<number>(0);
+  const [price_range_end, setPricingEnd] = useState<number>(0);
+  const [bio, setBio] = useState<string>("");
+  const [location, setLocation] = useState<number>(0);
+  const [instagram, setInstagram] = useState<string>("");
+  const [website, setWebsite] = useState<string>("");
   const [charCount, setCharCount] = useState(0);
 
   useEffect(() => {
     if (user && trainer) {
-      setDisplayName(user.display_name);
-      setBio(user.bio);
-      setLocation(user.location);
-      setInstagram(user.instagram);
-      setWebsite(user.website);
-      setCoachingEmail(user.coaching_email);
+      setDisplayName(user.display_name || "");
+      setBio(trainer.bio || "");
+      setLocation(user.location || 0);
+      setInstagram(trainer.instagram || "");
+      setWebsite(trainer.website || "");
+      setPricingStart(trainer.price_range_start || 0);
+      setPricingEnd(trainer.price_range_end || 0);
     }
   }, [user, trainer]);
 
@@ -39,14 +39,13 @@ export default function TrainerEdit() {
     event.preventDefault();
 
     const userData = {
-      displayName,
+      display_name: displayName,
       price_range_start,
       price_range_end,
       bio,
       location,
       instagram,
       website,
-      coachingEmail,
       phone_number,
     };
 
@@ -82,6 +81,7 @@ export default function TrainerEdit() {
               id="floating_first_name"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              value={displayName}
               onChange={(e) => {
                 setDisplayName(e.target.value);
               }}
@@ -92,11 +92,9 @@ export default function TrainerEdit() {
           </div>
         </div>
         <div className="grid md:grid-cols-2 md:gap-6">
-        <div className="relative">
             <UserDropzone className="flex-shrink-0 flex justify-center items-center border-2 hover:border-pink transition-all p-0.5">
                 <Image width="320" height="160" src="/Discount.svg" alt="Photo of Howard" className="rounded-full h-14 w-14" />
             </UserDropzone>
-        </div>
         </div> 
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">
@@ -107,7 +105,10 @@ export default function TrainerEdit() {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               onChange={(e) => {
-                setPricingStart(e.target.value);
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value)) {
+                  setPricingStart(value);
+                }
               }}
             />
             <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -122,7 +123,10 @@ export default function TrainerEdit() {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               onChange={(e) => {
-                setPricingEnd(e.target.value);
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value)) {
+                  setPricingEnd(value);
+                }
               }}
             />
             <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -163,28 +167,16 @@ export default function TrainerEdit() {
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">
             <input
-              type="email"
-              name="floating_email"
-              id="floating_email"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              onChange={(e) => {
-                setCoachingEmail(e.target.value);
-              }}
-            />
-            <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-              Coaching Email{" "}
-            </label>
-          </div>
-          <div className="relative z-0 w-full mb-6 group">
-            <input
               type="text"
               name="floating_company"
               id="floating_company"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               onChange={(e) => {
-                setLocation(e.target.value);
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value)) {
+                  setLocation(value);
+                }
               }}
             />
             <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -210,7 +202,7 @@ export default function TrainerEdit() {
             <div style={{ position: "relative" }}>
               <textarea
                 rows={5}
-                maxLength={10}
+                maxLength={1000}
                 name="floating_biography"
                 id="floating_biography"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"

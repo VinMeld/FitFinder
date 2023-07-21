@@ -1,6 +1,6 @@
 'use client'
 import styles from '../styles'
-import ProfileInfo from '../components/Profile'
+import ProfileInfo from '../components/trainer/Profile'
 import dyanmic from "next/dynamic"
 import UserProfile from '../components/profiles/UserProfile'
 import TrainerProfile from '../components/profiles/TrainerProfile'

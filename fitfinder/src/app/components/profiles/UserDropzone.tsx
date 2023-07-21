@@ -14,25 +14,26 @@ const UserDropzone = (props: any) => {
         alert("You can only upload up to 5 files at a time.");
         return;
       }
+      if (!user) return;
       const userFolderPath = `${user.id}/`;  // Path where user's files are stored
       console.log(userFolderPath)
       let oldFiles = [];
-      // try {
-      //     const { data: oldFiles1, error: listError } = await supabase.storage.from('trainer-images').list(userFolderPath);
-      //     oldFiles = oldFiles1 || [];
-      //     if (listError) {
-      //         console.error('Error listing files: ', listError.message);
-      //         return;
-      //     }
+      try {
+          const { data: oldFiles1, error: listError } = await supabase.storage.from('trainer-images').list(userFolderPath);
+          oldFiles = oldFiles1 || [];
+          if (listError) {
+              console.error('Error listing files: ', listError.message);
+              return;
+          }
       
-      //     // Continue processing with oldFiles...
+          // Continue processing with oldFiles...
       
-      // } catch (error: any) {
-      //     console.error('Error occurred while listing files: ', error.message);
+      } catch (error: any) {
+          console.error('Error occurred while listing files: ', error.message);
       
-      //     // Here you could assume that if an error occurred, then it's because there were no files.
-      //     // Then, you can safely continue with your upload or other operation.
-      // }      
+          // Here you could assume that if an error occurred, then it's because there were no files.
+          // Then, you can safely continue with your upload or other operation.
+      }      
       if ((oldFiles.length + acceptedFiles.length) > 5) {
         alert('You have reached the maximum number of uploads (5).');
         return;

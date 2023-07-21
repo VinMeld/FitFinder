@@ -1,8 +1,7 @@
 import React, { useEffect, useState, FC } from 'react'
 import Trainer from './Trainer'
-import styles from '../styles'
-import Filter from './Filter'
-import { supabase } from '../../../lib/supabaseClient'
+import styles from '../../styles'
+import Filter from '../Filter'
 export default function TrainerList() {
   const [trainers, setTrainers]: any = useState([])
   useEffect(() => {

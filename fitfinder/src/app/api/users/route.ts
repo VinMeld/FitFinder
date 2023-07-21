@@ -46,9 +46,9 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const userColumns = ["first_name", "last_name", "phone_number"]
-  const trainerColumns = ["yoe","price_range_start","price_range_end","website"]
-  console.log("put request")
+  const userColumns = ["first_name", "last_name", "phone_number", "display_name", "email", "location"];
+  const trainerColumns = ["yoe", "price_range_start", "price_range_end", "website", "bio", "instagram"];
+    console.log("put request")
   //console.log(request)
   const supabase = createClient();
 

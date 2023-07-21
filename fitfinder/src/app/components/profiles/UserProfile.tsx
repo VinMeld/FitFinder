@@ -11,7 +11,7 @@ const UserProfile = () => {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-    const data = await response;
+    const data = response;
     if (!response.ok) {
       // handle error
       console.error(data);
@@ -23,6 +23,7 @@ const UserProfile = () => {
 
   return (
     <>
+    {user &&
         <div className="bg-black text-gray-300 rounded-lg space-y-6">
             <div className="divide-y divide-gray-700">
                 <div className="flex items-center gap-4 py-4 px-4">
@@ -38,7 +39,7 @@ const UserProfile = () => {
                                 </button>
                             </div>
                         </div>
-                        {user.phoneNumber && <div className="text-gray-500" onClick={() => router.push("/profile/edit/user")}>{user.phoneNumber} <span onClick={() => router.push("/profile/edit/user")} className="cursor-pointer">✏️</span></div>}
+                        {user.phone_number && <div className="text-gray-500" onClick={() => router.push("/profile/edit/user")}>{user.phone_number} <span onClick={() => router.push("/profile/edit/user")} className="cursor-pointer">✏️</span></div>}
                     </div>
                 </div>
             </div>
@@ -49,6 +50,7 @@ const UserProfile = () => {
             </a>}
             <button className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onClick={handleDelete}>Delete Account</button>
         </div>
+    }
     </>
   )
 }

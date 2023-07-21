@@ -8,8 +8,10 @@ const ShowImages = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
+    if(!user) return;
     async function getImages(){
         // Get list of images
+        if (!user) return;
         const { data: images, error: listError } = await supabase.storage.from('trainer-images').list(`${user.id}/`);
         if(listError) {
             console.error('Error getting images: ', listError.message);
@@ -30,7 +32,7 @@ const ShowImages = () => {
     }
 
     getImages();
-  }, []);
+  }, [user]);
 
   return (
     <div>

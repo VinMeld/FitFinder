@@ -13,7 +13,7 @@ interface ContextI {
   trainerError: any;
   trainerLoading: boolean;
   trainerMutate: any;
-  user: User | null | undefined | any;
+  user: Database["public"]["Tables"]["users"]["Row"] | null | undefined;
   error: any;
   isLoading: boolean;
   mutate: any;
@@ -55,14 +55,12 @@ export default function SupabaseAuthProvider({
       console.log(error);
       return null;
     } else {
-      console.log(trainer);
       return trainer as Database["public"]["Tables"]["trainer"]["Row"];
     }
   };
   
   // Get USER
   const getUser = async () => {
-    console.log(serverSession?.user?.id);
     // const data =  await supabase
     // .from("users")
     // .select("*")
@@ -78,8 +76,7 @@ export default function SupabaseAuthProvider({
       console.log(error);
       return null;
     } else {
-        console.log(user);
-      return user;
+      return user as Database["public"]["Tables"]["users"]["Row"];
     }
   };
   const { data: trainer, error: trainerError, isLoading: trainerLoading, mutate: trainerMutate } = useSWR(serverSession ? "trainer-context" : null, getTrainer);
