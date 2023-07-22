@@ -39,7 +39,7 @@ export async function GET(request: Request) {
     trainer.display_name = idToDisplayNameMap[trainer.id] || 'Not Found';
   });
 
-  console.log(users, trainers);
+  //console.log(users, trainers);
 
   return NextResponse.json(trainers);
 }
