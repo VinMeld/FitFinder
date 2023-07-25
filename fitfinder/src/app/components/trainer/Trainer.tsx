@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Image from 'next/image'
 import { supabase } from '../../../../lib/supabaseClient'
-export default function Trainer(props: any) {
+export default function Trainer({onClick, ...props}) {
     console.log(props)
     const [profilePic, setProfilePic] = useState("");
     useEffect(() => {
@@ -31,7 +31,7 @@ export default function Trainer(props: any) {
     }, [props]);
 
     return (
-    <a className="rounded overflow-hidden shadow-lg flex flex-col items-center ">
+    <a onClick={onClick} className="rounded overflow-hidden shadow-lg flex flex-col items-center ">
         <div className="w-full h-64 relative overflow-hidden">
           {profilePic  ? 
           <Image className="block w-full h-40" width="320" height="160" loading="lazy" src={profilePic} alt="Person" />          
