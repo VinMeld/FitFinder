@@ -6,19 +6,23 @@ import Filter from '../Filter';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 
-export default function TrainerList() {
+export default function TrainerList(props) {
   const [trainers, setTrainers] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedTrainer, setSelectedTrainer] = useState(null);
+  const [liked, setLiked] = useState([]);
+  const [isGetMore, setIsGetMore] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams()!
-
+  useEffect( () => {
+      console.log("Got props.trainer", props.trainers)
+  }, [props.trainers])
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
   const createQueryString = useCallback(
     (name: string, value: string) => {
       // Convert ReadonlyURLSearchParams to a regular object
-      const params = new URLSearchParams(searchParams)
+      const params = new URLSearchParams(searchParams.toString())
       params.set(name, value)  
   
       return params.toString();
@@ -26,7 +30,26 @@ export default function TrainerList() {
     [searchParams]
   );
   
-
+  useEffect(() => {
+    if(!isGetMore) return;
+    const getLikedTrainers = async () => {
+      const res = await fetch('http://localhost:3000/api/like', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if(res.ok) {
+        const data = await res.json();
+        setLiked(data.result); 
+        console.log(data.result);
+      } else {
+        console.error('Error getting liked trainers');
+      }
+    }
+    getLikedTrainers();
+    setIsGetMore(false);
+  }, [isGetMore]);
   useEffect(() => {
     generateTrainers();
   }, []);
@@ -42,16 +65,12 @@ export default function TrainerList() {
   
 
   async function generateTrainers(){
-    const response = await fetch('/api/trainer');
-    const data = await response.json();
-    const trainerComponents = data.map(trainer  =>
+    const trainerComponents = props.trainers.map(trainer  =>
       <Trainer key={trainer.id} {...trainer} onClick={() => {
-        console.log("CLICKED")
         setIsOpen(true);
         handleOpenModal(trainer.id)
       }} />
     );
-
     setTrainers(trainerComponents);
   };
 
@@ -66,15 +85,17 @@ export default function TrainerList() {
     // add the id to the URL
     router.push('?' + createQueryString('id', id), { scroll: false })
   }
-
-  useEffect(() => {
-    if(modalIsOpen) return;
+  function handleCloseModel() {
+    if(!modalIsOpen) return;
+    console.log("CLOSED")
+    // fetch trainer details
     setSelectedTrainer(null);
     setIsOpen(false);
 
-    // remove the id from the URL
-    router.push('?' + createQueryString('id', ''))
-  }, [setIsOpen])
+    // add the id to the URL
+    router.push('?' + createQueryString('id', ''), { scroll: false })
+  }
+  
 
   return (
   <section id="clients" className={`${styles.paddingY} ${styles.flexCenter} flex-col relative `}>
@@ -87,14 +108,21 @@ export default function TrainerList() {
           <Filter />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 w-full relative z-[1]">
-          {trainers.map((trainer) => trainer)}
+          {props.trainers && props.trainers.map(trainer =>
+            <Trainer key={trainer.id} {...trainer} onClick={() => {
+              setIsOpen(true);
+              handleOpenModal(trainer.id)
+            }} />
+          )}
       </div>
-      {modalIsOpen &&
-      <Modal
-        setIsOpen={setIsOpen}
-        trainer={selectedTrainer}
-      />
-        
+      {modalIsOpen && selectedTrainer && liked &&
+        <Modal
+          handleCloseModel={handleCloseModel}
+          trainer={selectedTrainer}
+          setIsGetMore={setIsGetMore}
+          isLike={liked.includes(selectedTrainer.id)}
+          setRegenerateLikedTrainers={props.setRegenerateLikedTrainers}
+        />
       }
   </section>
   )

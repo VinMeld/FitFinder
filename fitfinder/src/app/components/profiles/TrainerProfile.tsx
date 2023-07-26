@@ -1,11 +1,35 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Image from 'next/image'
 import { useDropzone } from 'react-dropzone';
 import UserDropzone from './UserDropzone';
 import { useAuth } from '../providers/supabase-auth-provider'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
+const TrainerList = dynamic(() => import('../trainer/TrainerList'))
 const TrainerProfile = () => {
   const { user, trainer } = useAuth()
+  const [likedTrainers, setLikedTrainers] = useState([]);
+  const [trainers, setTrainers] = useState([]);
+  const [regenerateLikedTrainers, setRegenerateLikedTrainers] = useState(true);
+  async function generateTrainers(){
+    const response = await fetch('/api/trainer');
+    let data = await response.json()
+    // Filter the data and only get the data where trainer.id is in likedTrainers
+    data = data.filter(trainer => likedTrainers.includes(trainer.id));
+    setTrainers(data);
+    console.log(data)
+  };
+  
+  useEffect(() => {
+    if(regenerateLikedTrainers) {
+        getLikedTrainers();
+        setRegenerateLikedTrainers(false);
+    }
+  }, [regenerateLikedTrainers]);
+
+  useEffect(() => {
+    generateTrainers();
+  }, [likedTrainers])
   const router = useRouter()
   // Function to toggle the visibility of the dropdown menu
   console.log(user)
@@ -25,10 +49,27 @@ const TrainerProfile = () => {
       router.push("/");
     }
   };
+  const getLikedTrainers = async () => {
+    const res = await fetch('http://localhost:3000/api/like', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if(res.ok) {
+      const data = await res.json();
+      setLikedTrainers(data.result); // This will cause the component to re-render
+      console.log(data);
+    } else {
+      console.error('Error getting liked trainers');
+    }
+  }
   
   return (
     <>
     {user && trainer &&
+        <>
         <div className="bg-black text-gray-300 rounded-lg space-y-6">
             <div className="divide-y divide-gray-700">
                 <div className="flex items-center gap-4 py-4 px-4">
@@ -78,11 +119,19 @@ const TrainerProfile = () => {
                 </div>}
                 <button className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onClick={handleDelete}>Delete Account</button>
             </div>
+            <div className="divide-y divide-gray-700">
+                {trainers && trainers.length > 0 &&
+                    <>
+                        Liked Trainers:
+                        <TrainerList setRegenerateLikedTrainers={setRegenerateLikedTrainers} trainers={trainers} />
+                    </>
+                }
+            </div>
         </div>
+        </>
         }
     </>
-
-  )
+    )
 }
 
 export default TrainerProfile

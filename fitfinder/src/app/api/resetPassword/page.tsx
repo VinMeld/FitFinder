@@ -2,11 +2,8 @@
 import React, { useState } from 'react';
 import { createClient } from "../../utils/supabase-browser";
 
-type ResetPasswordProps = {
-    setTab: React.Dispatch<React.SetStateAction<number>>;
-}
 
-const ResetPassword: React.FC<ResetPasswordProps> = ({ setTab }) => {
+export default function ResetPassword() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const supabase = createClient();
@@ -47,5 +44,3 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ setTab }) => {
     </form>
   )
 }
-
-export default ResetPassword;

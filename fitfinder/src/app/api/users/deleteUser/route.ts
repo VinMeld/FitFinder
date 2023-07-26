@@ -33,13 +33,11 @@ export async function GET(request: Request) {
         .delete()
         .eq('id', session.user.id)
 
-    console.log("HEREEEEEEEEEEEE!!!!!!!!!!!!!!!!!!!!!!!!");
     console.log(terror);
 
     const { data, error } = await supabaseAdminClient.auth.admin.deleteUser(
         session.user.id
       )
-    console.log("HEREEEEEEEEEEEE!!!!!!!!!!!!!!!!!!!!!!!!");
     console.log(error);
 
 

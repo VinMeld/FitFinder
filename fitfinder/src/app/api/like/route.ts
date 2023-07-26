@@ -23,8 +23,9 @@ export async function POST(request: Request) {
 
     const user_id = session.user.id;
     const trainer_id = requestData.trainer_id;
-
-    console.log(user_id, trainer_id);
+    if (user_id == trainer_id) {
+        return new NextResponse("You can't like yourself", { status: 403 });
+    }
 
 const { data, error } = await supabase
   .from('liked_trainers')
@@ -69,5 +70,44 @@ let { data: liked_trainers, error } = await supabase
     console.log(trainer_ids);
     let finalData = {"result": trainer_ids};
     return new NextResponse(JSON.stringify(finalData), { status: 200 });
+}
 
+export async function DELETE(request: Request) {
+  const supabase = createClient();
+
+  // Fetch the Current User
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  // If there is no user, return 401 Unauthorized
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  // Parse request data
+  let requestData = await request.json();
+  if (!requestData) {
+    return new NextResponse('Bad request', { status: 400 })
+  }
+
+  // Extract trainer_id from requestData
+  const trainer_id = requestData.trainer_id;
+  console.log("Trying to delete!")
+  console.log(trainer_id);
+  
+  // Delete the record
+  const { data, error } = await supabase
+    .from('liked_trainers')
+    .delete()
+    .eq('user_id', session.user.id)
+    .eq('trainer_id', trainer_id);
+
+  // Check for error after deletion
+  if (error) {
+    return new NextResponse(error.message, { status: 500 });
+  }
+
+  // If everything is fine, return a successful response
+  return new NextResponse(JSON.stringify({ message: 'Successfully deleted' }), { status: 200 });
 }

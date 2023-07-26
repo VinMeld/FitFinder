@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import Image from 'next/image'
 import { supabase } from '../../../../lib/supabaseClient'
 export default function Trainer({onClick, ...props}) {
-    console.log(props)
     const [profilePic, setProfilePic] = useState("");
     useEffect(() => {
       const getImages = async () => {
@@ -40,10 +39,7 @@ export default function Trainer({onClick, ...props}) {
           }
         </div>
         <div className="w-full">
-          <span className="inline-block bg-pink-200 text-white rounded-full px-2 py-1 text-xs font-bold mb-2">#photography</span>
-        </div>
-        <div className="w-full">
-          <div className="font-bold text-xl mb-2 text-center">{props.display_name}</div>
+          <div className="font-bold text-xl mb-2 text-center text-white">{props.display_name}</div>
           <p className="text-gray-700 text-base text-center mb-4">
             {props.description}
           </p>
