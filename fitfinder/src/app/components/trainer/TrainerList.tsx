@@ -60,7 +60,7 @@ export default function TrainerList() {
     // fetch trainer details
     const response = await fetch(`/api/trainer/${id}`);
     const data = await response.json();
-    setSelectedTrainer(data);
+    setSelectedTrainer(data[0]);
     setIsOpen(true);
 
     // add the id to the URL

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useDropzone } from 'react-dropzone';
 import { createClient } from "../../utils/supabase-browser";
 import { useAuth } from '../providers/supabase-auth-provider';
@@ -25,7 +25,8 @@ const UserDropzone = (props: any) => {
               console.error('Error listing files: ', listError.message);
               return;
           }
-      
+          console.log("oldFiles1", oldFiles1)
+
           // Continue processing with oldFiles...
       
       } catch (error: any) {
@@ -41,23 +42,26 @@ const UserDropzone = (props: any) => {
       for(const file of acceptedFiles){
         const filePath = `${user.id}/${uuidv4()}`; // File path in Supabase storage
         try {
-          const { data, error } = await supabase.storage.from('trainer').upload(filePath, file);
-
+          const { data, error } = await supabase.storage.from('trainer-images').upload(filePath, file);
+      
           if (error) {
             console.error('Error uploading file: ', error.message);
             continue;
           }
-
+      
+          // Wait for a while before checking if the upload was successful
+          await new Promise(resolve => setTimeout(resolve, 2000));  // wait for 2 seconds
+      
           // Upload Confirmation
-          const { data: newFiles, error: confirmError } = await supabase.storage.from('trainer').list(userFolderPath);
-
+          const { data: newFiles, error: confirmError } = await supabase.storage.from('trainer-images').list(userFolderPath);
+      
           if (confirmError) {
             console.error('Error confirming upload: ', confirmError.message);
             continue;
           }
-
+      
           const newFile = newFiles.find(f => f.name === file.name);
-
+      
           if (!newFile) {
             console.error(`Uploaded file ${file.name} not found.`);
           } else {
@@ -68,9 +72,8 @@ const UserDropzone = (props: any) => {
         }
       }
       setUploadCount(uploadCount => uploadCount + 1);
-    },
+          },
   });
-  
   return (
     <div {...getRootProps()} className={props.className}>
       <input {...getInputProps()} />
@@ -80,7 +83,7 @@ const UserDropzone = (props: any) => {
           <p>Drag and drop some files here, or click to select files</p>
       }
       {props.children}
-      <ShowImages />
+      <ShowImages uploadCount={uploadCount}/>
     </div>
   )
 }

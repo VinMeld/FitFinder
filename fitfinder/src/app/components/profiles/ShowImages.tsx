@@ -3,7 +3,7 @@ import { useAuth } from '../providers/supabase-auth-provider';
 import Image from 'next/image';
 import { supabase } from '../../../../lib/supabaseClient'
 
-const ShowImages = () => {
+const ShowImages = (props) => {
   const { user } = useAuth();
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
@@ -32,7 +32,7 @@ const ShowImages = () => {
     }
 
     getImages();
-  }, [user]);
+  }, [user, props]);
 
   return (
     <div>
