@@ -9,8 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const UserDropzone = (props: any) => {
   const { user } = useAuth();
-  const [image, setImage] = useState(null);  // Add this line
-  const editorRef = useRef(null);  // Add this line
+  const [image, setImage] = useState(null);
+  const editorRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [zoom, setZoom] = useState(1.2);
 
@@ -18,7 +18,7 @@ const UserDropzone = (props: any) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: async (acceptedFiles) => {
       if (acceptedFiles.length > 5) {
-        alert("You can only upload up to 5 files at a time.");
+        toast.error("You can only upload up to 5 files at a time.");
         return;
       }
       if (!user) return;
@@ -34,16 +34,12 @@ const UserDropzone = (props: any) => {
           }
           console.log("oldFiles1", oldFiles1)
 
-          // Continue processing with oldFiles...
       
       } catch (error: any) {
           console.error('Error occurred while listing files: ', error.message);
-      
-          // Here you could assume that if an error occurred, then it's because there were no files.
-          // Then, you can safely continue with your upload or other operation.
       }      
       if ((oldFiles.length + acceptedFiles.length) > 5) {
-        alert('You have reached the maximum number of uploads (5).');
+        toast.error('You have reached the maximum number of uploads (5).');
         return;
       }
       
@@ -89,7 +85,6 @@ const UserDropzone = (props: any) => {
     props.setUploadCount(uploadCount => uploadCount + 1);
     setImage(null);
     setShowModal(false);
-
   }
 
   return (
@@ -146,12 +141,6 @@ const UserDropzone = (props: any) => {
       }
       {props.children}
     </div>
-    {/* {image &&
-      <p className="text-white" onClick={() => {
-        console.log("Clicked Save")
-        setShowModal(true)  // Add this line
-      }}>Click to edit image</p>
-    } */}
     </>
   )
 }

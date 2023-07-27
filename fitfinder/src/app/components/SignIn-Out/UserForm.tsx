@@ -7,6 +7,8 @@ import { AuthResponse } from "@supabase/supabase-js";
 import {createClient} from "../../utils/supabase-browser"
 import { revalidatePath } from 'next/cache';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type UserFormProps = {
     setTab: React.Dispatch<React.SetStateAction<number>>;
@@ -23,21 +25,19 @@ const UserForm : React.FC<UserFormProps> = ({setTab}) => {
     console.log(email,password)
     // Check if passwords match
     if (password !== confirm) {
-        alert('Passwords do not match.')
+        toast.error("Passwords do not match!")
         return
     }
     // Check if email is valid
     if (!email.includes('@')) {
-        alert('Invalid email.')
+        toast.error("Invalid email!")
         return
     }
     // Check if password is valid
     if (password.length < 8) {
-        alert('Password must be at least 8 characters.')
+        toast.error("Password must be at least 8 characters!")
         return
     }
-    // Send user to backend
-    const user = {email, password}
     // Get result of fetch
     try {
         const user: AuthResponse = await supabase.auth.signUp({
@@ -50,12 +50,15 @@ const UserForm : React.FC<UserFormProps> = ({setTab}) => {
         })
         console.log(user);
     } catch (error) {
+        toast.error("Oops there was an error!")
         console.error('Error:', error);
     }
+    toast.success("Account created successfully!");
     setTab(6)
   }
   return (
     <>
+    <ToastContainer />
     <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create User Account</h3>
     <form className="space-y-6" action="#" onSubmit={registerUser}>
             <div>

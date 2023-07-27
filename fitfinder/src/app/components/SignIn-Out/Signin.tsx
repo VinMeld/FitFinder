@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import { useAuth } from '../../components/providers/supabase-auth-provider'; 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type SigninProps = {
     setTab: React.Dispatch<React.SetStateAction<number>>;
@@ -12,14 +14,7 @@ const Signin: React.FC<SigninProps> = ({ setTab }) => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const { signInWithEmail, signInWithGithub, user } = useAuth();
-  const supabase = createClientComponentClient();
-  function parseJwt(token : string) {
-    if (!token) { return; }
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
-}
-
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
@@ -29,17 +24,17 @@ const Signin: React.FC<SigninProps> = ({ setTab }) => {
       console.log(user)
       if (error) {
         setError(error);
+        toast.error("Oops there was an error!")
         console.log(error)
       }
       else{
         console.log(user);
       }
-      
-    //console.log(parseJwt())
-    
+      toast.success("Logged in successfully!");
       setTab(6);
     } catch (error) {
       console.log("Something went wrong!");
+      toast.error("Oops there was an error!")
     }
   };
 
@@ -52,6 +47,7 @@ const Signin: React.FC<SigninProps> = ({ setTab }) => {
   };
   return (
     <>
+       <ToastContainer />
         <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
         <form className="space-y-6" action="#" onSubmit={handleSubmit}>
             <div>

@@ -6,6 +6,8 @@ import UserDropzone from '../../../components/profiles/UserDropzone';
 import Image from 'next/image'
 import ShowImages from '../../../components/profiles/ShowImages';
 import { FaPlus } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
@@ -64,17 +66,21 @@ export default function TrainerEdit() {
       });
 
       if (!response.ok) {
+        toast.error("Oops there was an error!");
         throw new Error(`HTTP error! status: ${response.status}`);
       } else {
+        toast.success("Profile updated successfully!");
         console.log(`Update was successful, status code: ${response.status}`);
       }
     } catch (error) {
+      toast.error("Oops there was an error!");
       console.error("There was a problem with the fetch operation: ", error);
     }
   };
 
   return (
     <>
+      <ToastContainer />
       <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">

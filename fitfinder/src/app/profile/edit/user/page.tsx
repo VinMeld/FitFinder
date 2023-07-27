@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../components/providers/supabase-auth-provider";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function UserEdit() {
   const { user } = useAuth();
@@ -17,10 +19,45 @@ export default function UserEdit() {
       setLocation(user.location || 0);
     }
   }, [user]);
+  
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+
+    const userData = {
+      display_name: displayName,
+      email: email,
+      phone_number: phoneNumber,
+      location: location,
+    };
+
+    console.log(userData);
+
+    try {
+      const response = await fetch("/api/users", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        toast.error("Oops there was an error!");
+        throw new Error(`HTTP error! status: ${response.status}`);
+      } else {
+        toast.success("Profile updated successfully!");
+        console.log(`Update was successful, status code: ${response.status}`);
+      }
+    } catch (error) {
+      toast.error("Oops there was an error!");
+      console.error("There was a problem with the fetch operation: ", error);
+    }
+  };
 
   return (
     <>
-      <form>
+      <ToastContainer />
+      <form onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">
             <input

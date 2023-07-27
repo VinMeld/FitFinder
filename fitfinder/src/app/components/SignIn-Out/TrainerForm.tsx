@@ -5,6 +5,8 @@ import { AuthResponse } from "@supabase/supabase-js";
 type TrainerFormProps = {
   setTab: React.Dispatch<React.SetStateAction<number>>;
 };
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
   const [displayName, setDisplayName] = useState("");
@@ -12,21 +14,22 @@ const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const { signInWithEmail, signInWithGithub, user } = useAuth();
+
   const supabase = createClient();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirm) {
-      alert("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
     // Check if email is valid
     if (!email.includes("@")) {
-      alert("Invalid email.");
+      toast.error("Invalid email.");
       return;
     }
     // Check if password is valid
     if (password.length < 8) {
-      alert("Password must be at least 8 characters.");
+      toast.error("Password must be at least 8 characters.");
       return;
     }
     // Here you can handle form submission
@@ -58,6 +61,7 @@ const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
 
   return (
     <>
+      <ToastContainer />
       <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
         Create Trainer Account
       </h3>
