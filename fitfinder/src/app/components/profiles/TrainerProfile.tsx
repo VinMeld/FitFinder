@@ -5,6 +5,7 @@ import UserDropzone from './UserDropzone';
 import { useAuth } from '../providers/supabase-auth-provider'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import styles from '../../styles'
 const TrainerList = dynamic(() => import('../trainer/TrainerList'))
 const TrainerProfile = () => {
   const { user, trainer } = useAuth()
@@ -119,10 +120,16 @@ const TrainerProfile = () => {
                 </div>}
                 <button className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onClick={handleDelete}>Delete Account</button>
             </div>
+            
+
             <div className="divide-y divide-gray-700">
                 {trainers && trainers.length > 0 &&
                     <>
-                        Liked Trainers:
+                        <div className="w-full flex justify-between items-center md:flex-row flex-col sm:mb-16 mb-6 relative z-[1]">
+                        <h2 className={styles.heading3}>
+                            Liked Trainers
+                        </h2>
+                      </div>
                         <TrainerList setRegenerateLikedTrainers={setRegenerateLikedTrainers} trainers={trainers} />
                     </>
                 }

@@ -4,9 +4,12 @@ import { useAuth } from "../../../components/providers/supabase-auth-provider";
 import { useDropzone } from 'react-dropzone';
 import UserDropzone from '../../../components/profiles/UserDropzone';
 import Image from 'next/image'
+import ShowImages from '../../../components/profiles/ShowImages';
+import { FaPlus } from 'react-icons/fa';
 
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
+  const [uploadCount , setUploadCount] = useState(0);
   const [displayName, setDisplayName] = useState<string>("");
   const [price_range_start, setPricingStart] = useState<number>(0);
   const [price_range_end, setPricingEnd] = useState<number>(0);
@@ -92,13 +95,16 @@ export default function TrainerEdit() {
           </div>
         </div>
         <div className="grid md:grid-cols-2 md:gap-6">
-            <UserDropzone className="flex-shrink-0 flex justify-center items-center border-2 hover:border-pink transition-all p-0.5">
-                <Image width="320" height="160" src="/Discount.svg" alt="Photo of Howard" className="rounded-full h-14 w-14" />
-            </UserDropzone>
+        <UserDropzone setUploadCount={setUploadCount} uploadCount={uploadCount} className="col-span-2 flex items-center justify-center border-2 hover:border-pink transition-all p-0.5 w-full h-32">
+        <div className="flex items-center justify-center">
+          <FaPlus size={48} color="white" />
+        </div>
+      </UserDropzone>
+      <ShowImages uploadCount={uploadCount} />
         </div> 
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">
-            <input
+            <input 
               type="text"
               name="floating_price_range_start"
               id="floating_price_range_start"

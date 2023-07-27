@@ -91,7 +91,9 @@ const UserManager: React.FC<TrainerModalProps> = ({handleCloseModel, setIsGetMor
                         :
                         <h3 className="text-white">Loading...</h3>
                     }
+                    {trainerPics && trainerPics.length > 0 &&
                     <Carousel images={trainerPics} />
+                    }
                 </div>
             </div>
         </div>

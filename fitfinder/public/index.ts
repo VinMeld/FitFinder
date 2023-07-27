@@ -13,65 +13,52 @@ export const footer = "Copyright Ⓒ 2023 FitFinder. All Rights Reserved."
 
 export const footerLinks = [
     {
-      title: "Useful Links",
+      title: "Fitness Resources",
       links: [
         {
-          name: "Content",
-          link: "https://www.hoobank.com/content/",
+          name: "Lift Vault",
+          link: "https://liftvault.com/",
         },
         {
-          name: "How it Works",
-          link: "https://www.hoobank.com/how-it-works/",
+          name: "One Rep Max Calculator",
+          link: "https://strengthlevel.com/one-rep-max-calculator",
         },
         {
-          name: "Create",
-          link: "https://www.hoobank.com/create/",
+          name: "TDEE Calculator",
+          link: "https://www.calculator.net/tdee-calculator.html",
         },
         {
-          name: "Explore",
-          link: "https://www.hoobank.com/explore/",
+          name: "Fitness Wiki",
+          link: "https://thefitness.wiki/",
         },
         {
-          name: "Terms & Services",
-          link: "https://www.hoobank.com/terms-and-services/",
+          name: "Fitness Reddit",
+          link: "https://www.reddit.com/r/Fitness/",
         },
       ],
     },
     {
-      title: "Community",
+      title: "Youtube Channels",
       links: [
         {
-          name: "Help Center",
-          link: "https://www.hoobank.com/help-center/",
+          name: "Natural Hypertrophy",
+          link: "https://www.youtube.com/@NaturalHypertrophy",
         },
         {
-          name: "Partners",
-          link: "https://www.hoobank.com/partners/",
+          name: "Geoffrey Verity Schofield",
+          link: "https://www.youtube.com/@GVS",
         },
         {
-          name: "Suggestions",
-          link: "https://www.hoobank.com/suggestions/",
+          name: "Jeff Nippard",
+          link: "https://www.youtube.com/@JeffNippard",
         },
         {
-          name: "Blog",
-          link: "https://www.hoobank.com/blog/",
+          name: "Alex Leonidas",
+          link: "https://www.youtube.com/@AlexLeonidas",
         },
         {
-          name: "Newsletters",
-          link: "https://www.hoobank.com/newsletters/",
-        },
-      ],
-    },
-    {
-      title: "Partner",
-      links: [
-        {
-          name: "Our Partner",
-          link: "https://www.hoobank.com/our-partner/",
-        },
-        {
-          name: "Become a Partner",
-          link: "https://www.hoobank.com/become-a-partner/",
+          name: "Bald Omni Man",
+          link: "https://www.youtube.com/@BaldOmniMan",
         },
       ],
     },

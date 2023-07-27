@@ -33,10 +33,13 @@ const Footer = () => (
                     index !== footerlink.links.length - 1 ? "mb-4" : "mb-0"
                   }`}
                 >
-                  {link.name}
+                  <a href={link.link} target="_blank" rel="noopener noreferrer">
+                    {link.name}
+                  </a>
                 </li>
               ))}
             </ul>
+
           </div>
         ))}
       </div>
