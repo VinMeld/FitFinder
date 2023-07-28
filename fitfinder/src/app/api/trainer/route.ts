@@ -4,34 +4,41 @@ import { createClient as createAdminClient } from '@supabase/supabase-js'
 
 
 export async function GET(request: Request) {
+  const supabase = createClient();
   const URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
   const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
   const supabaseAdminClient = createAdminClient(URL, KEY);
 
-  const { data: trainers, error: trainersError } = await supabaseAdminClient
-    .from('trainer')
-    .select('*')  // Replace ... with other columns from trainer table you need
+  let idToDisplayNameMap: Record<string, string> = {};
 
-  if (trainersError) {
-    return new NextResponse(trainersError.message, { status: 500 });
-  }
+  let { data: trainers, error: trainersError } = await supabase.from("trainer").select("*");
+  if (trainersError) return new NextResponse(trainersError.message, { status: 500 });
 
-  const { data: images, error: imagesError } = await supabaseAdminClient
-    .from('imageOrder')
-    .select('user_id, image_url, order')
-    .eq('order', 1);
-  if (imagesError) {
-    console.log("ERRROR")
-    return new NextResponse(imagesError.message, { status: 500 });
-  }
+  const { data: users, error: usersError } = await supabaseAdminClient.from('users').select('display_name, id');
+  if (usersError) return new NextResponse(usersError.message, { status: 500 });
 
-  const imageMap = images.reduce((acc, image) => ({ ...acc, [image.user_id]: image }), {});
+  users?.forEach(user => idToDisplayNameMap[user.id] = user.display_name);
 
-  const result = trainers.map(trainer => {
-    const image = imageMap[trainer.id];
-    return image ? { ...trainer, imageOrder: image } : trainer;
+  trainers?.forEach(trainer => {
+    trainer.display_name = idToDisplayNameMap[trainer.id] || 'Not Found';
   });
-  console.log("result", result)
+  
+  const { data: images, error: trainerImagesError } = await supabaseAdminClient
+    .from('imageOrder')
+    .select('user_id, image_url, image_order')
+    .eq('image_order', 1);
 
-  return NextResponse.json(result);
+
+  const updatedTrainers = trainers.map(trainer => {
+    const imageObject = images.find(image => image.user_id === trainer.id);
+    return imageObject ? {...trainer, image_url: imageObject.image_url} : trainer;
+  });
+  
+
+  if (usersError) return new NextResponse(usersError.message, { status: 500 });
+  if (trainersError) return new NextResponse(trainersError.message, { status: 500 });
+  if (trainerImagesError) return new NextResponse(trainerImagesError.message, { status: 500 });
+
+
+  return NextResponse.json(updatedTrainers);
 }
