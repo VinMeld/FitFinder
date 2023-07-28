@@ -14,7 +14,7 @@ export async function GET(request: Request, { params: { id } }: Props) {
     const { data: images, error } = await supabase
     .from("imageOrder")
     .select("*")
-    .eq('trainer_id', id);
+    .eq('user_id', id);
     if (error) {
       return new Response(error.message, { status: 500 });
     }

@@ -1,6 +1,5 @@
 
 import React, {useState, useEffect} from 'react'
-import { supabase } from '../../../../lib/supabaseClient'
 import Image from 'next/image'
 import Carousel from './Carousel'
 import { useAuth } from '../providers/supabase-auth-provider'; 
@@ -12,33 +11,22 @@ type TrainerModalProps = {
     setIsGetMore: React.Dispatch<React.SetStateAction<boolean>>;
     setRegenerateLikedTrainers: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const UserManager: React.FC<TrainerModalProps> = ({handleCloseModel, setIsGetMore, isLike, trainer, setRegenerateLikedTrainers}) => {
     const [trainerPics, setTrainerPics] = useState([]);
     const [like, setLiked] = useState(isLike)
     const { user } = useAuth();
     useEffect(() => {
         const getImages = async () => {
-            // Get list of images
-            if (!trainer) return;
-            const { data: images, error: listError } = await supabase.storage.from('trainer-images').list(`${trainer.id}/`);
-            if(listError) {
-                console.error('Error getting images: ', listError.message);
-                return;
-            }
-            const urls: string[] = [];
-            for (const image of images) {
-                const filePath = `${trainer.id}/${image.name}`;
-                try {
-                    const { data, error }: any = await supabase.storage.from('trainer-images').getPublicUrl(filePath);
-                    if (error) throw error;
-                    if (data?.publicUrl) urls.push(data.publicUrl);
-                } catch(error) {
-                    console.error('Error getting public URL: ', error);
-                }
-            }
-            if(urls.length > 0) {
-                setTrainerPics(urls);
-            }
+            // Fetch images with their order from the server
+            const response = await fetch(`/api/orderImages?id=${trainer.id}`);
+            const data = await response.json();
+
+            // Sort images by order
+            data.sort((a, b) => a.order - b.order);
+            // Extract URLs to set the trainerPics state
+            const urls = data.map(image => image.image_url);
+            setTrainerPics(urls);
         }
         getImages();
     }, [trainer]);

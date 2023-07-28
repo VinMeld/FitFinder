@@ -61,35 +61,27 @@ const ShowImages = ({uploadCount}) => {
   useEffect(() => {
     async function getImages() {
       if (!user) return;
-      const { data: images, error: listError } = await supabase.storage.from('trainer-images').list(`${user.id}/`);
-
-      if (listError) {
-        console.error('Error getting images: ', listError.message);
+      
+      // Fetch image order and url from the database
+      const orderedImages = await getOrderImages();
+  
+      if (!orderedImages) {
+        console.error('Error getting ordered images');
         return;
       }
-
-      // Fetch image order from the database
-      const orderedImages = await getOrderImages();
-
-      const imageUrls = images.map((image) => {
-        const filePath = `${user.id}/${image.name}`;
-        try {
-          const { data } = supabase.storage.from('trainer-images').getPublicUrl(filePath);
-          // Find the order of the image in orderedImages, default to end of array
-          const order = orderedImages.find(orderedImage => orderedImage.image_url === data?.publicUrl)?.order || images.length;
-          return { id: image.name, url: data?.publicUrl, order }; // use original file name as id
-        } catch(error) {
-          console.error('Error getting public URL: ', error);
-        }
-      }).filter(image => image?.url !== undefined) as {id: string, url: string, order: number}[];
-
+  
+      // Transform the orderedImages array to match our state structure
+      const imageUrls = orderedImages.map((image, index) => {
+        return { id: `image-${index}`, url: image.image_url, order: image.order };
+      });
+  
       // Sort images by order
       imageUrls.sort((a, b) => a.order - b.order);
       setImages(imageUrls);
     }
     getImages();
   }, [user, uploadCount]);
-
+  
   const onDragEnd = async (result) => {
     if (!result.destination) {
       return;
