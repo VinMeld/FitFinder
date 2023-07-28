@@ -28,7 +28,6 @@ export async function GET(request: Request, { params: { id } }: Props) {
   trainers?.forEach(trainer => {
     trainer.display_name = idToDisplayNameMap[trainer.id] || 'Not Found';
   });
-
   console.log(users, trainers);
 
   return NextResponse.json(trainers);

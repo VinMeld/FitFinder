@@ -106,7 +106,7 @@ export default function TrainerEdit() {
           <FaPlus size={48} color="white" />
         </div>
       </UserDropzone>
-      <ShowImages uploadCount={uploadCount} />
+      <ShowImages setUploadCount={setUploadCount} uploadCount={uploadCount} />
         </div> 
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">

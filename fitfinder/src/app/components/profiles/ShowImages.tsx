@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { createClient } from "../../utils/supabase-browser";
 
-const ShowImages = ({uploadCount}) => {
+const ShowImages = ({uploadCount, setUploadCount}) => {
   const { user } = useAuth();
   const supabase = createClient();
   const [images, setImages] = useState<{id: string, url: string, order: number}[]>([]);
@@ -21,8 +21,11 @@ const ShowImages = ({uploadCount}) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    setUploadCount(uploadCount => uploadCount - 1)
   }
-
+  useEffect(() => {
+      getImages();
+  }, [uploadCount]);
   const sendDeleteRequest = async (image_url) => {
     const response = await fetch('/api/orderImages', {
       method: 'DELETE',
@@ -33,6 +36,12 @@ const ShowImages = ({uploadCount}) => {
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const id = image_url.split('/').pop();
+    const { error } = await supabase.storage.from('trainer-images').remove([`${user.id}/${id}`]);
+    if (error) {
+      console.error('Error deleting image: ', error.message);
+      return;
     }
   }
 
@@ -53,32 +62,32 @@ const ShowImages = ({uploadCount}) => {
   
     // If successfully deleted, update the local state
     setImages(images.filter(image => image.url !== url));
-  
+    
     // And delete it from the database
     await sendDeleteRequest(url);
   };
-  
-  useEffect(() => {
-    async function getImages() {
-      if (!user) return;
-      
-      // Fetch image order and url from the database
-      const orderedImages = await getOrderImages();
-  
-      if (!orderedImages) {
-        console.error('Error getting ordered images');
-        return;
-      }
-  
-      // Transform the orderedImages array to match our state structure
-      const imageUrls = orderedImages.map((image, index) => {
-        return { id: `image-${index}`, url: image.image_url, order: image.image_order };
-      });
-  
-      // Sort images by order
-      imageUrls.sort((a, b) => a.order - b.order);
-      setImages(imageUrls);
+  async function getImages() {
+    if (!user) return;
+    
+    // Fetch image order and url from the database
+    const orderedImages = await getOrderImages();
+
+    if (!orderedImages) {
+      console.error('Error getting ordered images');
+      return;
     }
+
+    // Transform the orderedImages array to match our state structure
+    const imageUrls = orderedImages.map((image, index) => {
+      return { id: `image-${index}`, url: image.image_url, order: image.image_order };
+    });
+
+    // Sort images by order
+    imageUrls.sort((a, b) => a.order - b.order);
+    setImages(imageUrls);
+  }
+  useEffect(() => {
+    
     getImages();
   }, [user, uploadCount]);
   

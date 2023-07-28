@@ -21,9 +21,8 @@ const Carousel = ({ images }) => {
       {images.map((src, index) => (
         <div key={index} className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${index === currentSlide ? 'block duration-700 ease-in-out' : 'hidden'}`}>
           <Image
-            width={200}
-            height={200}
-            className="block w-full"
+            width={800} // increased size
+            height={800} // increased size
             src={src}
             alt={`Carousel slide ${index}`}
           />

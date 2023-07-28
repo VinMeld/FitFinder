@@ -22,7 +22,9 @@ const Hero = () => {
         </p>
       </div>
       <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative z-[5] `}>
-        <Image fill src="/Hero.png"  alt="muscluar man" />
+        <div style={{width: '100%', height: '0', paddingBottom: '50%', position: 'relative'}}>
+            <Image layout='fill' objectFit='cover' src="/hero.png" alt="muscluar man" />
+        </div>
         {/* gradient start */}
         {/* <div className="absolute z-[0] w-[40%] h-[35%] top-0 pink__gradient" />
         <div className="absolute z-[1] w-[80%] h-[80%] rounded-full white__gradient bottom-40" />
@@ -37,4 +39,3 @@ const Hero = () => {
 };
 
 export default Hero;
-/*w-[100%] h-[100%] */

@@ -29,11 +29,13 @@ export async function GET(request: Request) {
     .eq('image_order', 1);
 
 
-  const updatedTrainers = trainers.map(trainer => {
-    const imageObject = images.find(image => image.user_id === trainer.id);
-    return imageObject ? {...trainer, image_url: imageObject.image_url} : trainer;
-  });
+    let updatedTrainers = trainers.map(trainer => {
+      const imageObject = images.find(image => image.user_id === trainer.id);
+      return imageObject ? {...trainer, image_url: imageObject.image_url} : trainer;
+    });
   
+    updatedTrainers = updatedTrainers.filter(trainer => 'image_url' in trainer);
+    console.log(updatedTrainers)
 
   if (usersError) return new NextResponse(usersError.message, { status: 500 });
   if (trainersError) return new NextResponse(trainersError.message, { status: 500 });

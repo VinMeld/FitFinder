@@ -29,25 +29,25 @@ export default async function RootLayout({
   } = await supabase.auth.getSession();
   return (
     <html lang="en" className={poppins.className}>
-      <body >
-      <SupabaseProvider>
+      <body className="flex flex-col min-h-screen">
+        <SupabaseProvider>
           <SupabaseAuthProvider serverSession={session}>
-        <div className="bg-primary w-full overflow-hidden">
-        <div className={`${styles.paddingX} ${styles.flexCenter}`}>
-          <div className={`${styles.boxWidth}`}>
-          <Navbar />
-          </div>
-        </div>  
-        {children}
-        <div className={`bg-primary ${styles.flexStart}`}>
-          <div className={`${styles.boxWidth}`}>
-            <Footer />
+            <div className="bg-primary w-full overflow-hidden flex-1">
+              <div className={`${styles.paddingX} ${styles.flexCenter}`}>
+                <div className={`${styles.boxWidth}`}>
+                  <Navbar />
+                </div>
+              </div>  
+              {children}
             </div>
-          </div>
-        </div>
-        </SupabaseAuthProvider>
+            <div className={`bg-primary ${styles.flexStart}`}>
+              <div className={`${styles.boxWidth}`}>
+                <Footer />
+              </div>
+            </div>
+          </SupabaseAuthProvider>
         </SupabaseProvider>
-        </body>
+      </body>
     </html>
   )
 }

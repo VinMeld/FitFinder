@@ -1,8 +1,10 @@
 
 import React, {useState, useEffect} from 'react'
 import Image from 'next/image'
-import Carousel from './Carousel'
+//import Carousel from './Carousel'
 import { useAuth } from '../providers/supabase-auth-provider'; 
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 type TrainerModalProps = {
     handleCloseModel: any;
@@ -18,10 +20,12 @@ const UserManager: React.FC<TrainerModalProps> = ({handleCloseModel, setIsGetMor
     const { user } = useAuth();
     useEffect(() => {
         const getImages = async () => {
+            console.log(trainer.id)
             // Fetch images with their order from the server
-            const response = await fetch(`/api/orderImages?id=${trainer.id}`);
+            const response = await fetch(`/api/orderImages/${trainer.id}`);
+            console.log(response)
             const data = await response.json();
-
+            console.log(data)
             // Sort images by order
             data.sort((a, b) => a.image_order - b.image_order);
             // Extract URLs to set the trainerPics state
@@ -55,7 +59,11 @@ const UserManager: React.FC<TrainerModalProps> = ({handleCloseModel, setIsGetMor
 
     // Define HeartIcon component
     const HeartIcon = () => (
-        user.id != trainer.id &&
+        user ? user.id != trainer.id &&
+        <svg onClick={likeTrainer} className="w-5 h-5 cursor-pointer" fill={like ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+        :
         <svg onClick={likeTrainer} className="w-5 h-5 cursor-pointer" fill={like ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
         </svg>
@@ -80,8 +88,16 @@ const UserManager: React.FC<TrainerModalProps> = ({handleCloseModel, setIsGetMor
                         <h3 className="text-white">Loading...</h3>
                     }
                     {trainerPics && trainerPics.length > 0 &&
-                    <Carousel images={trainerPics} />
-                    }
+                    <div className="relative w-full overflow-hidden h-96 rounded-lg">
+                    <Carousel dynamicHeight emulateTouch showThumbs={false}>
+                        {trainerPics.map((src, index) => (
+                            <div key={index} className="w-full h-full">
+                                <Image src={src} height={200} width={200} alt={`Carousel slide ${index}`} />
+                            </div>
+                        ))}
+                    </Carousel>
+                </div>
+                }
                 </div>
             </div>
         </div>

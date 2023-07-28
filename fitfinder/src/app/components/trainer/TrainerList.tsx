@@ -52,7 +52,7 @@ export default function TrainerList(props) {
   }, [isGetMore]);
   useEffect(() => {
     generateTrainers();
-  }, []);
+  }, [props.trainer]);
 
   useEffect(() => {
     // Checking if there's an id in the URL
@@ -77,6 +77,7 @@ export default function TrainerList(props) {
   async function handleOpenModal(id) {
     console.log("id: ", id)
     // fetch trainer details
+    console.log(id)
     const response = await fetch(`/api/trainer/${id}`);
     const data = await response.json();
     setSelectedTrainer(data[0]);
