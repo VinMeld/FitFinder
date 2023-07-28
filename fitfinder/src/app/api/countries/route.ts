@@ -1,7 +1,68 @@
 import {NextResponse} from 'next/server'
 import { supabase } from '../../../../lib/supabaseClient'
-import { AuthResponse } from '@supabase/supabase-js'
 import {v4 as uuidv4} from "uuid";
+import { createClient as createAdminClient} from '@supabase/supabase-js'
+
+
+
+export async function POST(request: Request) {
+  // Delete all users from supabase, make admin client then do it 
+  const URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string
+  const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY as string
+
+  const supabaseAdminClient = createAdminClient(URL, KEY);
+  // Delete all users
+  const { data: users, error:error1 } = await supabaseAdminClient
+    .from('users')
+    .select('id')
+
+    if (error1) {
+      console.error("Error fetching users: ", error1);
+      return new NextResponse(JSON.stringify({ message: 'Error fetching users', error: error1 }), {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+      });
+  }
+    for (const user of users) {
+      const { error:terror } = await supabase
+        .from('users')
+        .delete()
+        .eq('id', user.id)
+
+    const { data, error } = await supabaseAdminClient.auth.admin.deleteUser(
+        user.id
+      )
+    console.log(error);
+  }
+  // for (const user of users) {
+  //   const { error } = await supabaseAdminClient
+  //       .from('users')
+  //       .delete()
+  //       .match({ id: user.id })
+
+  //   if (error) {
+  //       console.error("Error deleting user from own table: ", error);
+  //   }
+
+  // If successful, send a status code of 200
+  return new NextResponse(JSON.stringify({ message: 'Users deleted successfully' }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+
+
+
+
+
+
+
+
 export async function GET(request: Request) {
   const usersData = generateUsersData(20);
   console.log(usersData)

@@ -23,7 +23,7 @@ const UserManager: React.FC<TrainerModalProps> = ({handleCloseModel, setIsGetMor
             const data = await response.json();
 
             // Sort images by order
-            data.sort((a, b) => a.order - b.order);
+            data.sort((a, b) => a.image_order - b.image_order);
             // Extract URLs to set the trainerPics state
             const urls = data.map(image => image.image_url);
             setTrainerPics(urls);

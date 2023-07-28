@@ -4,26 +4,34 @@ import { createClient as createAdminClient } from '@supabase/supabase-js'
 
 
 export async function GET(request: Request) {
-  const supabase = createClient();
   const URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
   const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
   const supabaseAdminClient = createAdminClient(URL, KEY);
 
-  let idToDisplayNameMap: Record<string, string> = {};
+  const { data: trainers, error: trainersError } = await supabaseAdminClient
+    .from('trainer')
+    .select('*')  // Replace ... with other columns from trainer table you need
 
-  const { data: trainers, error: trainersError } = await supabase.from("trainer").select("*");
-  if (trainersError) return new NextResponse(trainersError.message, { status: 500 });
+  if (trainersError) {
+    return new NextResponse(trainersError.message, { status: 500 });
+  }
 
-  const { data: users, error: usersError } = await supabaseAdminClient.from('users').select('display_name, id');
-  if (usersError) return new NextResponse(usersError.message, { status: 500 });
+  const { data: images, error: imagesError } = await supabaseAdminClient
+    .from('imageOrder')
+    .select('user_id, image_url, order')
+    .eq('order', 1);
+  if (imagesError) {
+    console.log("ERRROR")
+    return new NextResponse(imagesError.message, { status: 500 });
+  }
 
-  users?.forEach(user => idToDisplayNameMap[user.id] = user.display_name);
+  const imageMap = images.reduce((acc, image) => ({ ...acc, [image.user_id]: image }), {});
 
-  trainers?.forEach(trainer => {
-    trainer.display_name = idToDisplayNameMap[trainer.id] || 'Not Found';
+  const result = trainers.map(trainer => {
+    const image = imageMap[trainer.id];
+    return image ? { ...trainer, imageOrder: image } : trainer;
   });
+  console.log("result", result)
 
-  //console.log(users, trainers);
-
-  return NextResponse.json(trainers);
+  return NextResponse.json(result);
 }

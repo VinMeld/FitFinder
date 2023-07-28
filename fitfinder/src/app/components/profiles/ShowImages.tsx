@@ -72,7 +72,7 @@ const ShowImages = ({uploadCount}) => {
   
       // Transform the orderedImages array to match our state structure
       const imageUrls = orderedImages.map((image, index) => {
-        return { id: `image-${index}`, url: image.image_url, order: image.order };
+        return { id: `image-${index}`, url: image.image_url, order: image.image_order };
       });
   
       // Sort images by order

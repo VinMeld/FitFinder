@@ -30,7 +30,7 @@ export async function PUT(request: Request) {
         
         const { error } = await supabase
         .from("imageOrder")
-        .update({ order: item.order })
+        .update({ image_order: item.order })
         .eq('user_id', session.user.id)
         .eq('image_url', item.image_url);
         if (error) {
@@ -106,7 +106,7 @@ export async function POST(request: Request) {
     const insertData ={
         user_id: session.user.id,
         image_url: payload.image_url,
-        order: order
+        image_order: order
     }
 
     const { error } = await supabase
