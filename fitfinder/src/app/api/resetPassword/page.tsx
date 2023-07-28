@@ -1,14 +1,29 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createClient } from "../../utils/supabase-browser";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSearchParams } from 'next/navigation';
 
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const supabase = createClient();
+  const searchParams = useSearchParams()!
+  //store in state
+  const [token_hash, setTokenHash] = useState('');
+  const [type, setType] = useState('');
+
+  
+  useEffect(() => {
+    // Checking if there's an id in the URL
+    if(!searchParams) return;
+    setTokenHash(searchParams.get('token_hash'));
+    setType(searchParams.get('type'));
+    console.log(1);
+    console.log(token_hash, type);
+  }, [searchParams]);
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -18,6 +33,9 @@ export default function ResetPassword() {
         return;
     }
     console.log(password)
+    console.log(token_hash, type);
+    const {data:session , error:errorv} = await supabase.auth.verifyOtp({ token_hash, type })
+    console.log(session, errorv)
 
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
