@@ -4,29 +4,7 @@ import { supabase } from '../../../../lib/supabaseClient'
 export default function Trainer({onClick, ...props}) {
     const [profilePic, setProfilePic] = useState("");
     useEffect(() => {
-      const getImages = async () => {
-        // Get list of images
-        if (!props) return;
-        const { data: images, error: listError } = await supabase.storage.from('trainer-images').list(`${props.id}/`);
-        if(listError) {
-            console.error('Error getting images: ', listError.message);
-            return;
-        }
-
-        const urls = images.map(image => {
-            const filePath = `${props.id}/${image.name}`;
-            try {
-                const { data } = supabase.storage.from('trainer-images').getPublicUrl(filePath);
-                return data?.publicUrl;
-            } catch(error) {
-                console.error('Error getting public URL: ', error);
-            }
-        }).filter(url => url !== undefined) as string[];
-        if(urls.length > 0) {
-          setProfilePic(urls[0]);
-        }
-      }
-      getImages();
+      setProfilePic(props.image_url)
     }, [props]);
 
     return (
