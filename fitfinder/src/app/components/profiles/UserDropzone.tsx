@@ -50,13 +50,13 @@ const UserDropzone = (props: any) => {
     },
   });
 
-  const postImageOrder = async (filePath) => {
+  const postImageOrder = async (publicURL) => {
     const response = await fetch('/api/orderImages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify([{image_url: filePath, order: 1}])
+      body: JSON.stringify({image_url: publicURL.publicUrl, order: 1})
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -73,7 +73,6 @@ const UserDropzone = (props: any) => {
     const blob = await response.blob();
     const file = new File([blob], "filename", { type: 'image/png' });
     const filePath = `${user.id}/${uuidv4()}`; // File path in Supabase storage
-    const userFolderPath = `${user.id}/`;  // Path where user's files are stored
     try {
       const { data, error } = await supabase.storage.from('trainer-images').upload(filePath, file);
       if (error) {
@@ -81,25 +80,33 @@ const UserDropzone = (props: any) => {
       } else if (data) {
         console.log("File uploaded successfully!");
         toast.success("File uploaded successfully!");
-        postImageOrder(filePath);
       }
+      // Get the URL of the uploaded file
+      const { data: publicURL } = supabase.storage
+        .from('trainer-images')
+        .getPublicUrl(filePath);
+      console.log("publicURL", publicURL)
+      postImageOrder(publicURL);
+
+
       // Wait for a while before checking if the upload was successful
-      await new Promise(resolve => setTimeout(resolve, 2000));  // wait for 2 seconds
+    //   await new Promise(resolve => setTimeout(resolve, 2000));  // wait for 2 seconds
   
-      // Upload Confirmation
-      const { data: newFiles, error: confirmError } = await supabase.storage.from('trainer-images').list(userFolderPath);
+    //   // Upload Confirmation
+    //   const { data: newFiles, error: confirmError } = await supabase.storage.from('trainer-images').list(userFolderPath);
   
-      if (confirmError) {
-        console.error('Error confirming upload: ', confirmError.message);
-      }
-      const newFile = newFiles.find(f => f.name === file.name);
-      if (!newFile) {
-        console.error(`Uploaded file ${file.name} not found.`);
-        toast.error("Uploaded file not found.");
-      } else {
-        console.log("File uploaded successfully!");
-        toast.success("File uploaded successfully!");
-      }
+    //   if (confirmError) {
+    //     console.error('Error confirming upload: ', confirmError.message);
+    //   }
+    //   const newFile = newFiles.find(f => f.name === file.name);
+    //   if (!newFile) {
+    //     console.error(`Uploaded file ${file.name} not found.`);
+    //     toast.error("Uploaded file not found.");
+    //   } else {
+    //     console.log("File uploaded successfully!");
+    //     toast.success("File uploaded successfully!");
+    //     console.log("newFiles", newFiles)
+    //   }
     } catch (error) {
       console.error('Unexpected error uploading file: ', error);
       toast.error("Unexpected error uploading file.");
