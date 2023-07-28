@@ -49,6 +49,24 @@ const UserDropzone = (props: any) => {
       }
     },
   });
+
+  const postImageOrder = async (filePath) => {
+    const response = await fetch('/api/orderImages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify([{image_url: filePath, order: 1}])
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    else {
+      const data = await response.json();
+      console.log(data);
+    }
+}
+
   const handleSave = async () => {
     const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
     const response = await fetch(canvas);
@@ -63,6 +81,7 @@ const UserDropzone = (props: any) => {
       } else if (data) {
         console.log("File uploaded successfully!");
         toast.success("File uploaded successfully!");
+        postImageOrder(filePath);
       }
       // Wait for a while before checking if the upload was successful
       await new Promise(resolve => setTimeout(resolve, 2000));  // wait for 2 seconds
@@ -76,11 +95,14 @@ const UserDropzone = (props: any) => {
       const newFile = newFiles.find(f => f.name === file.name);
       if (!newFile) {
         console.error(`Uploaded file ${file.name} not found.`);
+        toast.error("Uploaded file not found.");
       } else {
         console.log("File uploaded successfully!");
+        toast.success("File uploaded successfully!");
       }
     } catch (error) {
       console.error('Unexpected error uploading file: ', error);
+      toast.error("Unexpected error uploading file.");
     }
     props.setUploadCount(uploadCount => uploadCount + 1);
     setImage(null);
