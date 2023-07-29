@@ -168,7 +168,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
                 <div className="flex items-center">
                         {trainer.website && trainer.website !== '' && 
                             <div className="mr-2"> {/* Add some right margin for spacing between icons */}
-                                <a href={`https://${trainer.website}`} target="_blank" rel="noopener noreferrer">
+                                <a href={`${trainer.website}`} target="_blank" rel="noopener noreferrer">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"

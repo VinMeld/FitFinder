@@ -16,7 +16,7 @@ import { revalidatePath } from "next/cache";
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
   const [uploadCount, setUploadCount] = useState(0);
-  const [displayName, setDisplayName] = useState<string>("");
+  const [display_name, setDisplayName] = useState<string>("");
   const [price_range_start, setPricingStart] = useState<number>(0);
   const [price_range_end, setPricingEnd] = useState<number>(0);
   const [bio, setBio] = useState<string>("");
@@ -80,7 +80,7 @@ export default function TrainerEdit() {
     <div className="w-4/5 h-auto bg-black">
 
       <ToastContainer />
-      {displayName &&
+      {display_name &&
         price_range_start &&
         price_range_end &&
         bio &&
@@ -90,7 +90,7 @@ export default function TrainerEdit() {
         phone_number && (
           <Formik
             initialValues={{
-              display_name: displayName || "",
+              display_name: display_name || "",
               price_range_start: price_range_start || 0,
               price_range_end: price_range_end || 0,
               bio: bio || "",
