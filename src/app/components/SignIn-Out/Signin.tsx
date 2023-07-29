@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import { useAuth } from '../../components/providers/supabase-auth-provider'; 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

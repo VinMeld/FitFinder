@@ -1,17 +1,13 @@
 "use client";
 import React, { useState, useEffect, useTransition } from "react";
 import { useAuth } from "../../../components/providers/supabase-auth-provider";
-import { useDropzone } from "react-dropzone";
 import UserDropzone from "../../../components/profiles/UserDropzone";
-import Image from "next/image";
 import ShowImages from "../../../components/profiles/ShowImages";
-import { FaPlus } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();

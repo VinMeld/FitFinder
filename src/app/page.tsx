@@ -42,7 +42,6 @@ export default function Page() {
         <div  className={`${styles.boxWidth}`}>
           { trainers &&
           <> 
-            <h3> HI</h3>
             <TrainerList setRegenerateLikedTrainers={setRegenerateLikedTrainers} trainers={trainers} />
             </>
           }
