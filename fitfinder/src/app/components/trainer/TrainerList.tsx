@@ -33,7 +33,7 @@ export default function TrainerList(props) {
   useEffect(() => {
     if(!isGetMore) return;
     const getLikedTrainers = async () => {
-      const res = await fetch('http://localhost:3000/api/like', {
+      const res = await fetch('/api/like', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

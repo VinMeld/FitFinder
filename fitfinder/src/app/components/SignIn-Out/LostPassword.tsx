@@ -10,9 +10,10 @@ const LostPassword: React.FC<LostPasswordProps> = ({setTab}) => {
 
   const supabase = createClient();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
   const resetPassword = async () => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `http://localhost:3000/api/resetPassword`,
+      redirectTo: `${API_URL}/resetPassword`,
     });
 
     if (error) {
