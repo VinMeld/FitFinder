@@ -23,11 +23,8 @@ export async function PUT(request: Request) {
     } ... ]
     */
     const payload = await request.json();
-    console.log("payload: ", payload)
     // Find where entries match the image_url and user_id then replace it with order
     for (const item of payload) {
-        console.log("item: ", item)
-        
         const { error } = await supabase
         .from("imageOrder")
         .update({ image_order: item.order })
@@ -102,7 +99,6 @@ export async function POST(request: Request) {
     }
     // If there are no entries, insert the data
     const payload = await request.json();
-    console.log("payload: ", payload)
     const insertData ={
         user_id: session.user.id,
         image_url: payload.image_url,

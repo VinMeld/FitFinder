@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../providers/supabase-auth-provider";
 import { useRouter } from "next/navigation";
-import styles from '../../styles'
-import dynamic from 'next/dynamic'
-const TrainerList = dynamic(() => import('../trainer/TrainerList'))
+import styles from "../../styles";
+import dynamic from "next/dynamic";
+const TrainerList = dynamic(() => import("../trainer/TrainerList"));
 
 const UserProfile = () => {
   const { user } = useAuth();
@@ -17,7 +17,6 @@ const UserProfile = () => {
     // Filter the data and only get the data where trainer.id is in likedTrainers
     data = data.filter((trainer) => likedTrainers.includes(trainer.id));
     setTrainers(data);
-    console.log(data);
   }
   useEffect(() => {
     if (regenerateLikedTrainers) {
@@ -39,7 +38,6 @@ const UserProfile = () => {
     if (res.ok) {
       const data = await res.json();
       setLikedTrainers(data.result); // This will cause the component to re-render
-      console.log(data);
     } else {
       console.error("Error getting liked trainers");
     }
@@ -136,17 +134,18 @@ const UserProfile = () => {
             Delete Account
           </button>
           <div className="divide-y divide-gray-700">
-                {trainers && trainers.length > 0 &&
-                    <>
-                        <div className="w-full flex justify-between items-center md:flex-row flex-col sm:mb-16 mb-6 relative z-[1]">
-                        <h2 className={styles.heading3}>
-                            Liked Trainers
-                        </h2>
-                      </div>
-                        <TrainerList setRegenerateLikedTrainers={setRegenerateLikedTrainers} trainers={trainers} />
-                    </>
-                }
-            </div>
+            {trainers && trainers.length > 0 && (
+              <>
+                <div className="w-full flex justify-between items-center md:flex-row flex-col sm:mb-16 mb-6 relative z-[1]">
+                  <h2 className={styles.heading3}>Liked Trainers</h2>
+                </div>
+                <TrainerList
+                  setRegenerateLikedTrainers={setRegenerateLikedTrainers}
+                  trainers={trainers}
+                />
+              </>
+            )}
+          </div>
         </div>
       )}
     </>

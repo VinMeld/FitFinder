@@ -21,8 +21,6 @@ export default function ResetPassword() {
     setToken(searchParams.get('token_hash'));
     setType(searchParams.get('type'));
     
-    console.log(1);
-    console.log(token, type);
   }, [searchParams]);
 
   const onSubmit = async (event: React.FormEvent) => {
@@ -32,8 +30,6 @@ export default function ResetPassword() {
         toast.error("Oops there was an error!");
         return;
     }
-    console.log(password)
-    console.log(token, type);
     
     const {data:session , error:verifyError} = await supabase.auth.verifyOtp({ email:"", token, type: 'email' });
     if (verifyError) {

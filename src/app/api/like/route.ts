@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
     let requestData = await request.json()
-    console.log(requestData);
     if (!requestData) {
         return new NextResponse('Bad request', { status: 400 })
     }
@@ -33,9 +32,6 @@ const { data, error } = await supabase
     { user_id: user_id, trainer_id: trainer_id },
   ])
   .select()
-
-  console.log("data, error");
-  console.log(data, error);
 
     return new NextResponse(requestData, { status: 200 });
 
@@ -67,7 +63,6 @@ let { data: liked_trainers, error } = await supabase
         return new NextResponse("No liked trainers", { status: 200 });
     }
     let trainer_ids = liked_trainers.map(trainer => trainer.trainer_id);
-    console.log(trainer_ids);
     let finalData = {"result": trainer_ids};
     return new NextResponse(JSON.stringify(finalData), { status: 200 });
 }
@@ -93,8 +88,6 @@ export async function DELETE(request: Request) {
 
   // Extract trainer_id from requestData
   const trainer_id = requestData.trainer_id;
-  console.log("Trying to delete!")
-  console.log(trainer_id);
   
   // Delete the record
   const { data, error } = await supabase

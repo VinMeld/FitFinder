@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../components/providers/supabase-auth-provider";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -14,14 +14,14 @@ export default function UserEdit() {
   const [location, setLocation] = useState<number>(0);
 
   useEffect(() => {
-    if(user) {
+    if (user) {
       setDisplayName(user.display_name || "");
       setEmail(user.email || "");
       setPhoneNumber(user.phone_number || 0);
       setLocation(user.location || 0);
     }
   }, [user]);
-  
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
@@ -31,8 +31,6 @@ export default function UserEdit() {
       phone_number: phoneNumber,
       location: location,
     };
-
-    console.log(userData);
 
     try {
       const response = await fetch("/api/users", {
@@ -56,21 +54,20 @@ export default function UserEdit() {
     }
   };
   const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-  const validationSchema = Yup.object()
-    .shape({
-      display_name: Yup.string().required("Display name is required"),
-      price_range_start: Yup.number().required("Pricing start is required"),
-      price_range_end: Yup.number().moreThan(
-        Yup.ref("price_range_start"),
-        "End price must be greater than start price"
-      ),
-      phone_number: Yup.string().matches(
-        phoneRegExp,
-        "Phone number is not valid"
-      ),
-    })
+  const validationSchema = Yup.object().shape({
+    display_name: Yup.string().required("Display name is required"),
+    price_range_start: Yup.number().required("Pricing start is required"),
+    price_range_end: Yup.number().moreThan(
+      Yup.ref("price_range_start"),
+      "End price must be greater than start price"
+    ),
+    phone_number: Yup.string().matches(
+      phoneRegExp,
+      "Phone number is not valid"
+    ),
+  });
 
   return (
     <>

@@ -35,7 +35,6 @@ export async function GET(request: Request) {
     });
   
     updatedTrainers = updatedTrainers.filter(trainer => 'image_url' in trainer);
-    console.log(updatedTrainers)
 
   if (usersError) return new NextResponse(usersError.message, { status: 500 });
   if (trainersError) return new NextResponse(trainersError.message, { status: 500 });

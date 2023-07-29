@@ -34,11 +34,6 @@ const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
     }
     // Here you can handle form submission
     // For example, log the form data to console
-    console.log({
-      email,
-      password,
-      confirm,
-    });
     try {
         const trainer: AuthResponse = await supabase.auth.signUp({
         email: email,
@@ -51,12 +46,16 @@ const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
             emailRedirectTo: `${location.origin}/auth/callback`,
         },
         });
-        console.log(trainer);
-        setTab(6);
+        if(trainer){
+          toast.success("An email has been sent to your account!");
+          setTab(6);
+        } else {
+          toast.error("Oops there was an error, try a new email!");
+        }
     } catch (error) {
+        toast.error("Oops there was an error!");
         console.log("Something went wrong!", error);
     }
-    
   }
 
   return (

@@ -17,7 +17,6 @@ const UserForm : React.FC<UserFormProps> = ({setTab}) => {
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(email,password)
     // Check if passwords match
     if (password !== confirm) {
         toast.error("Passwords do not match!")
@@ -43,13 +42,18 @@ const UserForm : React.FC<UserFormProps> = ({setTab}) => {
             emailRedirectTo: `${location.origin}/auth/callback`,
             },
         })
-        console.log(user);
+        if(user){
+          toast.success("An email has been sent to your account!");
+          setTab(6);
+        } else {
+          toast.error("Oops there was an error, try a new email!");
+        }
+
     } catch (error) {
         toast.error("Oops there was an error!")
         console.error('Error:', error);
     }
-    toast.success("Account created successfully!");
-    setTab(6)
+
   }
   return (
     <>

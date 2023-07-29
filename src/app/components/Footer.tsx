@@ -1,8 +1,8 @@
-'use client'
+"use client";
 import styles from "../styles";
 import { footerLinks, socialMedia } from "../../../public";
 import Image from "next/image";
-import {footer} from '../../../public'
+import { footer } from "../../../public";
 const Footer = () => (
   <section className={`${styles.flexCenter} ${styles.paddingY} flex-col`}>
     <div className={`${styles.flexStart} md:flex-row flex-col mb-8 w-full`}>
@@ -10,7 +10,8 @@ const Footer = () => (
         <Image
           src="/FitFinderLogoTextBig.png"
           alt="FitFinder Logo"
-          width="266" height="72"
+          width="266"
+          height="72"
           className="w-[266px] h-[72.14px] object-contain"
           quality={1}
         />
@@ -21,7 +22,10 @@ const Footer = () => (
 
       <div className="flex-[1.5] w-full flex flex-row justify-between flex-wrap md:mt-0 mt-10 mr-4">
         {footerLinks.map((footerlink) => (
-          <div key={footerlink.title} className={`flex flex-col ss:my-0 my-4 min-w-[150px]`}>
+          <div
+            key={footerlink.title}
+            className={`flex flex-col ss:my-0 my-4 min-w-[150px]`}
+          >
             <h4 className="font-poppins font-medium text-[18px] leading-[27px] text-white">
               {footerlink.title}
             </h4>
@@ -39,7 +43,6 @@ const Footer = () => (
                 </li>
               ))}
             </ul>
-
           </div>
         ))}
       </div>
@@ -56,7 +59,7 @@ const Footer = () => (
             key={social.id}
             src={social.icon}
             alt={social.id}
-            width="21" 
+            width="21"
             height="21"
             className={`w-[21px] h-[21px] object-contain cursor-pointer ${
               index !== socialMedia.length - 1 ? "mr-6" : "mr-0"
