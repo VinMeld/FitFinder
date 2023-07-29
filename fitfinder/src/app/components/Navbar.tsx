@@ -36,7 +36,7 @@ export default function Navbar() {
             className={`font-poppins font-normal cursor-pointer text-[16px] mr-10 ${
               active === nav.title ? "text-slate-300	" : "text-slate-500"
             } `}
-            onClick={() => {router.push('/profile')
+            onClick={() => {router.push(`${nav.id}`)
              setActive(nav.title)}}
           >
             {nav.title}
@@ -55,12 +55,13 @@ export default function Navbar() {
           </>
       :
           <a
-            key='/profile'
+            key='/'
             className={`font-poppins font-medium cursor-pointer text-[16px] ${
  "text-slate-400" 
             } ${ "mb-0"}`}
             onClick={() =>{ 
-              router.push(`/profile`)
+              console.log("here")
+              router.push(`/`)
             setActive("Home")}}
           >
             <a href={`/`} className='text-slate-50'>Home</a>
