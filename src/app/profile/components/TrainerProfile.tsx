@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../components/providers/supabase-auth-provider";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import styles from "../../styles";
 import TrainerList from "../../components/trainer/TrainerList";
 

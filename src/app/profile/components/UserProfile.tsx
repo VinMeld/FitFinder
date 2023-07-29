@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../components/providers/supabase-auth-provider";
 import { useRouter } from "next/navigation";
 import styles from "../../styles";
-import dynamic from "next/dynamic";
 import TrainerList from "../../components/trainer/TrainerList";
 
 const UserProfile = () => {
