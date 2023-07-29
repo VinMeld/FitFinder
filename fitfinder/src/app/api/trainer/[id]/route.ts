@@ -16,19 +16,25 @@ export async function GET(request: Request, { params: { id } }: Props) {
   const supabaseAdminClient = createAdminClient(URL, KEY);
 
   let idToDisplayNameMap: Record<string, string> = {};
+  let idToPhoneNumberMap: Record<string, string> = {};
 
   const { data: trainers, error: trainersError } = await supabase.from("trainer").select("*").filter('id', 'eq', id);
   if (trainersError) return new NextResponse(trainersError.message, { status: 500 });
 
-  const { data: users, error: usersError } = await supabaseAdminClient.from('users').select('display_name, id').filter('id', 'eq', id);
+  const { data: users, error: usersError } = await supabaseAdminClient.from('users').select('display_name, id, phone_number').filter('id', 'eq', id);
   if (usersError) return new NextResponse(usersError.message, { status: 500 });
 
-  users?.forEach(user => idToDisplayNameMap[user.id] = user.display_name);
+  users?.forEach(user => {
+    idToDisplayNameMap[user.id] = user.display_name;
+    idToPhoneNumberMap[user.id] = user.phone_number; 
+  });
 
   trainers?.forEach(trainer => {
     trainer.display_name = idToDisplayNameMap[trainer.id] || 'Not Found';
+    trainer.phone_number = idToPhoneNumberMap[trainer.id] || 'Not Found';
   });
   console.log(users, trainers);
 
   return NextResponse.json(trainers);
 }
+

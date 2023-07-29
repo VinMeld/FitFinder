@@ -8,6 +8,7 @@ import ShowImages from '../../../components/profiles/ShowImages';
 import { FaPlus } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Formik } from 'formik';
 
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
@@ -16,24 +17,25 @@ export default function TrainerEdit() {
   const [price_range_start, setPricingStart] = useState<number>(0);
   const [price_range_end, setPricingEnd] = useState<number>(0);
   const [bio, setBio] = useState<string>("");
-  const [location, setLocation] = useState<number>(0);
+  const [yoe, setYoe] = useState<number>(0);
   const [instagram, setInstagram] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
   const [charCount, setCharCount] = useState(0);
+  const [phone_number, setPhoneNumber] = useState("");
 
   useEffect(() => {
     if (user && trainer) {
       setDisplayName(user.display_name || "");
       setBio(trainer.bio || "");
-      setLocation(user.location || 0);
+      setYoe(trainer.yoe || 0);
       setInstagram(trainer.instagram || "");
       setWebsite(trainer.website || "");
       setPricingStart(trainer.price_range_start || 0);
       setPricingEnd(trainer.price_range_end || 0);
+      setPhoneNumber(user.phone_number.toString() || "");
     }
   }, [user, trainer]);
 
-  const [phone_number, setPhoneNumber] = useState("");
 
   const handleBioChange = (event: any) => {
     setBio(event.target.value);
@@ -48,10 +50,10 @@ export default function TrainerEdit() {
       price_range_start,
       price_range_end,
       bio,
-      location,
       instagram,
       website,
       phone_number,
+      yoe,
     };
 
     console.log(userData);
@@ -116,6 +118,7 @@ export default function TrainerEdit() {
               id="floating_price_range_start"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              value={price_range_start}
               onChange={(e) => {
                 const value = parseFloat(e.target.value);
                 if (!isNaN(value)) {
@@ -134,6 +137,7 @@ export default function TrainerEdit() {
               id="floating_price_range_end"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              value={price_range_end}
               onChange={(e) => {
                 const value = parseFloat(e.target.value);
                 if (!isNaN(value)) {
@@ -153,6 +157,7 @@ export default function TrainerEdit() {
             id="floating_instagram"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
+            value={instagram}
             onChange={(e) => {
               setInstagram(e.target.value);
             }}
@@ -168,6 +173,7 @@ export default function TrainerEdit() {
             id="floating_website"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
+            value={website}
             onChange={(e) => {
               setWebsite(e.target.value);
             }}
@@ -184,15 +190,16 @@ export default function TrainerEdit() {
               id="floating_company"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              value={yoe}
               onChange={(e) => {
                 const value = parseFloat(e.target.value);
                 if (!isNaN(value)) {
-                  setLocation(value);
+                  setYoe(value);
                 }
               }}
             />
             <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-              Location
+              Years of Experience:
             </label>
           </div>
           <div className="relative z-0 w-full mb-6 group">
@@ -202,6 +209,7 @@ export default function TrainerEdit() {
               id="floating_number"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              value={phone_number}
               onChange={(e) => {
                 setPhoneNumber(e.target.value);
               }}

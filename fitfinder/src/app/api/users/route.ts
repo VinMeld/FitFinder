@@ -63,6 +63,7 @@ export async function PUT(request: Request) {
   }
 
   const req = await request.json();
+  console.log("req", req)
   
 
   //respond with body
