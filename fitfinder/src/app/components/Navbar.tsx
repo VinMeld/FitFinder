@@ -39,7 +39,7 @@ export default function Navbar() {
             onClick={() => {router.push('/profile')
              setActive(nav.title)}}
           >
-            <a href={`${nav.id}`}>{nav.title}</a>
+            {nav.title}
           </li>
         ))}
          <li
@@ -54,17 +54,17 @@ export default function Navbar() {
           </li>
           </>
       :
-          <li
-            key='/'
+          <a
+            key='/profile'
             className={`font-poppins font-medium cursor-pointer text-[16px] ${
  "text-slate-400" 
             } ${ "mb-0"}`}
             onClick={() =>{ 
-              router.push('/profile')
+              router.push(`/profile`)
             setActive("Home")}}
           >
             <a href={`/`} className='text-slate-50'>Home</a>
-          </li>}
+          </a>}
       </ul>
 
       <div className="sm:hidden flex flex-1 justify-end items-center">

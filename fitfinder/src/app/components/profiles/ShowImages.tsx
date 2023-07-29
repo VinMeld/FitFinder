@@ -120,7 +120,7 @@ const ShowImages = ({uploadCount, setUploadCount}) => {
               <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} 
                 className="m-2 p-2 shadow-lg rounded-lg relative flex justify-center">
                 <div className="relative">
-                  <Image src={url} alt="User uploaded image" width={500} height={500} key={url} loading="lazy" />
+                  <Image src={url} alt="User uploaded image" width={200} height={200} key={url} loading="lazy" />
                   <button onClick={() => deleteImage(url, `${user.id}/${id}`)} 
                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center">X</button>
                 </div>
