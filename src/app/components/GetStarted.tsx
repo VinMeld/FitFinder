@@ -1,6 +1,6 @@
 import styles from "../styles";
 import Image from "next/image";
-import UserManager from "./SignIn-Out/UserManager";
+import UserManager from "./SignIn-Out/FormManager";
 import { useState } from "react";
 import { useAuth } from "../components/providers/supabase-auth-provider";
 import Link from "next/link";

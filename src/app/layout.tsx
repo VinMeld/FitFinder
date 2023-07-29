@@ -8,7 +8,7 @@ import SupabaseAuthProvider from "./components/providers/supabase-auth-provider"
 import SupabaseProvider from "./components/providers/supabase-provider";
 import { createClient } from "./utils/supabase-server";
 
-const Footer = dyanmic(() => import("./components/Footer"));
+const Footer = dyanmic(() => import("./Footer"));
 export const metadata = {
   title: "FitFinder",
   description: "Find your perfect trainer",

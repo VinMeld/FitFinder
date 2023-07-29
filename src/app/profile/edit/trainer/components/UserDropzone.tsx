@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
-import { createClient } from "../../utils/supabase-browser";
-import { useAuth } from "../providers/supabase-auth-provider";
+import { createClient } from "../../../../utils/supabase-browser";
+import { useAuth } from "../../../../components/providers/supabase-auth-provider";
 import { v4 as uuidv4 } from "uuid";
 import AvatarEditor from "react-avatar-editor";
 import { toast, ToastContainer } from "react-toastify";

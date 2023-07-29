@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect, useTransition } from "react";
 import { useAuth } from "../../../components/providers/supabase-auth-provider";
-import UserDropzone from "../../../components/profiles/UserDropzone";
-import ShowImages from "../../../components/profiles/ShowImages";
+import UserDropzone from "./components/UserDropzone";
+import ShowImages from "./components/ShowImages";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";

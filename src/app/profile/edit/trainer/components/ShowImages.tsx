@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../providers/supabase-auth-provider";
+import { useAuth } from "../../../../components/providers/supabase-auth-provider";
 import Image from "next/image";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { createClient } from "../../utils/supabase-browser";
+import { createClient } from "../../../../utils/supabase-browser";
 
 const ShowImages = ({ uploadCount, setUploadCount }) => {
   const { user } = useAuth();

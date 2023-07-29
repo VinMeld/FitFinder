@@ -1,8 +1,8 @@
 "use client";
-import styles from "../styles";
-import { footerLinks, socialMedia } from "../../../public";
+import styles from "./styles";
+import { footerLinks, socialMedia } from "../../public";
 import Image from "next/image";
-import { footer } from "../../../public";
+import { footer } from "../../public";
 const Footer = () => (
   <section className={`${styles.flexCenter} ${styles.paddingY} flex-col`}>
     <div className={`${styles.flexStart} md:flex-row flex-col mb-8 w-full`}>

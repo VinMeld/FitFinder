@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../providers/supabase-auth-provider";
+import { useAuth } from "../../components/providers/supabase-auth-provider";
 import { useRouter } from "next/navigation";
 import styles from "../../styles";
 import dynamic from "next/dynamic";
-const TrainerList = dynamic(() => import("../trainer/TrainerList"));
+import TrainerList from "../../components/trainer/TrainerList";
 
 const UserProfile = () => {
   const { user } = useAuth();

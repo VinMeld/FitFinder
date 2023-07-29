@@ -1,8 +1,8 @@
 "use client";
 import styles from "../styles";
 import dyanmic from "next/dynamic";
-import UserProfile from "../components/profiles/UserProfile";
-import TrainerProfile from "../components/profiles/TrainerProfile";
+import UserProfile from "./components/UserProfile";
+import TrainerProfile from "./components/TrainerProfile";
 import { useAuth } from "../components/providers/supabase-auth-provider";
 import { useRouter } from "next/navigation";
 export default function Profile() {
