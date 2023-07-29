@@ -80,9 +80,4 @@ export const footerLinks = [
       icon: "/twitter.svg",
       link: "https://www.twitter.com/",
     },
-    {
-      id: "social-media-4",
-      icon: "/linkedin.svg",
-      link: "https://www.linkedin.com/",
-    },
   ];

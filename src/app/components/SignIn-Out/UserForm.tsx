@@ -1,11 +1,6 @@
 'use client'
 import React, {useState} from 'react'
-import { useAuth } from '../../components/providers/supabase-auth-provider'; 
-import router from 'next/router';
 import { AuthResponse } from "@supabase/supabase-js";
-
-import {createClient} from "../../utils/supabase-browser"
-import { revalidatePath } from 'next/cache';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

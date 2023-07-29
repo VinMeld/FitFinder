@@ -23,7 +23,7 @@ export default function Trainer({onClick, ...props}) {
                   layout="fill"
                   objectFit="cover"
                   className="absolute top-0 left-0 w-full h-full" 
-                  src='/coinbase.png' 
+                  src='/hero.png' 
                   alt="Person" 
               />
           }
