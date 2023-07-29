@@ -4,7 +4,7 @@ const nextConfig = {
       serverActions: true,
   },
     images: {
-        domains: ['jewlrhkuhulfayqixmsx.supabase.co'],
+        domains: ['jewlrhkuhulfayqixmsx.supabase.co', 'test.fitfinder.ca'],
       },
 }
 module.exports = nextConfig

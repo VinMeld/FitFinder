@@ -40,7 +40,7 @@ const ShowImages = ({ uploadCount, setUploadCount }) => {
     }
     const id = image_url.split("/").pop();
     const { error } = await supabase.storage
-      .from("trainer-images")
+      .from("trainer_images")
       .remove([`${user.id}/${id}`]);
     if (error) {
       console.error("Error deleting image: ", error.message);
@@ -56,7 +56,7 @@ const ShowImages = ({ uploadCount, setUploadCount }) => {
 
   const deleteImage = async (url, filePath) => {
     const { error } = await supabase.storage
-      .from("trainer-images")
+      .from("trainer_images")
       .remove([filePath]);
 
     if (error) {

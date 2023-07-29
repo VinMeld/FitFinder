@@ -26,7 +26,7 @@ const UserDropzone = (props: any) => {
       let oldFiles = [];
       try {
         const { data: oldFiles1, error: listError } = await supabase.storage
-          .from("trainer-images")
+          .from("trainer_images")
           .list(userFolderPath);
         oldFiles = oldFiles1 || [];
         if (listError) {
@@ -71,7 +71,7 @@ const UserDropzone = (props: any) => {
     const filePath = `${user.id}/${uuidv4()}`; // File path in Supabase storage
     try {
       const { data, error } = await supabase.storage
-        .from("trainer-images")
+        .from("trainer_images")
         .upload(filePath, file);
       if (error) {
         console.error("Error uploading file: ", error.message);
@@ -80,7 +80,7 @@ const UserDropzone = (props: any) => {
       }
       // Get the URL of the uploaded file
       const { data: publicURL } = supabase.storage
-        .from("trainer-images")
+        .from("trainer_images")
         .getPublicUrl(filePath);
       postImageOrder(publicURL);
 
@@ -88,7 +88,7 @@ const UserDropzone = (props: any) => {
       //   await new Promise(resolve => setTimeout(resolve, 2000));  // wait for 2 seconds
 
       //   // Upload Confirmation
-      //   const { data: newFiles, error: confirmError } = await supabase.storage.from('trainer-images').list(userFolderPath);
+      //   const { data: newFiles, error: confirmError } = await supabase.storage.from('trainer_images').list(userFolderPath);
 
       //   if (confirmError) {
       //     console.error('Error confirming upload: ', confirmError.message);
