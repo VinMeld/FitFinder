@@ -40,7 +40,7 @@ const TrainerForm: React.FC<TrainerFormProps> = ({ setTab }) => {
         password: password,
         options: {
             data: {
-            displayName,
+            display_name:displayName,
             isuser: false,
             },
             emailRedirectTo: `${location.origin}/auth/callback`,
