@@ -72,6 +72,6 @@ Here's a high-level overview of the project's structure:
     ├── .gitignore          # Ignore file for git
     ├── README.md           # This file
 # Contributing
-Thank you for your interest in contributing to FitFinder! We welcome contributions from everyone. Please read our Contributing Guidelines to get started.
+Thank you for your interest in contributing to FitFinder! We welcome contributions from everyone.
 
 With FitFinder, finding the perfect trainer for your fitness journey has never been easier. We hope you enjoy using our application as much as we enjoyed building it!
