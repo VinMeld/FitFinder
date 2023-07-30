@@ -36,7 +36,7 @@ export default function TrainerEdit() {
       setWebsite(trainer.website || "");
       setPricingStart(trainer.price_range_start || 0);
       setPricingEnd(trainer.price_range_end || 0);
-      setPhoneNumber(user.phone_number.toString() || "");
+      setPhoneNumber(user.phone_number ? user.phone_number.toString() : "");
       setLoading(false);
     }
   }, [user, trainer]);
