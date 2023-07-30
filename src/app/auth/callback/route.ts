@@ -8,5 +8,6 @@ export async function GET(request: Request) {
         const supabase = createRouteHandlerClient({ cookies});
         await supabase.auth.exchangeCodeForSession(code);
     }
-    return NextResponse.redirect(requestURL.origin)
+
+    return NextResponse.redirect("https://www.fitfinder.ca")
 }
