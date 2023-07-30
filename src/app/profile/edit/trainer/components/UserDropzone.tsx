@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import AvatarEditor from "react-avatar-editor";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 const UserDropzone = (props: any) => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ const UserDropzone = (props: any) => {
   const editorRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [zoom, setZoom] = useState(1.2);
+  const router = useRouter();
   const accept = {
     'image/*': ['png', 'jpg', 'jpeg', 'gif']
   };
@@ -114,6 +116,7 @@ const UserDropzone = (props: any) => {
       toast.error("Unexpected error uploading file.");
     }
     props.setUploadCount((uploadCount) => uploadCount + 1);
+    router.refresh();
     setImage(null);
     setShowModal(false);
   };
