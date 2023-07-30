@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import AvatarEditor from "react-avatar-editor";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 const UserDropzone = (props: any) => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ const UserDropzone = (props: any) => {
   const editorRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [zoom, setZoom] = useState(1.2);
+  const router = useRouter();
   const accept = {
     'image/*': ['png', 'jpg', 'jpeg', 'gif']
   };
@@ -50,6 +52,7 @@ const UserDropzone = (props: any) => {
       for (const file of acceptedFiles) {
         setImage(file);
         setShowModal(true);
+        handleSave(file);
       }
     },
   });
@@ -69,11 +72,11 @@ const UserDropzone = (props: any) => {
     }
   };
 
-  const handleSave = async () => {
-    const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
-    const response = await fetch(canvas);
-    const blob = await response.blob();
-    const file = new File([blob], "filename", { type: "image/png" });
+  const handleSave = async (file) => {
+    // const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
+    // const response = await fetch(canvas);
+    // const blob = await response.blob();
+    // const file = new File([blob], "filename", { type: "image/png" });
     const filePath = `${user.id}/${uuidv4()}`; // File path in Supabase storage
     try {
       const { data, error } = await supabase.storage
@@ -113,6 +116,7 @@ const UserDropzone = (props: any) => {
       toast.error("Unexpected error uploading file.");
     }
     props.setUploadCount((uploadCount) => uploadCount + 1);
+    router.refresh();
     setImage(null);
     setShowModal(false);
   };
@@ -120,7 +124,7 @@ const UserDropzone = (props: any) => {
   return (
     <>
       <ToastContainer />
-      {showModal && (
+      {/* {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div
             className="absolute inset-0 bg-black opacity-60"
@@ -187,7 +191,7 @@ const UserDropzone = (props: any) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
       <div {...getRootProps()} className={props.className}>
         <input {...getInputProps()} />
         {isDragActive ? (

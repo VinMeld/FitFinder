@@ -1,8 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
 const Carousel = ({ images }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const carouselRef = useRef(null);
+  const [carouselWidth, setCarouselWidth] = useState(0);
+  const [carouselHeight, setCarouselHeight] = useState(0);
+
+  useEffect(() => {
+    if (carouselRef.current) {
+      setCarouselWidth(carouselRef.current.offsetWidth);
+      setCarouselHeight(carouselRef.current.offsetHeight);
+    }
+  }, []);
 
   const handlePrev = () => {
     setCurrentSlide((oldSlide) => {
@@ -17,22 +27,24 @@ const Carousel = ({ images }) => {
   };
 
   return (
-    <div className="relative w-full overflow-hidden h-96 rounded-lg">
+    <div className="relative w-full overflow-hidden h-96 rounded-lg" ref={carouselRef}>
       {images.map((src, index) => (
         <div
           key={index}
-          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${
-            index === currentSlide ? "block duration-700 ease-in-out" : "hidden"
+          className={`absolute w-full h-full transition-all duration-500 ease-in-out ${
+            index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
+          style={{ top: '0', left: '0' }}
         >
           <Image
-            width={800} // increased size
-            height={800} // increased size
+            layout="fill" 
+            objectFit="cover" 
             src={src}
             alt={`Carousel slide ${index}`}
           />
         </div>
       ))}
+
       <div className="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
         {images.map((_, index) => (
           <button
