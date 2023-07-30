@@ -144,24 +144,20 @@ export default function TrainerEdit() {
                           className="text-red-500 text-xs mt-1"
                         />
                       </div>
-                      <div className="flex justify-start">
-                        {" "}
+                      <div className="flex justify-start relative">
                         <UserDropzone
                           setUploadCount={setUploadCount}
                           uploadCount={uploadCount}
-                          className="col-span-2 flex items-center justify-center border-2 hover:border-pink transition-all p-0.5 w-full h-64"
+                          className="col-span-2 flex border-2 border-dotted hover:border-pink transition-all p-0.5 w-full h-64"
                         >
-                          <div className="flex items-center justify-center">
-                            <div className="flex flex-col items-center justify-center text-6xl">
-                              {" "}
-                              <span role="img" aria-label="muscle">
-                                💪
-                              </span>
-                              <p className="text-white">Upload trainer image</p>
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-6xl">
+                                <span role="img" aria-label="camera">
+                                    📷
+                                </span>
+                                <p className="text-white">Add your photo</p>
                             </div>
-                          </div>
                         </UserDropzone>
-                      </div>
+                    </div>
                       <ShowImages
                         setUploadCount={setUploadCount}
                         uploadCount={uploadCount}

@@ -13,9 +13,15 @@ const UserDropzone = (props: any) => {
   const editorRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [zoom, setZoom] = useState(1.2);
-
+  const accept = {
+    'image/*': ['png', 'jpg', 'jpeg', 'gif']
+  };
+  
   const supabase = createClient();
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    maxFiles: 1,
+    accept,
+    maxSize: 2 * 1024 * 1024,
     onDrop: async (acceptedFiles) => {
       if (acceptedFiles.length > 5) {
         toast.error("You can only upload up to 5 files at a time.");
