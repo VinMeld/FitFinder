@@ -35,21 +35,19 @@ export default function ResetPassword() {
         toast.error("Oops there was an error!");
         return;
     }
-    if(code){
-      const { data, error } = await supabase.auth.exchangeCodeForSession(code)
-      console.log("using code to get session")
-      toast.error("using code to get session");
-      console.log(data, error)
-    }
+    // if(code){
+    //   toast.error("using to get session");
+    //   const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+    //   console.log("using code to get session")
+    //   toast.error("using code to get session");
+    //   console.log(data, error)
+    // }
     // const { error:verifyError } = await supabase.auth.verifyOtp({ email:"xesejeh406@mliok.com", token, type: type as EmailOtpType })
     // if (verifyError) {
     //     console.error(verifyError);
     //     toast.error("Oops there was an error!");
     //     return;
     // }
-
-    toast.error("here");
-    console.log("hello")
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
         toast.error("Oops there was an error!");
