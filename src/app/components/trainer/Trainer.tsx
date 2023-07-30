@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { supabase } from "../../../../lib/supabaseClient";
 
 export default function Trainer({ onClick, ...props }) {
   const [profilePic, setProfilePic] = useState("");

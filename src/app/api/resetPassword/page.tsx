@@ -31,12 +31,12 @@ export default function ResetPassword() {
         return;
     }
     
-    const {data:session , error:verifyError} = await supabase.auth.verifyOtp({ email:"", token, type: 'email' });
-    if (verifyError) {
-        console.error(verifyError);
-        toast.error("Oops there was an error!");
-        return;
-    }
+    // const {data:session , error:verifyError} = await supabase.auth.verifyOtp({ token, type })
+    // if (verifyError) {
+    //     console.error(verifyError);
+    //     toast.error("Oops there was an error!");
+    //     return;
+    // }
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
         toast.error("Oops there was an error!");
