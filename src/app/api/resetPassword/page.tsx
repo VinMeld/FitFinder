@@ -39,6 +39,10 @@ export default function ResetPassword() {
     //     toast.error("Oops there was an error!");
     //     return;
     // }
+
+    const { data, error:reauthError } = await supabase.auth.getSession();
+    console.log("hello")
+    console.log(data, reauthError);
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
         toast.error("Oops there was an error!");
