@@ -1,9 +1,10 @@
 import { createClient } from "../../utils/supabase-server";
 import { NextResponse } from "next/server";
 import { createClient as createAdminClient } from '@supabase/supabase-js'
-
+import { log } from 'next-axiom'
 
 export async function GET(request: Request) {
+  log.debug("callback.ts GET")
   const supabase = createClient();
   const URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
   const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
