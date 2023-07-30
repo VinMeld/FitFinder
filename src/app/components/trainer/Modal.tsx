@@ -119,8 +119,13 @@ const UserManager: React.FC<TrainerModalProps> = ({
                           />
                           <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
                             <p className="">
-                              ${trainer.price_range_start} - $
-                              {trainer.price_range_end}
+                              {
+                                (trainer.price_range_start && trainer.price_range_end) 
+                                ? `$${trainer.price_range_start} - $${trainer.price_range_end}` 
+                                : (trainer.price_range_start 
+                                  ? `$${trainer.price_range_start}` 
+                                  : "")
+                              }
                             </p>
                           </div>
                         </div>
@@ -134,7 +139,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
                         {trainer.location}
                       </p>
                     )}
-                    {trainer.phone_number && (
+                    {trainer.phone_number && trainer.phone_number.length > 1 && (
                       <p>
                         <span className="font-bold">Phone Number:</span>{" "}
                         {trainer.phone_number}

@@ -69,31 +69,31 @@ export default function ResetPassword() {
 
   return (
     <>
-    <ToastContainer />
-    <div className="flex items-center justify-center w-4/5 h-auto bg-black">
-      <form onSubmit={onSubmit}>
-            <>
-          <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Enter Your New Password</h3>
-          <div>
+      <ToastContainer />
+      <div className="flex items-center justify-center w-full h-auto bg-black">
+        <form onSubmit={onSubmit} className="w-4/5">
+          <>
+            <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Reset your password</h3>
+            <div>
               <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
-              <input type="email" name="email" id="email" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" onChange={(e) => setEmail(e.target.value)} required />
-          </div>
-          <div>
+              <input type="email" name="email" id="email" placeholder="john_doe@gmail.com" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div>
               <label htmlFor="otp" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your OTP</label>
-              <input type="text" name="otp" id="otp" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" onChange={(e) => setOtp(e.target.value)} required />
-          </div>
-          <div>
+              <input type="text" name="otp" id="otp" placeholder="123456" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" onChange={(e) => setOtp(e.target.value)} required />
+            </div>
+            <div>
               <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your new password</label>
               <input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" onChange={(e) => setPassword(e.target.value)} required />
-          </div>
-          <div>
+            </div>
+            <div>
               <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm your new password</label>
               <input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" onChange={(e) => setConfirmPassword(e.target.value)} required />
-          </div>
-          <button type="submit" className="w-full mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reset Password</button>
-      </>
-      </form>
-    </div>
+            </div>
+            <button type="submit" className="mx-auto mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reset Password</button>
+          </>
+        </form>
+      </div>
     </>
   )
-}
+  }
