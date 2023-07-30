@@ -13,7 +13,7 @@ const nextConfig = withAxiom({
       serverActions: true,
   },
     images: {
-        domains: ['jewlrhkuhulfayqixmsx.supabase.co', 'test.fitfinder.ca'],
+        domains: ['jewlrhkuhulfayqixmsx.supabase.co', 'server.fitfinder.ca'],
       },
 })
 module.exports = nextConfig
