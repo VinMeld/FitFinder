@@ -31,7 +31,7 @@ export async function GET(request: Request, { params: { id } }: Props) {
 
   trainers?.forEach(trainer => {
     trainer.display_name = idToDisplayNameMap[trainer.id] || 'Not Found';
-    trainer.phone_number = idToPhoneNumberMap[trainer.id] || 'Not Found';
+    trainer.phone_number = idToPhoneNumberMap[trainer.id] || '';
   });
 
   return NextResponse.json(trainers);

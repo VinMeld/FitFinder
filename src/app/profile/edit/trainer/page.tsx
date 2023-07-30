@@ -42,21 +42,27 @@ export default function TrainerEdit() {
   }, [user, trainer]);
   const validationSchema = Yup.object().shape({
     display_name: Yup.string().required("Display name is required"),
-    price_range_start: Yup.number().required("Pricing start is required"),
-    price_range_end: Yup.number().moreThan(
-      Yup.ref("price_range_start"),
-      "End price must be greater than start price"
+    price_range_start: Yup.number().positive("Pricing start must be above 0").notRequired(),
+    price_range_end: Yup.number().nullable().notRequired().test(
+      "is-greater",
+      "End price must be greater than start price",
+      function(value) {
+        let startPrice = this.resolve(Yup.ref('price_range_start')) as number; // get the value of price_range_start
+        if (value === null || startPrice === null) {
+          return true; // skip validation when value or startPrice is null
+        }
+        return value > startPrice;
+      }
     ),
-    bio: Yup.string().required("Biography is required"),
-    instagram: Yup.string(),
-    website: Yup.string().url("Must be a valid URL"),
-    yoe: Yup.number(),
+    bio: Yup.string().notRequired(),
+    instagram: Yup.string().nullable().notRequired(),
+    website: Yup.string().url("Must be a valid URL").nullable().notRequired(),
+    yoe: Yup.number().nullable().notRequired(),
     phone_number: Yup.string().matches(
       phoneRegExp,
       "Phone number is not valid"
-    ),
-  });
-
+    ).nullable().notRequired(),
+});
   const handleBioChange = (event: any) => {
     setBio(event.target.value);
     setCharCount(event.target.value.length);
@@ -74,13 +80,13 @@ export default function TrainerEdit() {
               <Formik
                 initialValues={{
                   display_name: display_name || "",
-                  price_range_start: price_range_start || 0,
-                  price_range_end: price_range_end || 0,
-                  bio: bio || "",
-                  instagram: instagram || "",
-                  website: website || "",
-                  phone_number: phone_number || "",
-                  yoe: yoe || 0,
+                  price_range_start: price_range_start || null,
+                  price_range_end: price_range_end || null,
+                  bio: bio || null,
+                  instagram: instagram || null,
+                  website: website || null,
+                  phone_number: phone_number || '',
+                  yoe: yoe || null,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting }) => {
