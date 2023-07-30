@@ -14,7 +14,8 @@ export default function ResetPassword() {
   const [type, setType] = useState('');
   const [email, setEmail] = useState('');  // new email state
 
-  
+  type EmailOtpType = 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' | 'email'
+
   useEffect(() => {
     // Checking if there's an id in the URL
     if(!searchParams) return;
@@ -32,7 +33,7 @@ export default function ResetPassword() {
         return;
     }
     
-    const {data:session , error:verifyError} = await supabase.auth.verifyOtp({email: "xesejeh406@mliok.com", token, type: "recovery" });
+    const { error:verifyError } = await supabase.auth.verifyOtp({ email:"xesejeh406@mliok.com", token, type: type as EmailOtpType })
     if (verifyError) {
         console.error(verifyError);
         toast.error("Oops there was an error!");
