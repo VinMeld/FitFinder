@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-//import Carousel from './Carousel'
+import Carousel from './Carousel'
 import { useAuth } from "../providers/supabase-auth-provider";
-import { Carousel } from "react-responsive-carousel";
+//import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 type TrainerModalProps = {
@@ -108,31 +108,34 @@ const UserManager: React.FC<TrainerModalProps> = ({
                   {" "}
                   {/* This div will scroll */}
                   <div className="relative w-full overflow-hidden h-96 rounded-lg">
-                    <Carousel dynamicHeight emulateTouch showThumbs={false}>
+                    {/* <Carousel dynamicHeight emulateTouch showThumbs={false}>
                       {trainerPics.map((src, index) => (
                         <div key={index} className="w-full h-full">
                           <Image
                             src={src}
                             height={200}
                             width={200}
+                            quality={100}
                             alt={`Carousel slide ${index}`}
                           />
-                          <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
-                            <p className="">
-                              {
-                                (trainer.price_range_start && trainer.price_range_end) 
-                                ? `$${trainer.price_range_start} - $${trainer.price_range_end}` 
-                                : (trainer.price_range_start 
-                                  ? `$${trainer.price_range_start}` 
-                                  : "")
-                              }
-                            </p>
-                          </div>
                         </div>
                       ))}
-                    </Carousel>
+                    </Carousel> */}
+                    <Carousel images={trainerPics}/>
                   </div>
                   <div className="pt-6 flex flex-col space-y-2">
+                  <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
+                      <p className="">
+                        {
+                          (trainer.price_range_start && trainer.price_range_end) 
+                          ? `$${trainer.price_range_start} - $${trainer.price_range_end}` 
+                          : (trainer.price_range_start 
+                            ? `$${trainer.price_range_start}` 
+                            : "")
+                        }
+                      </p>
+                    </div>
+
                     {trainer.location && (
                       <p>
                         <span className="font-bold">Location:</span>{" "}
