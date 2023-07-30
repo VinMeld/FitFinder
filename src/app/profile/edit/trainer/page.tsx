@@ -41,20 +41,20 @@ export default function TrainerEdit() {
     }
   }, [user, trainer]);
   const validationSchema = Yup.object().shape({
-    display_name: Yup.string().required("Display name is required"),
-    price_range_start: Yup.number().required("Pricing start is required"),
-    price_range_end: Yup.number().moreThan(
-      Yup.ref("price_range_start"),
-      "End price must be greater than start price"
-    ),
-    bio: Yup.string().required("Biography is required"),
-    instagram: Yup.string(),
-    website: Yup.string().url("Must be a valid URL"),
-    yoe: Yup.number(),
-    phone_number: Yup.string().matches(
-      phoneRegExp,
-      "Phone number is not valid"
-    ),
+    // display_name: Yup.string().required("Display name is required"),
+    // price_range_start: Yup.number().required("Pricing start is required"),
+    // price_range_end: Yup.number().moreThan(
+    //   Yup.ref("price_range_start"),
+    //   "End price must be greater than start price"
+    // ),
+    // bio: Yup.string().required("Biography is required"),
+    // instagram: Yup.string(),
+    // website: Yup.string().url("Must be a valid URL"),
+    // yoe: Yup.number(),
+    // phone_number: Yup.string().matches(
+    //   phoneRegExp,
+    //   "Phone number is not valid"
+    // ),
   });
 
   const handleBioChange = (event: any) => {
