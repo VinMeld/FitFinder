@@ -20,6 +20,7 @@ export default function ResetPassword() {
     if(!searchParams) return;
     setToken(searchParams.get('token_hash'));
     setType(searchParams.get('type'));
+    setEmail(searchParams.get('email'));
     
   }, [searchParams]);
 
@@ -31,7 +32,7 @@ export default function ResetPassword() {
         return;
     }
     
-    const {data:session , error:verifyError} = await supabase.auth.verifyOtp({ token, type });
+    const {data:session , error:verifyError} = await supabase.auth.verifyOtp({email, token, type: "recovery" });
     if (verifyError) {
         console.error(verifyError);
         toast.error("Oops there was an error!");
