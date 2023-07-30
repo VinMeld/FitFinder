@@ -32,7 +32,7 @@ export default function ResetPassword() {
         return;
     }
     
-    const {data:session , error:verifyError} = await supabase.auth.verifyOtp({email, token, type: "recovery" });
+    const {data:session , error:verifyError} = await supabase.auth.verifyOtp({email: "xesejeh406@mliok.com", token, type: "recovery" });
     if (verifyError) {
         console.error(verifyError);
         toast.error("Oops there was an error!");
