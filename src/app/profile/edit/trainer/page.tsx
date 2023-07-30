@@ -67,17 +67,10 @@ export default function TrainerEdit() {
   }
   return (
     <>
+      <ToastContainer />
       <div className=" bg-black flex items-center justify-center">
         <div className="w-4/5 h-auto bg-black">
-          <ToastContainer />
-          {display_name &&
-            price_range_start &&
-            price_range_end &&
-            bio &&
-            instagram &&
-            website &&
-            yoe &&
-            phone_number && (
+          { (
               <Formik
                 initialValues={{
                   display_name: display_name || "",
@@ -153,7 +146,6 @@ export default function TrainerEdit() {
                       </div>
                       <div className="flex justify-start">
                         {" "}
-                        {/* Use justify-start to move content to the left */}
                         <UserDropzone
                           setUploadCount={setUploadCount}
                           uploadCount={uploadCount}
@@ -162,7 +154,6 @@ export default function TrainerEdit() {
                           <div className="flex items-center justify-center">
                             <div className="flex flex-col items-center justify-center text-6xl">
                               {" "}
-                              {/* Use flex-col to stack items vertically */}
                               <span role="img" aria-label="muscle">
                                 💪
                               </span>
