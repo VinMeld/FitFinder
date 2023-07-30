@@ -21,8 +21,9 @@ const LostPassword: React.FC<LostPasswordProps> = ({ setTab }) => {
     if (error) {
       toast.error("Error sending reset password email");
       console.log(error);
+    } else {
+      toast.success("Reset password email sent!");      
     }
-    toast.success("Reset password email sent!");
   };
 
   return (
