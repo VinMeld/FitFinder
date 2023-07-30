@@ -11,8 +11,8 @@ type UserFormProps = {
 
 const UserForm : React.FC<UserFormProps> = ({setTab}) => {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirm, setConfirm] = useState('')
+  const [password, setPassword] = useState('123456789')
+  const [confirm, setConfirm] = useState('123456789')
   const supabase = createClientComponentClient();
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
