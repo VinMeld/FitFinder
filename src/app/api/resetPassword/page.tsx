@@ -45,7 +45,7 @@ export default function ResetPassword() {
     // }
     console.log("Email and OTP")
     console.log(email, otp)
-    const { error:verifyError } = await supabase.auth.verifyOtp({ email, type: type as EmailOtpType, token:otp})
+    const { error:verifyError } = await supabase.auth.verifyOtp({ email, type: "recovery", token:otp})
     if (verifyError) {
         console.error(verifyError);
         toast.error("Oops there was an error!");
@@ -63,9 +63,9 @@ export default function ResetPassword() {
         setConfirmPassword('');
         setOtp('');
         setType('');
-        setToken('');
+        // setToken('');
         setEmail('');
-        setCode('');
+        //setCode('');
     }
   }
 
