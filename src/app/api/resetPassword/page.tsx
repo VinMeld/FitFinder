@@ -11,6 +11,7 @@ export default function ResetPassword() {
   const searchParams = useSearchParams()!
   //store in state
   const [token, setToken] = useState('');
+  const [code, setCode] = useState('');
   const [type, setType] = useState('');
   const [email, setEmail] = useState('');  // new email state
 
@@ -22,6 +23,7 @@ export default function ResetPassword() {
     setToken(searchParams.get('token_hash'));
     setType(searchParams.get('type'));
     setEmail(searchParams.get('email'));
+    setCode(searchParams.get('code'));
     
   }, [searchParams]);
 
@@ -40,9 +42,12 @@ export default function ResetPassword() {
     //     return;
     // }
 
-    const { data, error:reauthError } = await supabase.auth.getSession();
+    if(code){
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+      console.log("using code to get session")
+      console.log(data, error)
+    }
     console.log("hello")
-    console.log(data, reauthError);
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
         toast.error("Oops there was an error!");
