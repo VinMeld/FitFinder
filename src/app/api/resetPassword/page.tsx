@@ -33,12 +33,12 @@ export default function ResetPassword() {
         return;
     }
     
-    const { error:verifyError } = await supabase.auth.verifyOtp({ email:"xesejeh406@mliok.com", token, type: type as EmailOtpType })
-    if (verifyError) {
-        console.error(verifyError);
-        toast.error("Oops there was an error!");
-        return;
-    }
+    // const { error:verifyError } = await supabase.auth.verifyOtp({ email:"xesejeh406@mliok.com", token, type: type as EmailOtpType })
+    // if (verifyError) {
+    //     console.error(verifyError);
+    //     toast.error("Oops there was an error!");
+    //     return;
+    // }
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
         toast.error("Oops there was an error!");
