@@ -31,7 +31,7 @@ export default function ResetPassword() {
         return;
     }
     
-    const {data:session , error:verifyError} = await supabase.auth.verifyOtp({ token, type: 'email' });
+    const {data:session , error:verifyError} = await supabase.auth.verifyOtp({ token, type });
     if (verifyError) {
         console.error(verifyError);
         toast.error("Oops there was an error!");
