@@ -29,6 +29,9 @@ export default async function RootLayout({
   } = await supabase.auth.getSession();
   return (
     <html lang="en" className={poppins.className}>
+      <head>
+      <script async src="https://analytics.umami.is/script.js" data-website-id="bb60014a-bdf3-4a39-a7de-af5e39de1301"></script>
+      </head>
       <body className="flex flex-col min-h-screen">
         <SupabaseProvider>
           <SupabaseAuthProvider serverSession={session}>
