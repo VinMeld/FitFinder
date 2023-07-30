@@ -10,21 +10,21 @@ export default function ResetPassword() {
   const supabase = createClient();
   const searchParams = useSearchParams()!
   //store in state
-  const [token, setToken] = useState('');
+  // const [token, setToken] = useState('');
   const [type, setType] = useState('');
   const [email, setEmail] = useState('');  // new email state
   const [otp, setOtp] = useState('');  // new otp state
-  const [code, setCode] = useState('');  // new code state
+  // const [code, setCode] = useState('');  // new code state
 
   type EmailOtpType = 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' | 'email'
 
   useEffect(() => {
     // Checking if there's an id in the URL
     if(!searchParams) return;
-    setToken(searchParams.get('token_hash'));
+    // setToken(searchParams.get('token_hash'));
     setType(searchParams.get('type'));
     setEmail(searchParams.get('email'));
-    setCode(searchParams.get('code'));
+    // setCode(searchParams.get('code'));
     
     
   }, [searchParams]);
@@ -45,7 +45,7 @@ export default function ResetPassword() {
     // }
     console.log("Email and OTP")
     console.log(email, otp)
-    const { error:verifyError } = await supabase.auth.verifyOtp({ email, type: "recovery", token:otp})
+    const { error:verifyError } = await supabase.auth.verifyOtp({ email, type: type as EmailOtpType, token:otp})
     if (verifyError) {
         console.error(verifyError);
         toast.error("Oops there was an error!");
