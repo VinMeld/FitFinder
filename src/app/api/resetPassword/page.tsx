@@ -43,6 +43,8 @@ export default function ResetPassword() {
     //   toast.error("using code to get session");
     //   console.log(data, error)
     // }
+    console.log("Email and OTP")
+    console.log(email, otp)
     const { error:verifyError } = await supabase.auth.verifyOtp({ email, type: "recovery", token:otp})
     if (verifyError) {
         console.error(verifyError);
