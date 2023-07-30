@@ -4,14 +4,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { log } from 'next-axiom'
 
 export async function GET(req: NextRequest) {
-  log.debug("callback.ts GET")
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/";
 
   if (code) {
     const supabase = createRouteHandlerClient({ cookies });
-    await supabase.auth.exchangeCodeForSession(code);
+    log.info("code", code.toString);
+    const {error} = await supabase.auth.exchangeCodeForSession(code);
+    if(error) log.error(error.message);
   }
   console.log("redirecting to", next);
   return NextResponse.redirect(new URL(next, req.url));
