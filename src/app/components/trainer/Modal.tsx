@@ -43,13 +43,12 @@ const UserManager: React.FC<TrainerModalProps> = ({
   }, [trainer]);
 
   const likeTrainer = async () => {
+    console.log("likeTrainer called")
     setRegenerateLikedTrainers(true);
     const trainer_id = trainer.id;
     const method = like ? "DELETE" : "POST";
-    const API_URL =
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
-
-    const res = await fetch(`${API_URL}/like`, {
+    
+    const res = await fetch(`/api/like`, {
       method: method,
       headers: {
         "Content-Type": "application/json",
