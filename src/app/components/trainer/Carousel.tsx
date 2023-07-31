@@ -41,6 +41,7 @@ const Carousel = ({ images }) => {
             objectFit="cover" 
             src={src}
             alt={`Carousel slide ${index}`}
+            quality={50}
           />
         </div>
       ))}
