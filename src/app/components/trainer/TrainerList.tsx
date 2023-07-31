@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import Modal from "./Modal";
 import Trainer from "./Trainer";
 import styles from "../../styles";
-import Filter from "../Filter";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function TrainerList(props) {
@@ -96,9 +95,7 @@ export default function TrainerList(props) {
       id="clients"
       className={`${styles.paddingY} ${styles.flexCenter} flex-col relative `}
     >
-      {/* <div className="w-full px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 mx-auto">
-          <Filter />
-      </div> */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 w-full relative z-[1]">
         {props.trainers &&
           props.trainers.map((trainer) => (

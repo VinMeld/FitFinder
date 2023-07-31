@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
-export default function Filter() {
-  const [searchTerm, setSearchTerm] = useState("");
+import { useRouter } from "next/navigation";
+export default function Filter({searchTerm, setSearchTerm}) {
+  const router = useRouter();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const categories = ["Mockups", "Templates", "Design", "Logos"]; // categories array
-
   const handleSearchChange = (event: any) => {
     setSearchTerm(event.target.value);
   };
@@ -12,11 +12,14 @@ export default function Filter() {
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
-
+  // Add searchTerm to the URL query string
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+  };
   return (
-    <form className="w-full flex">
-      <div className="relative">
-        <button
+    <form className="w-full flex" onSubmit={handleSubmit}>
+      {/* <div className="relative"> */}
+        {/* <button
           id="dropdown-button"
           data-dropdown-toggle="dropdown"
           className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 whitespace-nowrap"
@@ -55,14 +58,16 @@ export default function Filter() {
             ))}
           </ul>
         </div>
-      </div>
+      </div> */}
 
       <div className="relative w-full">
         <input
           type="search"
           id="search-dropdown"
           className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-          placeholder="Search Mockups, Logos, Design Templates..."
+          placeholder="Search Trainer Names..."
+          value={searchTerm}
+          onChange={handleSearchChange}
           required
         />
         <button
