@@ -4,8 +4,9 @@ import { Navbar, Hero, Signup } from "./components/index";
 import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import TrainerList from "./components/trainer/TrainerList";
-
+const TrainerList = dynamic(() => import("./components/trainer/TrainerList"), {
+  loading: () => <p>Loading...</p>,
+});
 export default function Page() {
   const [trainers, setTrainers] = useState([]);
   const [regenerateLikedTrainers, setRegenerateLikedTrainers] = useState(true);
