@@ -21,12 +21,28 @@ const UserManager: React.FC<TrainerModalProps> = ({
   setRegenerateLikedTrainers,
 }) => {
   const [trainerPics, setTrainerPics] = useState([]);
+  const [chipData, setChipData] = useState([]);
   const [like, setLiked] = useState(isLike);
   const { user } = useAuth();
   const [isReadMore, setIsReadMore] = useState(true);
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
+  useEffect(() => {
+    // Fetch tags
+    const fetchTags = async () => {
+      const response = await fetch(`/api/tags/${trainer.id}`);
+      if (response.status === 200) {
+        const data = await response.json();
+        setChipData(data.map((item, index) => ({
+          label: item.tag,
+          key: index
+        })));
+      }
+    }
+
+    fetchTags();
+  }, [trainer]);
 
   useEffect(() => {
     const getImages = async () => {
@@ -125,7 +141,15 @@ const UserManager: React.FC<TrainerModalProps> = ({
                   <div className="relative w-full overflow-hidden h-96 rounded-lg">
                     <Carousel images={trainerPics}/>
                   </div>
-                  <div className="pt-6 flex flex-col space-y-2">
+                  {chipData.map(data => (
+                  <div key={data.key} className="mb-0 mt-3 inline-block">
+                    <div className="flex items-center bg-gray-200 rounded-full text-sm font-medium px-2 py-0.5 whitespace-nowrap">
+                      <div className="text-gray-700">{data.label}</div>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="pt-2 flex flex-col space-y-2">
                   <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
                       <p className="">
                         {
@@ -177,7 +201,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
                       )}
                     </div>
                   )}
-                  <div className="flex items-center">
+                  <div className="flex items-center mb-2">
                     {trainer.website && trainer.website !== "" && (
                       <div className="mr-2">
                         {" "}

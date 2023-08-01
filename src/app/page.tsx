@@ -36,9 +36,11 @@ export default function Page() {
           Search for your <span className="text-gradient">trainer</span> now!
         </h2>
       </div>
-      <div className="w-full px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 mx-auto">
-         <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      </div>
+      <div className={`${styles.flexStart} px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 mx-auto`}>
+        <div className={`${styles.boxWidth}`}>
+          <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        </div>
+      </div>      
       <div
         id="trainerList"
         className={`bg-primary ml-4 ${styles.flexStart} px-8`}

@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage, useFormikContext  } from "formik";
 import * as Yup from "yup";
+import ChipsArray from "./components/ChipArray";
 import { useRouter } from "next/navigation";
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
@@ -174,7 +175,10 @@ export default function TrainerEdit() {
                       setUploadCount={setUploadCount}
                       uploadCount={uploadCount}
                     />
-
+                    <div className="relative z-0 w-full mb-6 group">
+                      <ChipsArray user_id={user.id} />
+                    </div>
+                    
                     <div className="flex">
                       <div className="relative z-0 mb-6 group">
                         <p
