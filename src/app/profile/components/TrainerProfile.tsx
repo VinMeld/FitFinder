@@ -149,7 +149,8 @@ const TrainerProfile = () => {
                 <div className="px-4 py-2">
                   <h2 className="font-medium">Phone Number:</h2>
                   <p>
-                    {user.phone_number}{" "}
+                  {user.phone_number.toString().replace(/(\d{1})(\d{3})(\d{3})(\d{4})/, "+$1-$2-$3-$4")}
+                    {" "}
                     <span
                       onClick={() => router.push("/profile/edit/trainer")}
                       className="cursor-pointer"

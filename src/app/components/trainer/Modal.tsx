@@ -59,7 +59,6 @@ const UserManager: React.FC<TrainerModalProps> = ({
   }, [trainer]);
 
   const likeTrainer = async () => {
-    console.log("likeTrainer called")
     setRegenerateLikedTrainers(true);
     const trainer_id = trainer.id;
     const method = like ? "DELETE" : "POST";
@@ -167,10 +166,10 @@ const UserManager: React.FC<TrainerModalProps> = ({
                         {trainer.location}
                       </p>
                     )}
-                    {trainer.phone_number && trainer.phone_number.length > 1 && (
+                    {trainer.phone_number > 1 && trainer.phone_number.toString().length > 10 &&  (
                       <p>
                         <span className="font-bold">Phone Number:</span>{" "}
-                        {trainer.phone_number}
+                        {trainer.phone_number.toString().replace(/(\d{1})(\d{3})(\d{3})(\d{4})/, "+$1-$2-$3-$4")}
                       </p>
                     )}
                     {trainer.yoe && (

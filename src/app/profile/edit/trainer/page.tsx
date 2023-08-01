@@ -9,6 +9,7 @@ import { Formik, Form, Field, ErrorMessage, useFormikContext  } from "formik";
 import * as Yup from "yup";
 import ChipsArray from "./components/ChipArray";
 import { useRouter } from "next/navigation";
+import InputMask from 'react-input-mask';
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
   const [uploadCount, setUploadCount] = useState(0);
@@ -44,7 +45,7 @@ export default function TrainerEdit() {
     display_name: Yup.string().required("Display name is required"),
     price_range_start: Yup.number()
       .positive("Pricing start must be above 0")
-      .notRequired(),
+      .notRequired().max(10000, "Value too large"),
     price_range_end: Yup.number()
       .nullable()
       .notRequired()
@@ -58,11 +59,11 @@ export default function TrainerEdit() {
           }
           return value > startPrice;
         }
-      ),
+      ).max(10000, "Value too large"),
     bio: Yup.string().notRequired(),
     instagram: Yup.string().nullable().notRequired(),
     website: Yup.string().url("Must be a valid URL").nullable().notRequired(),
-    yoe: Yup.number().nullable().notRequired(),
+    yoe: Yup.number().nullable().notRequired().max(70, "Experience must be less than 70 years"),
     phone_number: Yup.string()
       .matches(phoneRegExp, "Phone number is not valid")
       .nullable()
@@ -74,7 +75,14 @@ export default function TrainerEdit() {
   //   setBio(event.target.value);  // Updates local state value
   //   setCharCount(event.target.value.length);  // Updates character count
   // };
-
+  const handlePhoneNumberChange = (event) => {
+    // Get the raw value without the mask characters from the input
+    const rawValue = event.target.value.replace(/[^0-9]/g, "");
+    console.log(rawValue);
+    console.log("RAW VALUE")
+    // Set the numeric phone number to the state
+    setPhoneNumber(rawValue);
+  };
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -97,6 +105,11 @@ export default function TrainerEdit() {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { setSubmitting }) => {
+                if(phone_number.length >= 11){
+                  values.phone_number = phone_number;
+                } else {
+                  values.phone_number = "";
+                }
                 try {
                   const response = await fetch("/api/users", {
                     method: "PUT",
@@ -202,7 +215,6 @@ export default function TrainerEdit() {
                         />
                       </div>
                       <div className="mx-3 mt-3">
-                        <span className="text-white">-</span>
                       </div>
                       <div className="relative z-0 mb-6 group">
                         <p
@@ -296,15 +308,27 @@ export default function TrainerEdit() {
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                           Phone
                         </label>
+                        <InputMask
+                          mask="+9 999-999-9999"
+                          type="text"
+                          name="phone_number"
+                          id="phone_number"
+                          maxLength={16} // Adjust the maximum length based on the mask
+                          
+                          className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="+1 613-314-4443"
+                          value={phone_number}
+                          onChange={handlePhoneNumberChange}
+                        />
 
-                        <Field
+                        {/* <Field
                           type="text"
                           name="phone_number"
                           id="phone_number"
                           maxLength={30}
                           className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="613-314-4443"
-                        />
+                        /> */}
                         <ErrorMessage
                           name="phone_number"
                           component="div"
