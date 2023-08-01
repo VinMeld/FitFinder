@@ -1,0 +1,21 @@
+/* This is for Chrome and Opera */
+#custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  #custom-scrollbar::-webkit-scrollbar-track {
+    background: #000000;
+  }
+  
+  #custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #444;
+  }
+  
+  #custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #222;
+  }
+  
+  #custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #444 #000000;
+  }

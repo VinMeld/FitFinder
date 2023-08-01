@@ -1,6 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* The container that has scrollbar */
+:root {
+  overflow-y: scroll; /* It's important to set this */
+}
+
+/* This is for Chrome and Opera */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #222;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #000000;
+}
+
+:root::-webkit-scrollbar {
+  width: 5px; /* Adjust width for thinner scrollbar */
+}
+
+:root::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+:root::-webkit-scrollbar-thumb {
+  background: #444; /* Darker color for scrollbar */
+  border-radius: 20px; /* This will give a rounded look */
+}
+
+:root::-webkit-scrollbar-thumb:hover {
+  background: #222; /* Darker color for scrollbar hover */
+}
+
+/* This is for Internet Explorer and Edge */
+:root {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #000000; /* Darker color for scrollbar */
+}
 
 :root {
     --black-gradient: linear-gradient(

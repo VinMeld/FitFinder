@@ -4,7 +4,7 @@ import Carousel from './Carousel'
 import { useAuth } from "../providers/supabase-auth-provider";
 //import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-
+import './App.css'
 type TrainerModalProps = {
   handleCloseModel: any;
   trainer: any;
@@ -135,11 +135,22 @@ const UserManager: React.FC<TrainerModalProps> = ({
                   {trainer.display_name ? trainer.display_name : "Unknown"}
                 </h3>
                 <HeartIcon />
-                <div className="overflow-y-auto">
+                <div className="overflow-y-auto" id="custom-scrollbar">
                   {" "}
                   {/* This div will scroll */}
                   <div className="relative w-full overflow-hidden h-96 rounded-lg">
                     <Carousel images={trainerPics}/>
+                    <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
+                  <p className="">
+                  {
+                      (trainer.price_range_start && trainer.price_range_end) 
+                      ? `$${trainer.price_range_start} - $${trainer.price_range_end}` 
+                      : (trainer.price_range_start 
+                        ? `$${trainer.price_range_start}` 
+                        : "")
+                  }
+                  </p>
+                </div>
                   </div>
                   {chipData.map(data => (
                   <div key={data.key} className="mb-0 mt-3 mr-2 inline-block">
@@ -149,18 +160,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
                   </div>
                 ))}
                 <div className="pt-2 flex flex-col space-y-2">
-                  <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
-                      <p className="">
-                        {
-                          (trainer.price_range_start && trainer.price_range_end) 
-                          ? `$${trainer.price_range_start} - $${trainer.price_range_end}` 
-                          : (trainer.price_range_start 
-                            ? `$${trainer.price_range_start}` 
-                            : "")
-                        }
-                      </p>
-                    </div>
-
+                  
                     {trainer.location && (
                       <p>
                         <span className="font-bold">Location:</span>{" "}
