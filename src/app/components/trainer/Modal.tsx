@@ -142,13 +142,12 @@ const UserManager: React.FC<TrainerModalProps> = ({
                     <Carousel images={trainerPics}/>
                   </div>
                   {chipData.map(data => (
-                  <div key={data.key} className="mb-0 mt-3 inline-block">
+                  <div key={data.key} className="mb-0 mt-3 mr-2 inline-block">
                     <div className="flex items-center bg-gray-200 rounded-full text-sm font-medium px-2 py-0.5 whitespace-nowrap">
                       <div className="text-gray-700">{data.label}</div>
                     </div>
                   </div>
                 ))}
-
                 <div className="pt-2 flex flex-col space-y-2">
                   <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
                       <p className="">
