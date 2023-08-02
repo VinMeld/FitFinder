@@ -1,7 +1,6 @@
-'use server'
+"use server";
 import { createClient } from "../../utils/supabase-server";
 import { NextResponse } from "next/server";
-
 
 //get user profile
 export async function GET(request: Request) {
@@ -18,24 +17,22 @@ export async function GET(request: Request) {
   }
 
   // Fetch Posts for the current user
-  const { data: user, error } = await supabase
-    .from("users")
-    .select("*");
+  const { data: user, error } = await supabase.from("users").select("*");
 
-  if(user){
-    console.log("user is trainer")
-    if(!(user["0"]["isuser"])){
+  if (user) {
+    console.log("user is trainer");
+    if (!user["0"]["isuser"]) {
       const { data: trainer, error } = await supabase
-      .from("trainer")
-      .select("*")
-      .eq('id', user["0"]["id"]);
-  
+        .from("trainer")
+        .select("*")
+        .eq("id", user["0"]["id"]);
+
       if (error) {
         return new Response(error.message, { status: 500 });
       }
       //create new json
-      let allData = {user: user["0"], trainer: trainer["0"]};
-      return NextResponse.json(allData, {status: 200});
+      let allData = { user: user["0"], trainer: trainer["0"] };
+      return NextResponse.json(allData, { status: 200 });
     }
   }
   if (error) {
@@ -46,9 +43,23 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const userColumns = ["first_name", "last_name", "phone_number", "display_name", "email", "location"];
-  const trainerColumns = ["yoe", "price_range_start", "price_range_end", "website", "bio", "instagram"];
-    console.log("put request")
+  const userColumns = [
+    "first_name",
+    "last_name",
+    "phone_number",
+    "display_name",
+    "email",
+    "location",
+  ];
+  const trainerColumns = [
+    "yoe",
+    "price_range_start",
+    "price_range_end",
+    "website",
+    "bio",
+    "instagram",
+  ];
+  console.log("put request");
   //console.log(request)
   const supabase = createClient();
 
@@ -63,33 +74,63 @@ export async function PUT(request: Request) {
   }
 
   const req = await request.json();
-  console.log("req", req)
-  
+  console.log("req", req);
 
-  //respond with body
+  // Define fields to check for spam
+  const fieldsToCheck = ['bio', 'instagram'];
 
+  // Loop over each field to check
+  for (let field of fieldsToCheck) {
+    // Only proceed if the field is defined
+    if (req[field]) {
+      // Create the search parameters
+      const params = new URLSearchParams({
+        text: req[field],
+        token: '4PPpkaxCn=RUoy98/Bd6ZwKfrPM6SCWx/xlUki/Y4HajNRS2NEuLRdt7=FSQWqqo1R/bw67JB=6GD54mlsuDfP6PXEAPFuDTZnx6HGS??mexLlRoN5wZmST4Kd-ZhUHYuIIZy8J-pq9RexTconKgLkv25z7s0QySF=2qaOZf0wd8CnWVtwlQVHs/wVmNHhnQpvrEkDL0OnVoYFAfBauivl8226ro=TZTfs-Q-Ej3sYvlo6116NnjkLNj/hwmX7gw',
+      });
+      // Set the search parameters on the URL
+      const url = new URL('https://ai.fitfinder.ca/classify');
+      url.search = params.toString();
+      console.log(url)
 
-  console.log(req)
+      // Send a request to the classify API
+      const response = await fetch(url.toString());
+
+      // Check if request was successful
+      if (!response.ok) {
+        throw new Error(`An error has occurred: ${response.statusText}`);
+      }
+
+      // Parse response as JSON
+      const spamData = await response.json();
+      console.log(spamData)
+      // Check classification value
+      if (spamData.classification === true) {
+        console.log('spam');
+        return new NextResponse(`Please have a kinder ${field}`, { status: 400 });
+      }
+    }
+  }
+
 
   //loop through json and discard field if its empty
 
-  for(var key in req){
-    if(req[key] == ""){
+  for (var key in req) {
+    if (req[key] == "") {
       delete req[key];
     }
   }
 
-  let userReq = {}
-  let trainerReq = {}
+  let userReq = {};
+  let trainerReq = {};
 
   // Loop through json and divide fields based on userColumns and trainerColumns
-  for(var key in req){
-    if(req[key] !== ""){
-      if(userColumns.includes(key)) {
-        userReq[key] = req[key]
-      } 
-      else if(trainerColumns.includes(key)) {
-        trainerReq[key] = req[key]
+  for (var key in req) {
+    if (req[key] !== "") {
+      if (userColumns.includes(key)) {
+        userReq[key] = req[key];
+      } else if (trainerColumns.includes(key)) {
+        trainerReq[key] = req[key];
       }
     }
   }
@@ -97,22 +138,19 @@ export async function PUT(request: Request) {
   console.log(userReq);
   console.log(trainerReq);
 
-
   console.log(req);
 
   const { data, error } = await supabase
-  .from('users')
-  .update(userReq)
-  .eq('id', session.user.id)
-  .select()
+    .from("users")
+    .update(userReq)
+    .eq("id", session.user.id)
+    .select();
 
-  
-  const { data: trainerData, error: trainerError  } = await supabase
-  .from('trainer')
-  .update(trainerReq)
-  .eq('id', session.user.id)
-  .select()
-
+  const { data: trainerData, error: trainerError } = await supabase
+    .from("trainer")
+    .update(trainerReq)
+    .eq("id", session.user.id)
+    .select();
 
   console.log(trainerError);
   console.log(trainerData);
@@ -121,4 +159,4 @@ export async function PUT(request: Request) {
       "Content-Type": "application/json",
     },
   });
-};
+}

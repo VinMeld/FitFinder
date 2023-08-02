@@ -120,8 +120,13 @@ export default function TrainerEdit() {
                   });
 
                   if (!response.ok) {
-                    toast.error("Oops there was an error!");
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    if (response.status === 400) {
+                      return response.text().then((message) => {
+                        toast.error(message); // Display the "Please be nicer" message
+                      });
+                    } else {
+                      toast.error("Oops there was an error!");
+                    }
                   } else {
                     toast.success("Profile updated successfully!");
                     console.log(
