@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Carousel from './Carousel'
+import Carousel from "./Carousel";
 import { useAuth } from "../providers/supabase-auth-provider";
+import StarRatings from "react-star-ratings";
+
 //import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import './App.css'
+import "./App.css";
 type TrainerModalProps = {
   handleCloseModel: any;
   trainer: any;
@@ -25,6 +27,96 @@ const UserManager: React.FC<TrainerModalProps> = ({
   const [like, setLiked] = useState(isLike);
   const { user } = useAuth();
   const [isReadMore, setIsReadMore] = useState(true);
+  const [selectedRating, setSelectedRating] = useState<number>(0);
+  const [rating, setRating] = useState<number | null>(null);
+  const OptimizedStarRatings = React.memo(StarRatings);
+  const [tempRating, setTempRating] = useState<number>(0);
+
+  // Fetch trainer rating when component mounts or trainer changes
+  useEffect(() => {
+    const fetchRating = async () => {
+      const response = await fetch(`/api/rating/${trainer.id}`);
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data);
+        console.log("rating data");
+        setSelectedRating(data.rating);
+      }
+    };
+    
+    fetchRating();
+  }, [trainer]);
+  useEffect(() => {
+    const fetchAverageRating = async () => {
+      const response = await fetch(`/api/rating?trainer_id=${trainer.id}`);
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log("rating data avg");
+        console.log(data);
+        if (data.avg_rating != null) {
+          console.log(data.avg_rating);
+          setRating(data.avg_rating.toFixed(1));
+        }
+        console.log(rating);
+      } else {
+        console.log("Error getting avg rating");
+      }
+    };
+    fetchAverageRating();
+  }, [selectedRating])
+  const handleRatingChange = async (newRating: number) => {
+    // Update the rating locally first
+    setSelectedRating(newRating);
+    console.log("Handling rating change");
+    const response = await fetch(`/api/rating/${trainer.id}`);
+    console.log(response.status);
+    if (response.status === 200) {
+      // Update the existing rating
+      const res = await fetch(`/api/rating/${trainer.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rating: newRating }),
+      });
+      console.log("response");
+      console.log(res);
+      if (!res.ok) {
+        console.error("Error updating rating for the trainer");
+        // Rollback if the request failed
+        setSelectedRating(rating);
+      }
+    } else if (response.status === 404) {
+      // Create a new rating
+      const res = await fetch(`/api/rating/${trainer.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rating: newRating }),
+      });
+
+      if (!res.ok) {
+        console.error("Error creating rating for the trainer");
+        // Rollback if the request failed
+        setSelectedRating(rating);
+      }
+    }
+  };
+  const handleRatingHover = (newRating: number) => {
+    // Temporarily update the rating as the user hovers over the stars
+    setTempRating(newRating);
+  };
+
+  // Reset tempRating when the mouse leaves the rating component
+  const handleMouseLeave = () => {
+    setTempRating(rating);
+  };
+  // const handleRatingClick = async () => {
+  //   const newRating = await handleRatingChange(selectedRating);
+  //   setRating(newRating);
+  // };
+
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
@@ -34,12 +126,14 @@ const UserManager: React.FC<TrainerModalProps> = ({
       const response = await fetch(`/api/tags/${trainer.id}`);
       if (response.status === 200) {
         const data = await response.json();
-        setChipData(data.map((item, index) => ({
-          label: item.tag,
-          key: index
-        })));
+        setChipData(
+          data.map((item, index) => ({
+            label: item.tag,
+            key: index,
+          }))
+        );
       }
-    }
+    };
 
     fetchTags();
   }, [trainer]);
@@ -62,7 +156,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
     setRegenerateLikedTrainers(true);
     const trainer_id = trainer.id;
     const method = like ? "DELETE" : "POST";
-    
+
     const res = await fetch(`/api/like`, {
       method: method,
       headers: {
@@ -100,35 +194,36 @@ const UserManager: React.FC<TrainerModalProps> = ({
       </svg>
     );
 
-    return (
-      <>
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div
-            className="absolute inset-0 bg-black opacity-60"
-            style={{ backdropFilter: "blur(5px)" }}
-            onClick={handleCloseModel}
-          >
-            {" "}
-          </div>
-          <div className="relative w-full max-w-md max-h-full bg-white rounded-lg shadow dark:bg-gray-700 overflow-auto">
-            <article className="px-6 py-6 lg:px-8 text-white flex flex-col justify-between h-full">
-              <button
-            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-            onClick={handleCloseModel}
-              >
-            <svg
-              className="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+  return (
+    <>
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div
+          className="absolute inset-0 bg-black opacity-60"
+          style={{ backdropFilter: "blur(5px)" }}
+          onClick={handleCloseModel}
+        >
+          {" "}
+        </div>
+        <div className="relative w-full max-w-md max-h-full bg-white rounded-lg shadow dark:bg-gray-700 overflow-auto">
+          <article className="px-6 py-6 lg:px-8 text-white flex flex-col justify-between h-full">
+            <button
+              className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+              onClick={handleCloseModel}
             >
-              <path
-                fillRule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              ></path>
-            </svg>              </button>
-              {trainer ? (
+              <svg
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>{" "}
+            </button>
+            {trainer ? (
               <>
                 <h3>
                   {trainer.display_name ? trainer.display_name : "Unknown"}
@@ -138,40 +233,65 @@ const UserManager: React.FC<TrainerModalProps> = ({
                   {" "}
                   {/* This div will scroll */}
                   <div className="relative w-full overflow-hidden h-96 rounded-lg">
-                    <Carousel images={trainerPics}/>
+                    <Carousel images={trainerPics} />
                     <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
-                  <p className="">
-                  {
-                      (trainer.price_range_start && trainer.price_range_end) 
-                      ? `$${trainer.price_range_start} - $${trainer.price_range_end}` 
-                      : (trainer.price_range_start 
-                        ? `$${trainer.price_range_start}` 
-                        : "")
-                  }
-                  </p>
-                </div>
-                  </div>
-                  {chipData.map(data => (
-                  <div key={data.key} className="mb-0 mt-3 mr-2 inline-block">
-                    <div className="flex items-center bg-gray-200 rounded-full text-sm font-medium px-2 py-0.5 whitespace-nowrap">
-                      <div className="text-gray-700">{data.label}</div>
+                      <p className="">
+                        {trainer.price_range_start && trainer.price_range_end
+                          ? `$${trainer.price_range_start} - $${trainer.price_range_end}`
+                          : trainer.price_range_start
+                          ? `$${trainer.price_range_start}`
+                          : ""}
+                      </p>
                     </div>
                   </div>
-                ))}
-                <div className="pt-2 flex flex-col space-y-2">
-                  
+                  <div>
+                  {rating && !Number.isNaN(rating)  && rating !== null && rating !== 0 && (
+                    <p>Rating: {rating}</p>
+                  )}
+
+                    {user &&
+                      user.id != trainer.id &&
+                      selectedRating !== null &&
+                      selectedRating !== undefined && (
+                        <OptimizedStarRatings
+                          rating={selectedRating} // Display the selected rating
+                          starRatedColor="yellow"
+                          changeRating={handleRatingChange} // User has clicked, so confirm the rating
+                          numberOfStars={5}
+                          name="rating"
+                          starHoverColor="yellow"
+                          starEmptyColor="gray"
+                          onMouseLeave={handleMouseLeave} // Mouse has left the rating component, so revert to actual rating
+                          onStarHover={handleRatingHover} // User is hovering over a star, so update the temporary rating
+                        />
+                      )}
+                  </div>
+                  {chipData.map((data) => (
+                    <div key={data.key} className="mb-0 mt-3 mr-2 inline-block">
+                      <div className="flex items-center bg-gray-200 rounded-full text-sm font-medium px-2 py-0.5 whitespace-nowrap">
+                        <div className="text-gray-700">{data.label}</div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="pt-2 flex flex-col space-y-2">
                     {trainer.location && (
                       <p>
                         <span className="font-bold">Location:</span>{" "}
                         {trainer.location}
                       </p>
                     )}
-                    {trainer.phone_number > 1 && trainer.phone_number.toString().length > 10 &&  (
-                      <p>
-                        <span className="font-bold">Phone Number:</span>{" "}
-                        {trainer.phone_number.toString().replace(/(\d{1})(\d{3})(\d{3})(\d{4})/, "+$1-$2-$3-$4")}
-                      </p>
-                    )}
+                    {trainer.phone_number > 1 &&
+                      trainer.phone_number.toString().length > 10 && (
+                        <p>
+                          <span className="font-bold">Phone Number:</span>{" "}
+                          {trainer.phone_number
+                            .toString()
+                            .replace(
+                              /(\d{1})(\d{3})(\d{3})(\d{4})/,
+                              "+$1-$2-$3-$4"
+                            )}
+                        </p>
+                      )}
                     {trainer.yoe && (
                       <p>
                         <span className="font-bold">Years of Experience:</span>{" "}
