@@ -3,10 +3,11 @@ import Image from "next/image";
 import Carousel from "./Carousel";
 import { useAuth } from "../providers/supabase-auth-provider";
 import StarRatings from "react-star-ratings";
-import CommentSection from './Comments/CommentSection' 
+import CommentSection from "./Comments/CommentSection";
 //import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "./App.css";
+import { useRouter } from "next/navigation";
 type TrainerModalProps = {
   handleCloseModel: any;
   trainer: any;
@@ -22,6 +23,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
   trainer,
   setRegenerateLikedTrainers,
 }) => {
+  const router = useRouter();
   const [trainerPics, setTrainerPics] = useState([]);
   const [chipData, setChipData] = useState([]);
   const [like, setLiked] = useState(isLike);
@@ -31,7 +33,6 @@ const UserManager: React.FC<TrainerModalProps> = ({
   const [rating, setRating] = useState<number | null>(null);
   const OptimizedStarRatings = React.memo(StarRatings);
   const [tempRating, setTempRating] = useState<number>(0);
-
   // Fetch trainer rating when component mounts or trainer changes
   useEffect(() => {
     const fetchRating = async () => {
@@ -41,7 +42,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
         setSelectedRating(data.rating);
       }
     };
-    
+
     fetchRating();
   }, [trainer]);
   const fetchAverageRating = async () => {
@@ -59,7 +60,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
 
   useEffect(() => {
     fetchAverageRating();
-  }, [selectedRating])
+  }, [selectedRating]);
   const handleRatingChange = async (newRating: number) => {
     // Update the rating locally first
     setSelectedRating(newRating);
@@ -200,7 +201,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
         >
           {" "}
         </div>
-        <div className="relative w-full max-w-md max-h-full bg-white rounded-lg shadow dark:bg-gray-700 overflow-auto">
+        <div className="relative w-full max-w-md max-h-full bg-white rounded-lg shadow dark:bg-gray-700 overflow-auto custom-scrollbar ">
           <article className="px-6 py-6 lg:px-8 text-white flex flex-col justify-between h-full">
             <button
               className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -225,10 +226,10 @@ const UserManager: React.FC<TrainerModalProps> = ({
                   {trainer.display_name ? trainer.display_name : "Unknown"}
                 </h3>
                 <HeartIcon />
-                <div className="overflow-y-auto" id="custom-scrollbar">
+                <div className="overflow-y-auto custom-scrollbar">
                   {" "}
                   {/* This div will scroll */}
-                  <div className="relative w-full overflow-hidden h-96 rounded-lg">
+                  <div className="relative w-full overflow-hidden custom-scrollbar h-96 rounded-lg">
                     <Carousel images={trainerPics} />
                     <div className="absolute bottom-0 left-0 bg-red-500 text-white text-xs font-semibold rounded px-2 py-1">
                       <p className="">
@@ -241,9 +242,10 @@ const UserManager: React.FC<TrainerModalProps> = ({
                     </div>
                   </div>
                   <div>
-                  {rating && !Number.isNaN(rating)  && rating !== null && rating !== 0 && (
-                    <p>Rating: {rating}</p>
-                  )}
+                    {rating &&
+                      !Number.isNaN(rating) &&
+                      rating !== null &&
+                      rating !== 0 && <p>Rating: {rating}</p>}
 
                     {user &&
                       user.id != trainer.id &&
@@ -297,12 +299,15 @@ const UserManager: React.FC<TrainerModalProps> = ({
                   </div>
                   {trainer.bio && (
                     <div
-                      style={{
-                        maxHeight: isReadMore ? "100px" : "200px",
-                        overflowY: "auto",
-                      }}
+                      className={`overflow-y-auto ${
+                        isReadMore ? "max-h-[100px]" : "max-h-[200px]"
+                      } custom-scrollbar`}
                     >
-                      <p className={isReadMore ? "line-clamp-3" : ""}>
+                      <p
+                        className={`overflow-ellipsis overflow-hidden ${
+                          isReadMore ? "line-clamp-3" : ""
+                        }`}
+                      >
                         {trainer.bio}
                       </p>
                       {trainer.bio.length > 150 && (
@@ -362,7 +367,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
                     )}
                   </div>
                 </div>
-                <CommentSection trainer_id={trainer.id} />
+                <CommentSection rating={rating} trainer_id={trainer.id} />
               </>
             ) : (
               <h3>Loading...</h3>

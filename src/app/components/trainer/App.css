@@ -1,6 +1,6 @@
 /* This is for Chrome and Opera */
 #custom-scrollbar::-webkit-scrollbar {
-    width: 5px;
+    width: 30px;
   }
   
   #custom-scrollbar::-webkit-scrollbar-track {

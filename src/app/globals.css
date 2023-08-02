@@ -13,10 +13,11 @@
 
 .custom-scrollbar::-webkit-scrollbar-track {
   background: #000000;
+  border-radius: 20px; /* This will give a rounded look */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #444;
+  background: #222; /* Darker color for scrollbar hover */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {

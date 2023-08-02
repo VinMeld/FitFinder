@@ -4,9 +4,10 @@ import { toast, ToastContainer } from "react-toastify";
 import CommentItem from "./CommentItem";
 type CommentSectionProps = {
   trainer_id: string;
+  rating: string;
 };
 
-const CommentSection: React.FC<CommentSectionProps> = ({ trainer_id }) => {
+const CommentSection: React.FC<CommentSectionProps> = ({ rating, trainer_id }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const { user } = useAuth(); // Assuming useAuth is a custom hook that gets user data
@@ -95,6 +96,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trainer_id }) => {
           handleDelete={handleDelete}
           key={comment.comment_id}
           comment={comment}
+          ratingProps={rating}
         />
       ))}
       { user &&
@@ -102,7 +104,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trainer_id }) => {
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          className="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
+          className="w-full p-2 mb-3 text-black border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
           placeholder="Type your comment here..."
           rows={3}
         />
