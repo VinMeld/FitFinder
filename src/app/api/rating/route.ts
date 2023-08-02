@@ -11,14 +11,11 @@ export async function GET(request: Request) {
 
   if(!trainer_id) return new NextResponse('Bad request', { status: 400 });
   
-  console.log("trainer_id: " + trainer_id)
   let { data: ratings, error } = await supabase
     .from('ratings')
     .select("rating")
     .eq('trainer_id', trainer_id);
   if(!ratings) return new NextResponse('Not rated before', { status: 400 });
-  console.log("ratings:: ")
-  console.log(ratings)
 
   if (error) {
       console.log("error")

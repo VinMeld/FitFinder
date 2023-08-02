@@ -3,7 +3,7 @@ import Image from "next/image";
 import Carousel from "./Carousel";
 import { useAuth } from "../providers/supabase-auth-provider";
 import StarRatings from "react-star-ratings";
-
+import CommentSection from './Comments/CommentSection' 
 //import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "./App.css";
@@ -38,36 +38,31 @@ const UserManager: React.FC<TrainerModalProps> = ({
       const response = await fetch(`/api/rating/${trainer.id}`);
       if (response.status === 200) {
         const data = await response.json();
-        console.log(data);
-        console.log("rating data");
         setSelectedRating(data.rating);
       }
     };
     
     fetchRating();
   }, [trainer]);
-  useEffect(() => {
-    const fetchAverageRating = async () => {
-      const response = await fetch(`/api/rating?trainer_id=${trainer.id}`);
-      if (response.status === 200) {
-        const data = await response.json();
-        console.log("rating data avg");
-        console.log(data);
-        if (data.avg_rating != null) {
-          console.log(data.avg_rating);
-          setRating(data.avg_rating.toFixed(1));
-        }
-        console.log(rating);
-      } else {
-        console.log("Error getting avg rating");
+  const fetchAverageRating = async () => {
+    const response = await fetch(`/api/rating?trainer_id=${trainer.id}`);
+    if (response.status === 200) {
+      const data = await response.json();
+      if (data.avg_rating != null) {
+        console.log(data.avg_rating);
+        setRating(data.avg_rating.toFixed(1));
       }
-    };
+    } else {
+      console.log("Error getting avg rating");
+    }
+  };
+
+  useEffect(() => {
     fetchAverageRating();
   }, [selectedRating])
   const handleRatingChange = async (newRating: number) => {
     // Update the rating locally first
     setSelectedRating(newRating);
-    console.log("Handling rating change");
     const response = await fetch(`/api/rating/${trainer.id}`);
     console.log(response.status);
     if (response.status === 200) {
@@ -81,6 +76,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
       });
       console.log("response");
       console.log(res);
+      fetchAverageRating();
       if (!res.ok) {
         console.error("Error updating rating for the trainer");
         // Rollback if the request failed
@@ -95,12 +91,12 @@ const UserManager: React.FC<TrainerModalProps> = ({
         },
         body: JSON.stringify({ rating: newRating }),
       });
-
       if (!res.ok) {
         console.error("Error creating rating for the trainer");
         // Rollback if the request failed
         setSelectedRating(rating);
       }
+      fetchAverageRating();
     }
   };
   const handleRatingHover = (newRating: number) => {
@@ -366,6 +362,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
                     )}
                   </div>
                 </div>
+                <CommentSection trainer_id={trainer.id} />
               </>
             ) : (
               <h3>Loading...</h3>

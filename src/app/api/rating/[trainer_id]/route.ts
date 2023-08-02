@@ -71,7 +71,6 @@ export async function POST(request: Request, { params: { trainer_id } }: Props) 
     if (!requestData) {
         return new NextResponse('Bad request', { status: 400 })
     }
-    console.log(requestData)
     const supabase = createClient();
   
     const {
@@ -97,11 +96,9 @@ export async function POST(request: Request, { params: { trainer_id } }: Props) 
   
   export async function GET(request: Request, { params: { trainer_id } }: Props) {
     const supabase = createClient();
-    console.log("Loggin in ")
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    console.log(session.user.id)
     if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -111,14 +108,9 @@ export async function POST(request: Request, { params: { trainer_id } }: Props) 
       .select("*")
       .eq('user_id', session.user.id)
       .eq('trainer_id', trainer_id);
-    console.log(
-      "ratingsTest", ratings
-    )
       if (error) {
-      console.log("sending status 500")  
       return new NextResponse(error.message, { status: 500 });
     }
-    console.log("sending status 200")  
     if(ratings.length == 0){
       return new NextResponse("None found", { status: 404 });
     }
