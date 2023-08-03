@@ -1,72 +1,65 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { AiOutlinePlus } from "react-icons/ai";
+import React, { useState, useEffect } from 'react';
+import { categories } from "../../../../../../public/index"
 
 export default function ChipsArray(props) {
-  const [chipData, setChipData] = useState([]);
-  const [newTag, setNewTag] = useState('');
-  const MAX_TAG_LENGTH = 20;
+  const [allTags, setAllTags] = useState([]);
 
-  const createNewTag = async (event) => {
-    event.stopPropagation()
-    if (newTag.length <= MAX_TAG_LENGTH) {
-        // Check if the tag is already in the list
-        const tagExists = chipData.some(chip => chip.label.toString().toLowerCase() === newTag.toLowerCase());
-        
-        if (!tagExists) {
-          const response = await fetch(`/api/tags/${props.user_id}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              tag: newTag
-            })
-          });
+  useEffect(() => {
+    setAllTags(categories.map((item, index) => ({
+      label: item,
+      key: index,
+      selected: false
+    })));
+  }, [])
 
-          if (response.status === 200) {
-            setChipData((chips) => [...chips, { key: chips.length, label: newTag }]);
-            setNewTag('');
-          } else {
-            console.log('Could not add tag.');
-          }
-        } else {
-          console.log('Tag already exists.');
-        }
-    } else {
-      console.log(`Tag is too long. Maximum length is ${MAX_TAG_LENGTH} characters.`);
+  const handleSelectTag = async (tag) => {
+    if(allTags.filter(chip => chip.selected).length >= 5) return;
+    const tagExists = allTags.some(chip => chip.label.toString().toLowerCase() === tag.label.toLowerCase() && chip.selected);
+    if (!tagExists) {
+      const response = await fetch(`/api/tags/${props.user_id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          tag: tag.label
+        })
+      });
+
+      if (response.status === 200) {
+        setAllTags(allTags.map(t => t.key === tag.key ? { ...t, selected: true } : t));
+      } else {
+        console.log('Could not add tag.');
+      }
     }
   }
 
-  const handleDelete = useCallback((chipToDelete) => async (event) => {
-    event.stopPropagation()
-    console.log(chipToDelete)
-    console.log("trying to delete ^")
+  const handleDeselectTag = async (tag) => {
     const response = await fetch(`/api/tags/${props.user_id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        tag: chipToDelete.label
+        tag: tag.label
       })
     });
 
     if (response.status === 200) {
-      setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+      setAllTags(allTags.map(t => t.key === tag.key ? { ...t, selected: false } : t));
     } else {
       console.log('Could not delete tag.');
     }
-  }, [props.user_id]);
+  }
 
-  // Fetch tags when the component is first rendered
   useEffect(() => {
     const fetchTags = async () => {
       const response = await fetch(`/api/tags/${props.user_id}`);
       if (response.status === 200) {
         const data = await response.json();
-        setChipData(data.map((item, index) => ({
-          label: item.tag,
-          key: index
+        setAllTags(allTags => allTags.map(tag => ({
+          ...tag,
+          selected: data.some(item => item.tag === tag.label)
         })));
       }
     }
@@ -74,38 +67,22 @@ export default function ChipsArray(props) {
     fetchTags();
   }, []);
 
-   return (
+  return (
     <div className="flex flex-col items-center justify-center p-2">
-      <div className="flex items-center mb-4">
-        <label htmlFor="tag" className="block text-sm font-medium text-white mr-2">Tags</label>
-        <input
-          id="tag"
-          value={newTag}
-          maxLength={MAX_TAG_LENGTH}
-          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          onChange={(e) => setNewTag(e.target.value)}
-        />
-        {chipData.length < 6 && chipData.every((chip) => chip.label.toString().toLowerCase() !== newTag.toLowerCase()) &&
-          <button type="button"  className="p-1 bg-blue-500 hover:bg-blue-700 text-white rounded ml-2" onClick={createNewTag}>
-              <AiOutlinePlus />
-          </button>
-        }
-      </div>
-      <div className="flex flex-wrap justify-center">
-      { 
-        chipData.map((data) => {
-          return (
-            <div key={data.key} className="m-1">
-              <div className="flex items-center bg-gray-200 rounded-full text-sm font-medium px-2 py-0.5">
-                <div className="text-gray-700">{data.label}</div>
-                <button type="button" className="ml-1.5 text-gray-500 hover:text-gray-700" onClick={(event) => handleDelete(data)(event)}>
-                &times;
-                </button>
+      <div className="flex items-center mb-4 text-white">
+        <div className="flex flex-wrap">
+          {allTags && allTags.map((tag) => {
+            return (
+              <div 
+                key={tag.key} 
+                className={`m-1 p-1 border rounded cursor-pointer ${tag.selected ? 'border-blue-500' : 'border-gray-300'}`} 
+                onClick={() => tag.selected ? handleDeselectTag(tag) : handleSelectTag(tag)}
+              >
+                {tag.label}
               </div>
-            </div>
-          );
-        })
-      }
+            )
+          })}
+        </div>
       </div>
     </div>
   );

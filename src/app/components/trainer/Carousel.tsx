@@ -27,12 +27,12 @@ const Carousel = ({ images }) => {
   };
 
   return (
-    <div className="relative w-full overflow-hidden h-96 rounded-lg" ref={carouselRef}>
+    <div className="relative w-full overflow-hidden h-96 rounded-lg shadow-lg transform hover:scale-105 transition-all ease-in-out duration-300" ref={carouselRef}>
       {images.map((src, index) => (
         <div
           key={index}
           className={`absolute w-full h-full transition-all duration-500 ease-in-out ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
+            index === currentSlide ? "opacity-100 transform scale-105 shadow-lg" : "opacity-0 transform scale-95"
           }`}
           style={{ top: '0', left: '0' }}
         >

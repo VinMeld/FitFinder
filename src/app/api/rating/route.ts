@@ -29,5 +29,5 @@ export async function GET(request: Request) {
   }
   let avgRating = sum / ratings.length;
   console.log(avgRating)
-  return new NextResponse(JSON.stringify({avg_rating: avgRating}), { status: 200 });
+  return new NextResponse(JSON.stringify({rating_amount: ratings.length, avg_rating: avgRating}), { status: 200 });
 }

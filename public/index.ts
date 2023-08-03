@@ -81,3 +81,15 @@ export const footerLinks = [
       link: "https://www.twitter.com/",
     },
   ];
+  export const categories = [
+    "Aerobic Strength",
+    "Weight Loss",
+    "Rehabilitation",
+    "Senior Fitness",
+    "Youth Fitness",
+    "Bodybuilding",
+    "Functional Fitness",
+    "Sports Specific",
+    "Cardio",
+    "Martial Arts",
+  ];

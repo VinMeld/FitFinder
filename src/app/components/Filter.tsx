@@ -1,25 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef  } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-export default function Filter({searchTerm, setSearchTerm}) {
+import { categories } from "../../../public/index"
+export default function Filter({tags, setTags, searchTerm, setSearchTerm }) {
   const router = useRouter();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const categories = ["Mockups", "Templates", "Design", "Logos"]; // categories array
-  const handleSearchChange = (event: any) => {
+  const dropdownRef = useRef(null);
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
+
+  const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
-  // Add searchTerm to the URL query string
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
+
+  const handleTagClick = (tag, e) => {
+    e.preventDefault();
+    console.log(tag);
+    const newTags = [...tags];
+    if (newTags.includes(tag)) {
+      const tagIndex = newTags.indexOf(tag);
+      newTags.splice(tagIndex, 1);
+    } else {
+      newTags.push(tag);
+    }
+    console.log(newTags)
+    setTags(newTags);
+  
+    const params = new URLSearchParams();
+    if (searchTerm) {
+      params.append("searchTerm", searchTerm);
+    }
+    if (newTags.length > 0) {
+      params.append("tags", newTags.join(',')); // Join the tags with a comma
+    }
+    const newUrl = params.toString() ? `?${params.toString()}` : '/';
+    router.push(newUrl, { scroll: false });
   };
+  
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams();
+    if (searchTerm) {
+      params.append("searchTerm", searchTerm);
+    }
+    // if (tags.length > 0) {
+    //   params.append("tags", tags.join(',')); // Join the tags with a comma
+    // }
+    const newUrl = params.toString() ? `?${params.toString()}` : '/';
+    router.push(newUrl, { scroll: false });
+  };
+    
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownVisible(false);
+    }
+  };
+
   return (
     <form className="w-full flex" onSubmit={handleSubmit}>
-      {/* <div className="relative"> */}
-        {/* <button
+      <div className="relative" ref={dropdownRef}>
+        <button
           id="dropdown-button"
           data-dropdown-toggle="dropdown"
           className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 whitespace-nowrap"
@@ -33,7 +82,7 @@ export default function Filter({searchTerm, setSearchTerm}) {
             height={20}
             className="mr-2"
           />
-          All categories
+          Tags
         </button>
 
         <div
@@ -48,17 +97,21 @@ export default function Filter({searchTerm, setSearchTerm}) {
           >
             {categories.map((category) => (
               <li key={category}>
-                <button
-                  type="button"
+                <a
+                  href="#"
+                  onClick={(e) => handleTagClick(category, e)}
                   className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   {category}
-                </button>
+                  {tags.includes(category) && (
+                    <span className="ml-2">✔</span>
+                  )}
+                </a>
               </li>
             ))}
           </ul>
         </div>
-      </div> */}
+      </div>
 
       <div className="relative w-full">
         <input

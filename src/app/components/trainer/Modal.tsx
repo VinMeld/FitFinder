@@ -7,6 +7,8 @@ import CommentSection from "./Comments/CommentSection";
 //import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "./App.css";
+import { FaStar } from "react-icons/fa";
+
 import { useRouter } from "next/navigation";
 type TrainerModalProps = {
   handleCloseModel: any;
@@ -33,6 +35,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
   const [rating, setRating] = useState<number | null>(null);
   const OptimizedStarRatings = React.memo(StarRatings);
   const [tempRating, setTempRating] = useState<number>(0);
+  const [ratingAmount, setRatingAmount] = useState<number>(0);
   // Fetch trainer rating when component mounts or trainer changes
   useEffect(() => {
     const fetchRating = async () => {
@@ -52,6 +55,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
       if (data.avg_rating != null) {
         console.log(data.avg_rating);
         setRating(data.avg_rating.toFixed(1));
+        setRatingAmount(data.rating_amount);
       }
     } else {
       console.log("Error getting avg rating");
@@ -61,6 +65,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
   useEffect(() => {
     fetchAverageRating();
   }, [selectedRating]);
+
   const handleRatingChange = async (newRating: number) => {
     // Update the rating locally first
     setSelectedRating(newRating);
@@ -176,7 +181,7 @@ const UserManager: React.FC<TrainerModalProps> = ({
     user.id != trainer.id && (
       <svg
         onClick={likeTrainer}
-        className="w-5 h-5 cursor-pointer"
+        className="w-5 h-5 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
         fill={like ? "currentColor" : "none"}
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -222,10 +227,13 @@ const UserManager: React.FC<TrainerModalProps> = ({
             </button>
             {trainer ? (
               <>
-                <h3>
+                <div className="flex items-center">
+                <h3 className="mr-4">
                   {trainer.display_name ? trainer.display_name : "Unknown"}
                 </h3>
                 <HeartIcon />
+              </div>
+
                 <div className="overflow-y-auto custom-scrollbar">
                   {" "}
                   {/* This div will scroll */}
@@ -245,23 +253,49 @@ const UserManager: React.FC<TrainerModalProps> = ({
                     {rating &&
                       !Number.isNaN(rating) &&
                       rating !== null &&
-                      rating !== 0 && <p>Rating: {rating}</p>}
+                      rating !== 0 && (
+                        <div className="flex items-center text-sm">
+                          <svg
+                            width="24"
+                            height="24"
+                            fill="none"
+                            aria-hidden="true"
+                            className="mr-1 stroke-current text-yellow-500"
+                          >
+                            <path
+                              d="m12 5 2 5h5l-4 4 2.103 5L12 16l-5.103 3L9 14l-4-4h5l2-5Z"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          <span className="text-yellow-500">{rating}</span>
+                          {ratingAmount && (
+                            <span className="text-gray-500 font-normal">
+                              ({ratingAmount})
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                     {user &&
                       user.id != trainer.id &&
                       selectedRating !== null &&
                       selectedRating !== undefined && (
-                        <OptimizedStarRatings
-                          rating={selectedRating} // Display the selected rating
-                          starRatedColor="yellow"
-                          changeRating={handleRatingChange} // User has clicked, so confirm the rating
-                          numberOfStars={5}
-                          name="rating"
-                          starHoverColor="yellow"
-                          starEmptyColor="gray"
-                          onMouseLeave={handleMouseLeave} // Mouse has left the rating component, so revert to actual rating
-                          onStarHover={handleRatingHover} // User is hovering over a star, so update the temporary rating
-                        />
+                        <div>
+                          <OptimizedStarRatings
+                            rating={selectedRating} // Display the selected rating
+                            starRatedColor="yellow"
+                            changeRating={handleRatingChange} // User has clicked, so confirm the rating
+                            numberOfStars={5}
+                            name="rating"
+                            starHoverColor="yellow"
+                            starEmptyColor="gray"
+                            onMouseLeave={handleMouseLeave} // Mouse has left the rating component, so revert to actual rating
+                            onStarHover={handleRatingHover} // User is hovering over a star, so update the temporary rating
+                            starDimension="20px"
+                          />
+                        </div>
                       )}
                   </div>
                   {chipData.map((data) => (
@@ -367,7 +401,12 @@ const UserManager: React.FC<TrainerModalProps> = ({
                     )}
                   </div>
                 </div>
-                <CommentSection rating={rating} trainer_id={trainer.id} />
+                <div className="pt-6">
+                  <h3 className="text-xl font-bold text-white">User Comments</h3>
+                </div>
+                <div className="mt-4 p-4 border-t border-gray-400 bg-gray-600 rounded-lg shadow">
+                  <CommentSection rating={rating} trainer_id={trainer.id} />
+                </div>
               </>
             ) : (
               <h3>Loading...</h3>

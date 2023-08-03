@@ -19,13 +19,14 @@ const CommentItem: React.FC<CommentItemProps> = ({ratingProps, trainer_id, comme
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(comment.comment_text);
   const [prevText, setPrevText] = useState(comment.comment_text);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState<number | null>(null);
   const { user } = useAuth();
   const fetchRatings = async () => {
     const response = await fetch(`/api/comments?trainer_id=${trainer_id}&user_id=${comment.user_id}`);
     if (response.status === 200) {
       const data = await response.json();
-      setRating(data.rating);
+      if(data.rating === 0) setRating(null);
+      else setRating(data.rating);
     } else if(response.status != 400) {
       console.log("Error getting rating: ")
     }

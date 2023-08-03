@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Filter from "./components/Filter";
+import { useRouter, useSearchParams } from "next/navigation";
 const TrainerList = dynamic(() => import("./components/trainer/TrainerList"), {
   loading: () => <p>Loading...</p>,
 });
@@ -12,12 +13,45 @@ export default function Page() {
   const [trainers, setTrainers] = useState([]);
   const [regenerateLikedTrainers, setRegenerateLikedTrainers] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [tags, setTags] = useState([]);
+  const router = useRouter();
+  const searchParams = useSearchParams()!;
 
   async function generateTrainers() {
-    const response = await fetch(`/api/trainer?search=${searchTerm}`);
+    let URL = '/api/trainer?';
+  
+    if (searchTerm) {
+      URL += `search=${searchTerm}&`;
+    }
+  
+    if (tags.length > 0) {
+      URL += `tags=${tags.join(",")}`;
+    }
+  
+    const response = await fetch(URL);
     const data = await response.json();
     setTrainers(data);
   }
+  useEffect(() => {
+    // Checking if there's an id in the URL
+    if (!searchParams) {
+      generateTrainers();
+      return;
+    }
+  
+    let tempTags = [];
+    searchParams.forEach((value, key) => {
+      if (key === "searchTerm") {
+        setSearchTerm(value);
+      } else if (key === "tags") {
+        tempTags = value.split(",");
+      }
+    });
+  
+    setTags(tempTags);
+    generateTrainers();
+  }, [searchParams]);
+  
 
   useEffect(() => {
     generateTrainers();
@@ -38,7 +72,7 @@ export default function Page() {
       </div>
       <div className={`${styles.flexStart} px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 mx-auto`}>
         <div className={`${styles.boxWidth}`}>
-          <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <Filter tags={tags} setTags={setTags} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </div>
       </div>      
       <div

@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import CommentItem from "./CommentItem";
 type CommentSectionProps = {
   trainer_id: string;
-  rating: string;
+  rating: number;
 };
 
 const CommentSection: React.FC<CommentSectionProps> = ({ rating, trainer_id }) => {
@@ -64,9 +64,14 @@ const CommentSection: React.FC<CommentSectionProps> = ({ rating, trainer_id }) =
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      alert("You must be logged in to comment");
+      toast.error("You must be logged in to comment");
       return;
     }
+    if(newComment.length < 1){
+      toast.error("Comment cannot be empty");
+      return;
+    }
+    
     const response = await fetch(`/api/comments/${trainer_id}`, {
       method: "POST",
       headers: {

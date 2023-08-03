@@ -11,6 +11,7 @@ export async function GET(request: Request) {
 
   const {searchParams} = new URL(request.url);
   const searchQuery = searchParams.get('search');
+  const tagsString = searchParams.get('tags');
   
   let users, usersError;
   if(searchQuery) {
@@ -23,6 +24,19 @@ export async function GET(request: Request) {
   if (!users || users.length === 0) return new NextResponse('No users found', { status: 404 });
 
   let userIds = users.map(user => user.id);
+
+  if (tagsString) {
+    const tags = tagsString.split(',');
+    const { data: taggedUsers, error: tagsError } = await supabaseAdminClient
+      .from('tags')
+      .select('user_id')
+      .in('tag', tags);
+
+    if (tagsError) return new NextResponse(tagsError.message, { status: 500 });
+
+    userIds = taggedUsers.map(tag => tag.user_id);
+  }
+
 
   let { data: trainers, error: trainersError } = await supabase.from("trainer").select("*").in('id', userIds);
   if (trainersError) return new NextResponse(trainersError.message, { status: 500 });

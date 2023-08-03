@@ -39,6 +39,7 @@ export default function TrainerEdit() {
       setPricingEnd(trainer.price_range_end || 0);
       setPhoneNumber(user.phone_number ? user.phone_number.toString() : "");
       setLoading(false);
+      setCharCount(trainer.bio.length)
     }
   }, [user, trainer]);
   const validationSchema = Yup.object().shape({
