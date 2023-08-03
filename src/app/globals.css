@@ -1,6 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* styles/phone-input.css */
+
+.phone-input .PhoneInputInput {
+  background-color: black !important;
+  color: white !important;
+  border: 1px solid white !important;
+  padding: 1rem !important;
+  border-radius: 0.5rem !important;
+  width: 100% !important;
+}
+
+.phone-input .PhoneInputInput:focus {
+  outline: none !important;
+  border-color: blue !important;
+}
+
+.phone-input .PhoneInputCountrySelectIcon {
+  fill: white !important;
+}
+
+.phone-input .PhoneInputCountrySelectArrow {
+  border-color: white transparent transparent transparent !important;
+}
+
+.phone-input .PhoneInputCountrySelect:focus .PhoneInputCountrySelectIcon {
+  fill: blue !important;
+}
+
+.phone-input .PhoneInputCountrySelect:focus .PhoneInputCountrySelectArrow {
+  border-color: blue transparent transparent transparent !important;
+}
+
 /* The container that has scrollbar */
 :root {
   overflow-y: scroll; /* It's important to set this */

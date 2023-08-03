@@ -5,11 +5,14 @@ import UserDropzone from "./components/UserDropzone";
 import ShowImages from "./components/ShowImages";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Formik, Form, Field, ErrorMessage, useFormikContext  } from "formik";
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
 import * as Yup from "yup";
 import ChipsArray from "./components/ChipArray";
 import { useRouter } from "next/navigation";
-import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
+import "react-phone-number-input/style.css";
+import ReactTelInput from "react-telephone-input";
+import axios from "axios";
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
   const [uploadCount, setUploadCount] = useState(0);
@@ -39,7 +42,7 @@ export default function TrainerEdit() {
       setPricingEnd(trainer.price_range_end || 0);
       setPhoneNumber(user.phone_number ? user.phone_number.toString() : "");
       setLoading(false);
-      setCharCount(trainer.bio.length)
+      setCharCount(trainer.bio.length);
     }
   }, [user, trainer]);
   const validationSchema = Yup.object().shape({
@@ -106,7 +109,7 @@ export default function TrainerEdit() {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { setSubmitting }) => {
-                if(phone_number.length >= 11){
+                if (phone_number.length >= 11) {
                   values.phone_number = phone_number;
                 } else {
                   values.phone_number = "";
@@ -197,7 +200,7 @@ export default function TrainerEdit() {
                     <div className="relative z-0 w-full mb-6 group">
                       <ChipsArray user_id={user.id} />
                     </div>
-                    
+
                     <div className="flex">
                       <div className="relative z-0 mb-6 group">
                         <p
@@ -220,8 +223,7 @@ export default function TrainerEdit() {
                           className="text-red-500 text-xs mt-1"
                         />
                       </div>
-                      <div className="mx-3 mt-3">
-                      </div>
+                      <div className="mx-3 mt-3"></div>
                       <div className="relative z-0 mb-6 group">
                         <p
                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -315,7 +317,7 @@ export default function TrainerEdit() {
                           Phone
                         </label>
                         <InputMask
-                          mask="+9 999-999-9999"
+                          mask="+1 999-999-9999"
                           type="text"
                           name="phone_number"
                           id="phone_number"
@@ -358,7 +360,6 @@ export default function TrainerEdit() {
                               setCharCount(event.target.value.length);
                             }}
                           />
-                            
                           <div
                             style={{
                               position: "absolute",
