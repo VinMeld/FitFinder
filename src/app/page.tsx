@@ -33,7 +33,6 @@ export default function Page() {
     setTrainers(data);
   }
   useEffect(() => {
-    // Checking if there's an id in the URL
     if (!searchParams) {
       generateTrainers();
       return;
