@@ -99,6 +99,9 @@ export async function POST(request: Request) {
     }
     // If there are no entries, insert the data
     const payload = await request.json();
+    if(!payload.image_url) {
+        return new NextResponse("No image provided", { status: 400 });
+    }
     const insertData ={
         user_id: session.user.id,
         image_url: payload.image_url,

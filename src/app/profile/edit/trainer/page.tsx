@@ -30,7 +30,7 @@ export default function TrainerEdit() {
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const [isPending, startTransition] = useTransition();
-
+  
   useEffect(() => {
     if (user && trainer) {
       setDisplayName(user.display_name || "");
@@ -197,9 +197,7 @@ export default function TrainerEdit() {
                       setUploadCount={setUploadCount}
                       uploadCount={uploadCount}
                     />
-                    <div className="relative z-0 w-full mb-6 group">
-                      <ChipsArray user_id={user.id} />
-                    </div>
+                    
 
                     <div className="flex">
                       <div className="relative z-0 mb-6 group">
@@ -376,6 +374,9 @@ export default function TrainerEdit() {
                             className="text-red-500 text-xs mt-1"
                           />
                         </div>
+                      </div>
+                      <div className="relative z-0 w-full mb-6 group">
+                        <ChipsArray user_id={user.id} />
                       </div>
                     </div>
                     <button

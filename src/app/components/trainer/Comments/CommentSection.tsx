@@ -37,6 +37,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ rating, trainer_id }) =
         toast.error(message); // Display the "Please be nicer" message
       });
     } else {
+      console.log(response.status)
       toast.error("Error updating comment");
     }
   };

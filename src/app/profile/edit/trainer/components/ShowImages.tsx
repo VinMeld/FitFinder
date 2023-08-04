@@ -75,7 +75,7 @@ const ShowImages = ({ uploadCount, setUploadCount }) => {
 
     // Fetch image order and url from the database
     const orderedImages = await getOrderImages();
-
+    console.log(orderedImages);
     if (!orderedImages) {
       console.error("Error getting ordered images");
       return;

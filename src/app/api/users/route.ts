@@ -1,7 +1,7 @@
 "use server";
 import { createClient } from "../../utils/supabase-server";
 import { NextResponse } from "next/server";
-
+import { isToxic } from "../utils/spam_api";
 //get user profile
 export async function GET(request: Request) {
   const supabase = createClient();
@@ -77,41 +77,24 @@ export async function PUT(request: Request) {
   console.log("req", req);
 
   // Define fields to check for spam
-  const fieldsToCheck = ['bio', 'instagram'];
+  const fieldsToCheck = ["bio", "instagram"];
 
   // Loop over each field to check
   for (let field of fieldsToCheck) {
     // Only proceed if the field is defined
     if (req[field]) {
-      // Create the search parameters
-      const params = new URLSearchParams({
-        text: req[field],
-        token: '4PPpkaxCn=RUoy98/Bd6ZwKfrPM6SCWx/xlUki/Y4HajNRS2NEuLRdt7=FSQWqqo1R/bw67JB=6GD54mlsuDfP6PXEAPFuDTZnx6HGS??mexLlRoN5wZmST4Kd-ZhUHYuIIZy8J-pq9RexTconKgLkv25z7s0QySF=2qaOZf0wd8CnWVtwlQVHs/wVmNHhnQpvrEkDL0OnVoYFAfBauivl8226ro=TZTfs-Q-Ej3sYvlo6116NnjkLNj/hwmX7gw',
-      });
-      // Set the search parameters on the URL
-      const url = new URL('https://ai.fitfinder.ca/classify');
-      url.search = params.toString();
-      console.log(url)
+      // Use the isToxic function to classify the text
+      const isToxicText = await isToxic(req[field]);
 
-      // Send a request to the classify API
-      const response = await fetch(url.toString());
-
-      // Check if request was successful
-      if (!response.ok) {
-        throw new Error(`An error has occurred: ${response.statusText}`);
-      }
-
-      // Parse response as JSON
-      const spamData = await response.json();
-      console.log(spamData)
       // Check classification value
-      if (spamData.classification === true) {
-        console.log('spam');
-        return new NextResponse(`Please have a kinder ${field}`, { status: 400 });
+      if (isToxicText) {
+        console.log("Toxic");
+        return new NextResponse(`Please have a kinder ${field}`, {
+          status: 400,
+        });
       }
     }
   }
-
 
   //loop through json and discard field if its empty
 
