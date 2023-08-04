@@ -125,7 +125,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
               setCharCount(e.target.value.length);
             }}
             maxLength={250}
-            className="w-full p-2 mb-3 text-black border custom-scrollbar border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
+            className="w-full p-2 mb-3 text-black border comment-scrollbar border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
             placeholder="Type your comment here..."
             rows={3}
           />
