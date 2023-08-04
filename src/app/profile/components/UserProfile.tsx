@@ -86,11 +86,14 @@ const UserProfile = () => {
                       </p>
                     )}
                   </div>
-                  {/* <div className="relative justify-self-end ml-auto">
-                                <button onClick={() => router.push("/profile/edit/user")} className="btn btn-outline gap-2" >
-                                    Edit Account
-                                </button>
-                            </div> */}
+                  <div className="relative justify-self-end ml-auto">
+                    <button
+                      onClick={() => router.push("/profile/edit/user")}
+                      className="btn btn-outline gap-2"
+                    >
+                      Edit Account
+                    </button>
+                  </div>
                 </div>
                 {user.phone_number && (
                   <div

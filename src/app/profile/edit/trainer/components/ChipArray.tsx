@@ -53,7 +53,7 @@ export default function ChipsArray(props) {
   }, [allTags]);
 
   const handleSelectTag = async (tag) => {
-    if(allTags.filter(chip => chip.selected).length >= 5) return;
+    if(allTags.filter(chip => chip.selected).length >= 3) return;
     const tagExists = allTags.some(chip => chip.label.toString().toLowerCase() === tag.label.toLowerCase() && chip.selected);
     if (!tagExists) {
       const response = await fetch(`/api/tags/${props.user_id}`, {

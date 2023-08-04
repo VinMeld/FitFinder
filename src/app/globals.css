@@ -39,6 +39,30 @@
   overflow-y: scroll; /* It's important to set this */
 }
 
+.comment-scrollbar::-webkit-scrollbar {
+  width: 20px;
+}
+
+.comment-scrollbar::-webkit-scrollbar-track {
+  background: rgb(209 213 219);
+  border-radius: 20px; /* This will give a rounded look */
+}
+
+.comment-scrollbar::-webkit-scrollbar-thumb {
+  background: rgb(75 85 99); /* Darker color for scrollbar hover */
+}
+
+.comment-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgb(75 85 99);
+}
+
+.comment-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #444 rgb(107 114 128);
+}
+
+
+
 /* This is for Chrome and Opera */
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;

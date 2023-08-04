@@ -48,8 +48,8 @@ export async function POST(request: Request, { params: { user_id } }: Props) {
     }
 
     // Check the count of current tags
-    if (currentTags.length >= 5) {
-      return new Response("A trainer can have maximum 5 tags", { status: 400 });
+    if (currentTags.length >= 3) {
+      return new Response("A trainer can have maximum 3 tags", { status: 400 });
     }
 
     // Insert new tag

@@ -55,8 +55,10 @@ export async function PUT(request: Request, { params: { trainer_id } }: Props) {
   if (!requestData) {
     return new NextResponse("Bad request", { status: 400 });
   }
-
   const new_comment = requestData.comment;
+  if(new_comment.length > 250 ) {
+    return new NextResponse("Comment is too long", { status: 401 });
+  }
   const fieldsToCheck = ["comment"];
 
   // Loop over each field to check
@@ -110,7 +112,9 @@ export async function POST(
     return new NextResponse("Unauthorized", { status: 401 });
   }
   const fieldsToCheck = ["comment"];
-
+  if(requestData["comment"].length > 250 ) {
+    return new NextResponse("Comment is too long", { status: 401 });
+  }
   // Loop over each field to check
   for (let field of fieldsToCheck) {
     // Only proceed if the field is defined

@@ -7,11 +7,17 @@ type CommentSectionProps = {
   rating: number;
 };
 
-const CommentSection: React.FC<CommentSectionProps> = ({ rating, trainer_id }) => {
+const CommentSection: React.FC<CommentSectionProps> = ({
+  rating,
+  trainer_id,
+}) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  const { user } = useAuth(); // Assuming useAuth is a custom hook that gets user data
-
+  const [charCount, setCharCount] = useState(0);
+  const { user } = useAuth();
+  useEffect(() => {
+    setCharCount(newComment.length);
+  }, [newComment]);
   const fetchComments = async () => {
     const response = await fetch(`/api/comments/${trainer_id}`);
     if (response.status === 200) {
@@ -37,7 +43,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ rating, trainer_id }) =
         toast.error(message); // Display the "Please be nicer" message
       });
     } else {
-      console.log(response.status)
+      console.log(response.status);
       toast.error("Error updating comment");
     }
   };
@@ -68,11 +74,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ rating, trainer_id }) =
       toast.error("You must be logged in to comment");
       return;
     }
-    if(newComment.length < 1){
+    if (newComment.length < 1) {
       toast.error("Comment cannot be empty");
       return;
     }
-    
+
     const response = await fetch(`/api/comments/${trainer_id}`, {
       method: "POST",
       headers: {
@@ -95,33 +101,47 @@ const CommentSection: React.FC<CommentSectionProps> = ({ rating, trainer_id }) =
 
   return (
     <div>
-      {comments.map((comment) => (
-        <CommentItem
-          trainer_id={trainer_id}
-          handleUpdate={handleUpdate}
-          handleDelete={handleDelete}
-          key={comment.comment_id}
-          comment={comment}
-          ratingProps={rating}
-        />
-      ))}
-      { user &&
-      <form onSubmit={handleSubmit} className="mt-4">
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          className="w-full p-2 mb-3 text-black border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
-          placeholder="Type your comment here..."
-          rows={3}
-        />
-        <button
-          type="submit"
-          className="w-full py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition duration-200 ease-in"
-        >
-          Submit Comment
-        </button>
-      </form>
-    }
+      {comments.length > 0 ? (
+        comments.map((comment) => (
+          <CommentItem
+            trainer_id={trainer_id}
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
+            key={comment.comment_id}
+            comment={comment}
+            ratingProps={rating}
+          />
+        ))
+      ) : (
+        <div className="text-center">No comments yet</div>
+      )}
+      {user && (
+        <form onSubmit={handleSubmit} className="mt-4">
+          <div className="relative"> 
+          <textarea
+            value={newComment}
+            onChange={(e) => {
+              setNewComment(e.target.value);
+              setCharCount(e.target.value.length);
+            }}
+            maxLength={250}
+            className="w-full p-2 mb-3 text-black border custom-scrollbar border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
+            placeholder="Type your comment here..."
+            rows={3}
+          />
+          <div
+            className="absolute text-gray-400 text-sm bottom-6 right-3">
+            {charCount}/250 characters
+          </div>
+        </div> 
+          <button
+            type="submit"
+            className="w-full py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition duration-200 ease-in"
+          >
+            Submit Comment
+          </button>
+        </form>
+      )}
     </div>
   );
 };

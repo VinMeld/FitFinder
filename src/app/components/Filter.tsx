@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef  } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { categories } from "../../../public/index"
-export default function Filter({tags, setTags, searchTerm, setSearchTerm }) {
+import { categories } from "../../../public/index";
+export default function Filter({ tags, setTags, searchTerm, setSearchTerm }) {
   const router = useRouter();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef(null);
@@ -31,21 +31,20 @@ export default function Filter({tags, setTags, searchTerm, setSearchTerm }) {
     } else {
       newTags.push(tag);
     }
-    console.log(newTags)
+    console.log(newTags);
     setTags(newTags);
-  
+
     const params = new URLSearchParams();
     if (searchTerm) {
       params.append("searchTerm", searchTerm);
     }
     if (newTags.length > 0) {
-      params.append("tags", newTags.join(',')); // Join the tags with a comma
+      params.append("tags", newTags.join(",")); // Join the tags with a comma
     }
-    const newUrl = params.toString() ? `?${params.toString()}` : '/';
+    const newUrl = params.toString() ? `?${params.toString()}` : "/";
     router.push(newUrl, { scroll: false });
   };
-  
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const params = new URLSearchParams();
@@ -55,10 +54,10 @@ export default function Filter({tags, setTags, searchTerm, setSearchTerm }) {
     // if (tags.length > 0) {
     //   params.append("tags", tags.join(',')); // Join the tags with a comma
     // }
-    const newUrl = params.toString() ? `?${params.toString()}` : '/';
+    const newUrl = params.toString() ? `?${params.toString()}` : "/";
     router.push(newUrl, { scroll: false });
   };
-    
+
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropdownVisible(false);
@@ -89,7 +88,7 @@ export default function Filter({tags, setTags, searchTerm, setSearchTerm }) {
           id="dropdown"
           className={`absolute left-0 mt-1 z-10 ${
             dropdownVisible ? "block" : "hidden"
-          } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`} // Add conditional rendering here
+          } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 overflow-auto max-h-60 dark:bg-gray-700 custom-scrollbar`} // Add conditional rendering here
         >
           <ul
             className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -103,9 +102,7 @@ export default function Filter({tags, setTags, searchTerm, setSearchTerm }) {
                   className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   {category}
-                  {tags.includes(category) && (
-                    <span className="ml-2">✔</span>
-                  )}
+                  {tags.includes(category) && <span className="ml-2">✔</span>}
                 </a>
               </li>
             ))}

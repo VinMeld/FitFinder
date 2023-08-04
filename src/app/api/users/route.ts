@@ -78,7 +78,11 @@ export async function PUT(request: Request) {
 
   // Define fields to check for spam
   const fieldsToCheck = ["bio", "instagram"];
-
+  if (req["bio"] && req["bio"].length > 1000 ) {
+    return new NextResponse("Bio is too long", { status: 401 });
+  } else if (req["instagram"] && req["instagram"].length > 50 ) {
+    return new NextResponse("Instagram is too long", { status: 401 });
+  } 
   // Loop over each field to check
   for (let field of fieldsToCheck) {
     // Only proceed if the field is defined

@@ -82,13 +82,17 @@ export default function TrainerList(props) {
   }
   function handleCloseModel() {
     if (!modalIsOpen) return;
+  
     // fetch trainer details
     setSelectedTrainer(null);
     setIsOpen(false);
-
-    // add the id to the URL
-    router.push("?" + createQueryString("id", ""), { scroll: false });
+  
+    // remove the id from the URL
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('id');
+    router.push("?" + params.toString(), { scroll: false });
   }
+  
 
   return (
     <section
