@@ -71,7 +71,7 @@ const UserProfile = () => {
                 <div className="flex justify-between items-center gap-2 mb-2">
                   <div>
                     <h1 className="text-3xl">
-                      {user.first_name} {user.last_name}
+                      {user.display_name}
                     </h1>
                     {user.location && (
                       <p
