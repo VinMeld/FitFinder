@@ -1,7 +1,7 @@
 # FitFinder
 ### FitFinder is a fitness-oriented application that connects users and trainers, offering a seamless interface for interaction and personal training needs. This application is hosted on [fitfinder.ca](https://fitfinder.ca/). Built with NextJS, TailwindCSS, and Supabase as the backend, FitFinder is deployed with Vercel.
 
-[![FitFinder Homage Page](https://i.imgur.com/8s51v4N.png)](https://fitfinder.ca)
+[![FitFinder Homage Page](https://i.imgur.com/8s51v4N.png)](https://fitfinder.ca/)
 
 
 
