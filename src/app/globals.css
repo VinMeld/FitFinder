@@ -2,6 +2,113 @@
 @tailwind components;
 @tailwind utilities;
 
+/* styles/phone-input.css */
+
+.phone-input .PhoneInputInput {
+  background-color: black !important;
+  color: white !important;
+  border: 1px solid white !important;
+  padding: 1rem !important;
+  border-radius: 0.5rem !important;
+  width: 100% !important;
+}
+
+.phone-input .PhoneInputInput:focus {
+  outline: none !important;
+  border-color: blue !important;
+}
+
+.phone-input .PhoneInputCountrySelectIcon {
+  fill: white !important;
+}
+
+.phone-input .PhoneInputCountrySelectArrow {
+  border-color: white transparent transparent transparent !important;
+}
+
+.phone-input .PhoneInputCountrySelect:focus .PhoneInputCountrySelectIcon {
+  fill: blue !important;
+}
+
+.phone-input .PhoneInputCountrySelect:focus .PhoneInputCountrySelectArrow {
+  border-color: blue transparent transparent transparent !important;
+}
+
+/* The container that has scrollbar */
+:root {
+  overflow-y: scroll; /* It's important to set this */
+}
+
+.comment-scrollbar::-webkit-scrollbar {
+  width: 20px;
+}
+
+.comment-scrollbar::-webkit-scrollbar-track {
+  background: rgb(209 213 219);
+  border-radius: 20px; /* This will give a rounded look */
+}
+
+.comment-scrollbar::-webkit-scrollbar-thumb {
+  background: rgb(75 85 99); /* Darker color for scrollbar hover */
+}
+
+.comment-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgb(75 85 99);
+}
+
+.comment-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #444 rgb(107 114 128);
+}
+
+
+
+/* This is for Chrome and Opera */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #000000;
+  border-radius: 20px; /* This will give a rounded look */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #222; /* Darker color for scrollbar hover */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #222;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #000000;
+}
+
+:root::-webkit-scrollbar {
+  width: 5px; /* Adjust width for thinner scrollbar */
+}
+
+:root::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+:root::-webkit-scrollbar-thumb {
+  background: #444; /* Darker color for scrollbar */
+  border-radius: 20px; /* This will give a rounded look */
+}
+
+:root::-webkit-scrollbar-thumb:hover {
+  background: #222; /* Darker color for scrollbar hover */
+}
+
+/* This is for Internet Explorer and Edge */
+:root {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #000000; /* Darker color for scrollbar */
+}
+
 :root {
     --black-gradient: linear-gradient(
       144.39deg,

@@ -27,12 +27,12 @@ const Carousel = ({ images }) => {
   };
 
   return (
-    <div className="relative w-full overflow-hidden h-96 rounded-lg" ref={carouselRef}>
+    <div className="relative w-full overflow-hidden h-96 rounded-lg shadow-lg transform hover:scale-105 transition-all ease-in-out duration-300" ref={carouselRef}>
       {images.map((src, index) => (
         <div
           key={index}
           className={`absolute w-full h-full transition-all duration-500 ease-in-out ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
+            index === currentSlide ? "opacity-100 transform scale-105 shadow-lg" : "opacity-0 transform scale-95"
           }`}
           style={{ top: '0', left: '0' }}
         >
@@ -58,6 +58,7 @@ const Carousel = ({ images }) => {
           />
         ))}
       </div>
+      {images.length > 1 && (
       <button
         className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
         onClick={handlePrev}
@@ -79,6 +80,9 @@ const Carousel = ({ images }) => {
         </svg>
         <span className="sr-only">Previous</span>
       </button>
+      )}
+      {images.length > 1 && (
+
       <button
         className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
         onClick={handleNext}
@@ -100,6 +104,7 @@ const Carousel = ({ images }) => {
         </svg>
         <span className="sr-only">Next</span>
       </button>
+      )}
     </div>
   );
 };

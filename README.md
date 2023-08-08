@@ -1,7 +1,7 @@
 # FitFinder
 ### FitFinder is a fitness-oriented application that connects users and trainers, offering a seamless interface for interaction and personal training needs. This application is hosted on [fitfinder.ca](https://fitfinder.ca/). Built with NextJS, TailwindCSS, and Supabase as the backend, FitFinder is deployed with Vercel.
 
-[![FitFinder Homage Page](https://i.imgur.com/8s51v4N.png)](https://fitfinder.ca/)
+[![FitFinder Homage Page](FitFinderreadme.png)](https://fitfinder.ca/)
 
 
 
@@ -25,6 +25,22 @@ FitFinder comes with a wide array of features that streamline the user experienc
 
 **Interactive Interface**: Like your favorite trainers to show your support or bookmark for later.
 
+### Additional Features
+
+**Ratings and Comments**:
+- Users can rate trainers and leave feedback, helping the community make informed decisions.
+- A built-in moderation system ensures that the platform remains spam-free and upholds a high standard of communication.
+
+**NSFW Image Checker**: 
+- An automated tool reviews uploaded images to ensure they meet the platform's standards and guidelines.
+
+**Toxic Comment Checker**: 
+- To promote a healthy and respectful community, this tool automatically identifies and flags potentially harmful comments.
+
+**Tag Filtration & Suggestions**: 
+- Improve your search experience with tag filtration, allowing users to find trainers based on specific categories like 'strength training', 'yoga', and more.
+- The platform also auto-suggests tags derived from the trainer's biography, streamlining profile setup and enhancing discoverability.
+
 # Technologies Used
 This project is implemented with the following technologies:
 * Next.js
@@ -32,13 +48,15 @@ This project is implemented with the following technologies:
 * Supabase
 * Vercel
 
+* Hugging Face
+![Technologies](Technologyreadme.png)
 # Getting Started
 To get a local copy up and running, follow these simple steps:
 
 Clone the repository
 
 ```bash
-git clone https://github.com/VinMeld/FitFinder.git
+git clone https://github.com/FitFinderHost/FitFinder.git
 ```
 Install the dependencies
 
@@ -72,6 +90,7 @@ Here's a high-level overview of the project's structure:
     ├── package.json        # Project meta data
     ├── .gitignore          # Ignore file for git
     ├── README.md           # This file
+
 # Contributing
 Thank you for your interest in contributing to FitFinder. We welcome contributions from everyone.
 

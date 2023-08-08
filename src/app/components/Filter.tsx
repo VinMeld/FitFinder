@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-export default function Filter() {
-  const [searchTerm, setSearchTerm] = useState("");
+import { useRouter } from "next/navigation";
+import { categories } from "../../../public/index";
+export default function Filter({ tags, setTags, searchTerm, setSearchTerm }) {
+  const router = useRouter();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const categories = ["Mockups", "Templates", "Design", "Logos"]; // categories array
+  const dropdownRef = useRef(null);
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
 
-  const handleSearchChange = (event: any) => {
+  const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
@@ -13,9 +21,52 @@ export default function Filter() {
     setDropdownVisible(!dropdownVisible);
   };
 
+  const handleTagClick = (tag, e) => {
+    e.preventDefault();
+    console.log(tag);
+    const newTags = [...tags];
+    if (newTags.includes(tag)) {
+      const tagIndex = newTags.indexOf(tag);
+      newTags.splice(tagIndex, 1);
+    } else {
+      newTags.push(tag);
+    }
+    console.log(newTags);
+    setTags(newTags);
+
+    const params = new URLSearchParams();
+    if (searchTerm) {
+      params.append("searchTerm", searchTerm);
+    }
+    if (newTags.length > 0) {
+      params.append("tags", newTags.join(",")); // Join the tags with a comma
+    }
+    const newUrl = params.toString() ? `?${params.toString()}` : "/";
+    router.push(newUrl, { scroll: false });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const params = new URLSearchParams();
+    if (searchTerm) {
+      params.append("searchTerm", searchTerm);
+    }
+    // if (tags.length > 0) {
+    //   params.append("tags", tags.join(',')); // Join the tags with a comma
+    // }
+    const newUrl = params.toString() ? `?${params.toString()}` : "/";
+    router.push(newUrl, { scroll: false });
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownVisible(false);
+    }
+  };
+
   return (
-    <form className="w-full flex">
-      <div className="relative">
+    <form className="w-full flex" onSubmit={handleSubmit}>
+      <div className="relative" ref={dropdownRef}>
         <button
           id="dropdown-button"
           data-dropdown-toggle="dropdown"
@@ -30,14 +81,14 @@ export default function Filter() {
             height={20}
             className="mr-2"
           />
-          All categories
+          Tags
         </button>
 
         <div
           id="dropdown"
           className={`absolute left-0 mt-1 z-10 ${
             dropdownVisible ? "block" : "hidden"
-          } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`} // Add conditional rendering here
+          } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 overflow-auto max-h-60 dark:bg-gray-700 custom-scrollbar`} // Add conditional rendering here
         >
           <ul
             className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -45,12 +96,14 @@ export default function Filter() {
           >
             {categories.map((category) => (
               <li key={category}>
-                <button
-                  type="button"
+                <a
+                  href="#"
+                  onClick={(e) => handleTagClick(category, e)}
                   className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   {category}
-                </button>
+                  {tags.includes(category) && <span className="ml-2">✔</span>}
+                </a>
               </li>
             ))}
           </ul>
@@ -62,7 +115,9 @@ export default function Filter() {
           type="search"
           id="search-dropdown"
           className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-          placeholder="Search Mockups, Logos, Design Templates..."
+          placeholder="Search Trainer Names..."
+          value={searchTerm}
+          onChange={handleSearchChange}
           required
         />
         <button
