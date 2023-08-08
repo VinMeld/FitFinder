@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage, useFormikContext  } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-
 export default function TrainerEdit() {
   const { user, trainer } = useAuth();
   const [uploadCount, setUploadCount] = useState(0);
