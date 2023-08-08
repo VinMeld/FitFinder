@@ -47,6 +47,7 @@ This project is implemented with the following technologies:
 * Tailwind CSS
 * Supabase
 * Vercel
+
 * Hugging Face
 ![Technologies](Technologyreadme.png)
 # Getting Started
