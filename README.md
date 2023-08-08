@@ -25,6 +25,18 @@ FitFinder comes with a wide array of features that streamline the user experienc
 
 **Interactive Interface**: Like your favorite trainers to show your support or bookmark for later.
 
+## Additional Features
+
+**Ratings and Comments**:
+* Users can rate trainers and leave feedback, helping the community make informed decisions.
+* A built-in moderation system ensures that the platform remains spam-free and upholds a high standard of communication.
+
+**NSFW Image Checker**: An automated tool reviews uploaded images to ensure they meet the platform's standards and guidelines.
+**Toxic Comment Checker**: To promote a healthy and respectful community, this tool automatically identifies and flags potentially harmful comments.
+**Tag Filtration & Suggestions**: 
+* Improve your search experience with tag filtration, allowing users to find trainers based on specific categories like 'strength training', 'yoga', and more.
+* The platform also auto-suggests tags derived from the trainer's biography, streamlining profile setup and enhancing discoverability.
+
 # Technologies Used
 This project is implemented with the following technologies:
 * Next.js
