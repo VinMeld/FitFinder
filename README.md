@@ -47,13 +47,14 @@ This project is implemented with the following technologies:
 * Tailwind CSS
 * Supabase
 * Vercel
+* Hugging Face
 # Getting Started
 To get a local copy up and running, follow these simple steps:
 
 Clone the repository
 
 ```bash
-git clone https://github.com/VinMeld/FitFinder.git
+git clone https://github.com/FitFinderHost/FitFinder.git
 ```
 Install the dependencies
 
@@ -87,6 +88,7 @@ Here's a high-level overview of the project's structure:
     ├── package.json        # Project meta data
     ├── .gitignore          # Ignore file for git
     ├── README.md           # This file
+
 # Contributing
 Thank you for your interest in contributing to FitFinder. We welcome contributions from everyone.
 
