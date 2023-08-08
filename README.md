@@ -31,6 +31,7 @@ This project is implemented with the following technologies:
 * Tailwind CSS
 * Supabase
 * Vercel
+
 # Getting Started
 To get a local copy up and running, follow these simple steps:
 
